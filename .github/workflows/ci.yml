@@ -1,0 +1,85 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  markdown-lint:
+    name: Markdown Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run markdownlint
+        uses: nosborn/github-action-markdown-cli@v3.3.0
+        with:
+          files: .
+          config_file: .markdownlint.json
+          ignore_files: node_modules/
+        continue-on-error: true  # Don't fail build on markdown issues initially
+
+  python-setup:
+    name: Python Dependencies Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Check if requirements.txt exists
+        id: check-requirements
+        run: |
+          if [ -f requirements.txt ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "No requirements.txt found, skipping Python dependency check"
+          fi
+      
+      - name: Install Python dependencies
+        if: steps.check-requirements.outputs.exists == 'true'
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+  repo-structure:
+    name: Repository Structure Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Verify essential files
+        run: |
+          echo "Checking for essential repository files..."
+          
+          # Check for documentation
+          test -f README.md && echo "✅ README.md exists" || echo "❌ README.md missing"
+          test -f CONTRIBUTING.md && echo "✅ CONTRIBUTING.md exists" || echo "❌ CONTRIBUTING.md missing"
+          test -f LICENSE && echo "✅ LICENSE exists" || echo "❌ LICENSE missing"
+          
+          # Check for GitHub templates
+          test -f .github/PULL_REQUEST_TEMPLATE.md && echo "✅ PR template exists" || echo "❌ PR template missing"
+          test -d .github/ISSUE_TEMPLATE && echo "✅ Issue templates directory exists" || echo "❌ Issue templates missing"
+          
+          # Check for .gitignore
+          test -f .gitignore && echo "✅ .gitignore exists" || echo "❌ .gitignore missing"
+          
+          echo "Repository structure check complete"
+
+  notify:
+    name: CI Summary
+    runs-on: ubuntu-latest
+    needs: [markdown-lint, python-setup, repo-structure]
+    if: always()
+    steps:
+      - name: CI Summary
+        run: |
+          echo "CI checks completed!"
+          echo "This is a minimal CI pipeline to ensure basic repository health."
+          echo "More comprehensive checks will be added as the project develops."
