@@ -6,10 +6,15 @@ on:
   pull_request:
     branches: [ main, develop ]
 
+permissions:
+  contents: read
+
 jobs:
   markdown-lint:
     name: Markdown Lint
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       
@@ -24,6 +29,8 @@ jobs:
   python-setup:
     name: Python Dependencies Check
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       
@@ -51,6 +58,8 @@ jobs:
   repo-structure:
     name: Repository Structure Check
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       
@@ -75,6 +84,8 @@ jobs:
   notify:
     name: CI Summary
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     needs: [markdown-lint, python-setup, repo-structure]
     if: always()
     steps:
