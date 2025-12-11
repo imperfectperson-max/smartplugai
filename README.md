@@ -30,8 +30,8 @@ Smart Plug AI combines:
 2. **Choose your development path**:
    - 📱 **Mobile App**: See [app/README.md](app/README.md)
    - 🌐 **Web Dashboard**: See [web/README.md](web/README.md)
-   - 🔧 **Firmware**: See [firmware/README.md](firmware/README.md) (coming soon)
-   - ☁️ **Backend**: See [backend/README.md](backend/README.md) (coming soon)
+   - 🔧 **Firmware**: See [firmware/README.md](firmware/README.md)
+   - ☁️ **Backend**: See [backend/README.md](backend/README.md)
 
 3. **Review the roadmap**: Check [docs/ROADMAP.md](docs/ROADMAP.md) for milestones and priorities
 
@@ -59,8 +59,8 @@ Also review our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
 - [Roadmap](docs/ROADMAP.md) - Project phases and milestones
 - [Soldering Checklist](docs/soldering-checklist.md) - Hardware preparation guide
-- [Architecture](docs/ARCHITECTURE.md) (coming soon)
-- [API Documentation](docs/API.md) (coming soon)
+- [Architecture](docs/ARCHITECTURE.md) - System architecture and design
+- [API Documentation](docs/API.md) - REST API, WebSocket, and MQTT reference
 
 ## 🎯 Where to Start
 
