@@ -722,7 +722,8 @@ Device publishes power telemetry data.
   "properties": {
     "device_id": {
       "type": "string",
-      "pattern": "^smartplug_[a-z0-9]+$"
+      "pattern": "^smartplug_[a-zA-Z0-9_-]+$",
+      "description": "Unique device identifier"
     },
     "timestamp": {
       "type": "integer",

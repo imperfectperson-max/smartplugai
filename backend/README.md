@@ -92,13 +92,13 @@ The backend provides:
    # MQTT Broker
    MQTT_BROKER_HOST=mosquitto
    MQTT_BROKER_PORT=1883
-   MQTT_USERNAME=smartplug_backend
-   MQTT_PASSWORD=change_this_password
+   MQTT_USERNAME=YOUR_MQTT_USERNAME
+   MQTT_PASSWORD=YOUR_MQTT_PASSWORD
    MQTT_TLS_ENABLED=false
    
    # InfluxDB
    INFLUXDB_URL=http://influxdb:8086
-   INFLUXDB_TOKEN=your-influxdb-admin-token
+   INFLUXDB_TOKEN=YOUR_INFLUXDB_TOKEN
    INFLUXDB_ORG=smartplugai
    INFLUXDB_BUCKET=telemetry
    
@@ -107,7 +107,7 @@ The backend provides:
    POSTGRES_PORT=5432
    POSTGRES_DB=smartplugai
    POSTGRES_USER=smartplug
-   POSTGRES_PASSWORD=change_this_password
+   POSTGRES_PASSWORD=YOUR_POSTGRES_PASSWORD
    
    # Redis
    REDIS_HOST=redis

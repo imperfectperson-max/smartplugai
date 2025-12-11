@@ -166,15 +166,17 @@ Here's a complete minimal example that demonstrates INA219 reading, MQTT publish
 #include <Adafruit_INA219.h>
 #include <ArduinoJson.h>
 
-// Wi-Fi credentials (use Wi-Fi manager in production)
+// ⚠️ WARNING: Never hardcode credentials in production firmware!
+// Use Wi-Fi manager (e.g., WiFiManager library) and secure credential storage
+// This example uses placeholders for demonstration only
 const char* WIFI_SSID = "YOUR_WIFI_SSID";
 const char* WIFI_PASSWORD = "YOUR_WIFI_PASSWORD";
 
 // MQTT broker configuration
 const char* MQTT_BROKER = "mqtt.example.com";
 const int MQTT_PORT = 1883;
-const char* MQTT_USERNAME = "smartplug_user";
-const char* MQTT_PASSWORD = "your_mqtt_password";
+const char* MQTT_USERNAME = "YOUR_MQTT_USERNAME";
+const char* MQTT_PASSWORD = "YOUR_MQTT_PASSWORD";
 const char* DEVICE_ID = "smartplug_001";  // Unique device identifier
 
 // GPIO pins
