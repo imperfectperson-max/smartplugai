@@ -1,80 +1,108 @@
 # Smart Plug AI
 
-An intelligent IoT smart plug system that monitors power consumption in real-time, learns usage patterns, and provides actionable insights through mobile and web interfaces.
+An intelligent, **security-first** IoT smart plug system that monitors power consumption in real-time, learns usage patterns, and provides actionable insights through mobile and web interfaces.
 
 ## 🚀 Project Overview
 
-Smart Plug AI combines:
-- **Hardware**: ESP32-based smart plug with INA219 power monitoring
-- **Mobile App**: Flutter-based cross-platform app for real-time monitoring
-- **Web Dashboard**: React-based admin dashboard for analytics
-- **Backend**: Cloud-based API with Firebase/Supabase integration
-- **Intelligence**: Pattern recognition and anomaly detection for power usage
+Smart Plug AI is a comprehensive IoT solution combining hardware security, encrypted communications, and user privacy protection with powerful energy monitoring capabilities:
 
-## 📋 Quick Start for Developers
+- **🔒 Security-First Design**: Hardware secure boot, TLS 1.3 encryption, certificate-based authentication
+- **⚡ Smart Hardware**: ESP32-based plug with INA219 power monitoring and secure firmware
+- **📱 Mobile App**: Flutter cross-platform app with biometric auth and encrypted storage
+- **🌐 Web Dashboard**: React-based admin panel with role-based access control
+- **☁️ Secure Backend**: Cloud API with POPIA/GDPR compliance and encrypted data storage
+- **🧠 Intelligence**: ML-powered pattern recognition and security anomaly detection
+
+## 📋 Quick Start
 
 ### Prerequisites
-- **Hardware Development**: ESP32, INA219, relay modules (see [soldering checklist](docs/soldering-checklist.md))
-- **Mobile App**: Flutter SDK 3.x+, Dart 3.x+
-- **Web Dashboard**: Node.js 18+, npm/yarn
-- **Backend**: Python 3.10+, Docker (optional for local MQTT)
+
+- **Hardware**: ESP32, INA219, relay modules ([soldering checklist](docs/soldering-checklist.md))
+- **Mobile**: Flutter SDK 3.x+, Dart 3.x+
+- **Web**: Node.js 18+, npm/yarn
+- **Backend**: Python 3.10+, Docker
 
 ### Getting Started
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/imperfectperson-max/smartplugai.git
-   cd smartplugai
-   ```
+```bash
+# Clone the repository
+git clone https://github.com/imperfectperson-max/smartplugai.git
+cd smartplugai
 
-2. **Choose your development path**:
-   - 📱 **Mobile App**: See [app/README.md](app/README.md)
-   - 🌐 **Web Dashboard**: See [web/README.md](web/README.md)
-   - 🔧 **Firmware**: See [firmware/README.md](firmware/README.md)
-   - ☁️ **Backend**: See [backend/README.md](backend/README.md)
+# Choose your development area:
+# 📱 Mobile App    → see app/README.md
+# 🌐 Web Dashboard → see web/README.md
+# 🔧 Firmware     → see firmware/README.md
+# ☁️ Backend      → see backend/README.md
+```
 
-3. **Review the roadmap**: Check [docs/ROADMAP.md](docs/ROADMAP.md) for milestones and priorities
+## ⚠️ Hardware Safety Warning
 
-## 🔨 Hardware Soldering Preparation
+**DANGER - HIGH VOLTAGE**: This project involves mains electricity (110-240V AC). Improper handling can cause:
 
-**Next Session**: [Soldering Checklist](docs/soldering-checklist.md)
+- Electric shock, serious injury, or death
+- Fire hazards and property damage
+- Equipment damage
 
-Before the soldering session:
-- ✅ Verify parts list (ESP32, INA219, relay, connectors)
-- ✅ Review safety procedures and workspace setup
-- ✅ Test components individually with breadboard
-- ✅ Plan data collection and initial firmware test
+**Safety Requirements**:
 
-## 🤝 Contributing
+- ⚡ Only qualified individuals should work with mains voltage
+- 🔌 Always disconnect power before working on circuits
+- 🛡️ Use proper insulation, fusing, and safety enclosures
+- ✅ Follow local electrical codes and regulations
+- 🧪 Test thoroughly in safe environments before deployment
 
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for:
-- Code style and conventions
-- How to submit issues and pull requests
-- Development workflow and branch naming
-- Testing requirements
-
-Also review our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+See the [soldering checklist](docs/soldering-checklist.md) for complete safety procedures.
 
 ## 📚 Documentation
 
-- [Roadmap](docs/ROADMAP.md) - Project phases and milestones
-- [Soldering Checklist](docs/soldering-checklist.md) - Hardware preparation guide
-- [Architecture](docs/ARCHITECTURE.md) - System architecture and design
-- [API Documentation](docs/API.md) - REST API, WebSocket, and MQTT reference
+### Core Documentation
 
-## 🎯 Where to Start
+- **[Complete Project Plan](Complete%20Smart%20Plug%20AI%20plan.txt)** - Comprehensive security-enhanced implementation roadmap
+- **[Security Policy](SECURITY.md)** - Security architecture, compliance, and vulnerability disclosure
+- **[Architecture](docs/ARCHITECTURE.md)** - System design and component interactions
+- **[API Reference](docs/API.md)** - REST API, WebSocket, and MQTT documentation
+- **[Roadmap](docs/ROADMAP.md)** - Development phases and milestones
+- **[Changelog](CHANGELOG.md)** - Version history and notable changes
 
-**Before Hardware is Ready**:
-1. **Mobile App**: Build mock UI for auth, power monitoring, and QR pairing
-2. **Web Dashboard**: Create placeholder dashboard with sample data
-3. **Firmware**: Write test sketch to publish dummy INA219 data to MQTT
-4. **Infrastructure**: Set up local MQTT broker with docker-compose
+### Development Guides
 
-**After Soldering**:
-1. Flash firmware and test power readings
-2. Connect mobile app to live data feed
-3. Implement cloud storage and analytics
-4. Deploy web dashboard
+- [Soldering Checklist](docs/soldering-checklist.md) - Hardware assembly and safety
+- [Contributing Guidelines](CONTRIBUTING.md) - How to contribute to the project
+- [Code of Conduct](CODE_OF_CONDUCT.md) - Community guidelines
+
+## 🤝 Contributing
+
+We welcome contributions! **Security-conscious contributions are especially valued.**
+
+**Before Contributing**:
+
+1. Read [CONTRIBUTING.md](CONTRIBUTING.md) for development workflow
+2. Review [SECURITY.md](SECURITY.md) for security requirements
+3. Check [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for community standards
+4. Review the [Complete Project Plan](Complete%20Smart%20Plug%20AI%20plan.txt) for technical direction
+
+**How to Contribute**:
+
+- 🐛 Report bugs and security issues (see [SECURITY.md](SECURITY.md) for security reports)
+- 💡 Propose new features aligned with project goals
+- 📝 Improve documentation and examples
+- 🔧 Submit pull requests with tests and documentation
+- 🔒 Help with security reviews and testing
+
+## 🔐 Security
+
+Security is a fundamental principle of Smart Plug AI, not an afterthought.
+
+**Key Security Features**:
+
+- Hardware secure boot and flash encryption (ESP32)
+- TLS 1.3 encryption for all communications
+- Certificate-based device authentication
+- POPIA and GDPR compliance
+- Regular security audits and updates
+
+**Report Security Vulnerabilities**: See [SECURITY.md](SECURITY.md) for our vulnerability disclosure policy.
 
 ## 📄 License
 
@@ -82,4 +110,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-Built with passion for IoT innovation and smart home automation.
+Built with a commitment to secure IoT innovation, user privacy, and smart home automation.
+
+---
+
+**Project Status**: Active Development | **Version**: 0.2.0 | **Last Updated**: December 2025
