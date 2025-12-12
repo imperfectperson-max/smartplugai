@@ -6,43 +6,57 @@ Cloud-based backend service for device management, data ingestion, real-time ana
 
 The backend provides:
 
-- **MQTT Broker**: Message broker for device-to-cloud communication
-- **REST API**: Device management, telemetry query, and control endpoints
-- **WebSocket**: Real-time data streaming to web and mobile clients
-- **Data Ingestion**: Process and store telemetry from smart plug devices
-- **Data Storage**: Time-series data (InfluxDB) and metadata (PostgreSQL)
-- **Authentication**: User authentication and authorization (JWT-based)
+- **MQTT Broker**: Secure message broker for device-to-cloud communication over TLS 1.3 with client certificates
+- **REST API**: Device management, telemetry query, and control endpoints with signed command support
+- **WebSocket**: Real-time encrypted data streaming to web and mobile clients
+- **Data Ingestion**: Process and store encrypted telemetry from smart plug devices
+- **Data Storage**: Time-series data (InfluxDB) with field-level encryption and metadata (PostgreSQL/Firestore)
+- **Authentication**: User authentication and authorization with Auth0/Firebase Auth, 2FA, and RBAC
 - **Analytics**: Aggregation, pattern recognition, and anomaly detection
 - **ML Pipeline Integration**: Data export and hooks for machine learning workflows
+- **Security**: Rate limiting, audit logging, ATECC608A device provisioning endpoints, SOC2 compliance readiness
 
 ## 🏗️ Tech Stack
 
-### Recommended Stack
+### Recommended Stack (Security-First)
 
 - **API Framework**: FastAPI (Python 3.10+)
   - Async support for high throughput
   - Automatic OpenAPI documentation
   - Type validation with Pydantic
+  - Built-in security features
 
 - **MQTT Broker**: Eclipse Mosquitto
   - Lightweight and reliable
-  - SSL/TLS support
-  - WebSocket support for browsers
+  - TLS 1.3 support with client certificate authentication
+  - WebSocket over TLS support for browsers
+  - ACL-based access control
 
 - **Time-Series Database**: InfluxDB 2.x
   - Optimized for time-series data
   - Built-in downsampling and retention policies
   - Flux query language
+  - Field-level encryption support
 
-- **Relational Database**: PostgreSQL 14+
+- **Relational Database**: PostgreSQL 14+ or Firestore
   - Device metadata, user accounts, configurations
-  - Strong ACID guarantees
+  - Strong ACID guarantees (PostgreSQL)
+  - Field-level encryption for sensitive data
   - JSON support for flexible schemas
+  - RBAC and audit logging
+
+- **Authentication**: Auth0 or Firebase Auth
+  - OAuth2/OpenID Connect support
+  - 2FA and MFA support
+  - Social login providers
+  - RBAC and fine-grained permissions
+  - Session management and token refresh
 
 - **Cache**: Redis 7+
   - Session management
   - Real-time data caching
-  - Rate limiting
+  - Rate limiting counters
+  - Encrypted data cache
 
 - **Message Queue**: Redis Streams or RabbitMQ (optional)
   - Async task processing
@@ -89,41 +103,81 @@ The backend provides:
    API_HOST=0.0.0.0
    API_PORT=8000
    
-   # MQTT Broker
+   # MQTT Broker (TLS enabled for production)
    MQTT_BROKER_HOST=mosquitto
-   MQTT_BROKER_PORT=1883
+   MQTT_BROKER_PORT=8883
    MQTT_USERNAME=YOUR_MQTT_USERNAME
    MQTT_PASSWORD=YOUR_MQTT_PASSWORD
-   MQTT_TLS_ENABLED=false
+   MQTT_TLS_ENABLED=true
+   MQTT_CA_CERT=/certs/ca.crt
+   MQTT_CLIENT_CERT=/certs/client.crt
+   MQTT_CLIENT_KEY=/certs/client.key
    
-   # InfluxDB
+   # InfluxDB (with field-level encryption)
    INFLUXDB_URL=http://influxdb:8086
    INFLUXDB_TOKEN=YOUR_INFLUXDB_TOKEN
    INFLUXDB_ORG=smartplugai
    INFLUXDB_BUCKET=telemetry
+   INFLUXDB_ENCRYPTION_KEY=YOUR_FIELD_ENCRYPTION_KEY
    
-   # PostgreSQL
+   # PostgreSQL / Firestore
    POSTGRES_HOST=postgres
    POSTGRES_PORT=5432
    POSTGRES_DB=smartplugai
    POSTGRES_USER=smartplug
    POSTGRES_PASSWORD=YOUR_POSTGRES_PASSWORD
+   POSTGRES_SSL_MODE=require
+   
+   # Firestore (alternative)
+   FIRESTORE_PROJECT_ID=your-project-id
+   FIRESTORE_CREDENTIALS=/path/to/service-account.json
+   FIRESTORE_ENCRYPTION_KEY=YOUR_FIRESTORE_FIELD_ENCRYPTION_KEY
    
    # Redis
    REDIS_HOST=redis
    REDIS_PORT=6379
-   REDIS_PASSWORD=
+   REDIS_PASSWORD=YOUR_REDIS_PASSWORD
+   REDIS_TLS_ENABLED=false
+   
+   # Auth0 / Firebase Auth
+   AUTH_PROVIDER=auth0  # or firebase
+   AUTH0_DOMAIN=your-tenant.auth0.com
+   AUTH0_CLIENT_ID=YOUR_CLIENT_ID
+   AUTH0_CLIENT_SECRET=YOUR_CLIENT_SECRET
+   AUTH0_AUDIENCE=https://api.smartplugai.com
+   
+   # Firebase Auth (alternative)
+   FIREBASE_PROJECT_ID=your-project-id
+   FIREBASE_API_KEY=YOUR_API_KEY
    
    # JWT Authentication
    JWT_SECRET_KEY=your-jwt-secret-key
    JWT_ALGORITHM=HS256
    ACCESS_TOKEN_EXPIRE_MINUTES=30
    
+   # ATECC608A Device Provisioning
+   DEVICE_PROVISIONING_ENABLED=true
+   DEVICE_CA_CERT=/certs/device-ca.crt
+   DEVICE_CA_KEY=/certs/device-ca.key
+   
+   # Rate Limiting
+   RATE_LIMIT_ENABLED=true
+   RATE_LIMIT_PER_MINUTE=60
+   
+   # Audit Logging
+   AUDIT_LOG_ENABLED=true
+   AUDIT_LOG_PATH=/var/log/smartplugai/audit.log
+   
    # AWS S3 (for ML data export - optional)
    AWS_ACCESS_KEY_ID=your-access-key
    AWS_SECRET_ACCESS_KEY=your-secret-key
    AWS_S3_BUCKET=smartplugai-ml-data
    AWS_REGION=us-east-1
+   
+   # Security & Compliance
+   SABS_COMPLIANCE_MODE=true
+   ICASA_COMPLIANCE_MODE=true
+   SOC2_AUDIT_MODE=true
    ```
 
 3. **Start all services**:
@@ -133,10 +187,20 @@ The backend provides:
 
    This will start:
    - FastAPI application (port 8000)
-   - Mosquitto MQTT broker (port 1883, WebSocket 9001)
+   - Mosquitto MQTT broker (port 8883 TLS, WebSocket 9001)
    - InfluxDB (port 8086)
    - PostgreSQL (port 5432)
    - Redis (port 6379)
+   
+   **Note**: For TLS support, ensure certificate files are mounted:
+   ```yaml
+   # docker-compose.yml excerpt
+   mosquitto:
+     volumes:
+       - ./certs/ca.crt:/mosquitto/certs/ca.crt
+       - ./certs/server.crt:/mosquitto/certs/server.crt
+       - ./certs/server.key:/mosquitto/certs/server.key
+   ```
 
 4. **Verify services are running**:
    ```bash
@@ -476,34 +540,38 @@ Get most recent telemetry reading.
 }
 ```
 
-## 📡 MQTT Integration
+## 📡 MQTT Integration (TLS 1.3 with Client Certificates)
 
 ### Backend as MQTT Subscriber
 
-The backend subscribes to device telemetry topics and stores data in InfluxDB.
+The backend subscribes to device telemetry topics over TLS 1.3 and stores encrypted data in InfluxDB.
 
 **Subscribed Topics**:
 
-- `smartplug/+/telemetry` (all device telemetry)
+- `smartplug/+/telemetry` (all device telemetry - encrypted)
 - `smartplug/+/status` (all device status updates)
 
 **Handler Flow**:
 
-1. MQTT message received on `smartplug/{device_id}/telemetry`
-2. Parse JSON payload
-3. Validate data against schema
-4. Write to InfluxDB (time-series data)
-5. Update device last_seen in PostgreSQL
-6. Broadcast to WebSocket clients (real-time updates)
-7. Trigger ML pipeline if anomaly detected
+1. MQTT message received on `smartplug/{device_id}/telemetry` over TLS 1.3
+2. Verify client certificate and device identity
+3. Parse JSON payload and decrypt encrypted fields
+4. Validate data against schema and verify signature
+5. Write to InfluxDB with field-level encryption for sensitive data
+6. Update device last_seen in PostgreSQL/Firestore
+7. Broadcast to WebSocket clients over TLS (real-time updates)
+8. Trigger ML pipeline if anomaly detected
+9. Log to audit trail
 
-**Example MQTT Subscriber** (see `app/mqtt/subscriber.py`):
+**Example MQTT Subscriber with TLS** (see `app/mqtt/subscriber.py`):
 
 ```python
 import paho.mqtt.client as mqtt
 import json
-from app.db.influx import write_telemetry
+import ssl
+from app.db.influx import write_telemetry_encrypted
 from app.websocket.manager import broadcast_telemetry
+from app.services.crypto import verify_signature, decrypt_telemetry
 
 def on_message(client, userdata, msg):
     topic = msg.topic
@@ -512,17 +580,36 @@ def on_message(client, userdata, msg):
     # Extract device_id from topic: smartplug/{device_id}/telemetry
     device_id = topic.split('/')[1]
     
-    # Store in InfluxDB
-    write_telemetry(device_id, payload)
+    # Verify signature (devices sign telemetry data)
+    if not verify_signature(device_id, payload):
+        logger.error(f"Invalid signature from device {device_id}")
+        return
     
-    # Broadcast to WebSocket clients
-    broadcast_telemetry(device_id, payload)
+    # Decrypt sensitive fields
+    decrypted_payload = decrypt_telemetry(payload)
+    
+    # Store in InfluxDB with field-level encryption
+    write_telemetry_encrypted(device_id, decrypted_payload)
+    
+    # Broadcast to WebSocket clients (over TLS)
+    broadcast_telemetry(device_id, decrypted_payload)
 
 def start_mqtt_subscriber():
     client = mqtt.Client()
+    
+    # Configure TLS 1.3
+    client.tls_set(
+        ca_certs=MQTT_CA_CERT,
+        certfile=MQTT_CLIENT_CERT,
+        keyfile=MQTT_CLIENT_KEY,
+        tls_version=ssl.PROTOCOL_TLS,
+        cert_reqs=ssl.CERT_REQUIRED
+    )
+    client.tls_insecure_set(False)
+    
     client.username_pw_set(MQTT_USERNAME, MQTT_PASSWORD)
     client.on_message = on_message
-    client.connect(MQTT_BROKER_HOST, MQTT_BROKER_PORT)
+    client.connect(MQTT_BROKER_HOST, 8883)  # Port 8883 for TLS
     client.subscribe("smartplug/+/telemetry")
     client.subscribe("smartplug/+/status")
     client.loop_forever()
@@ -530,35 +617,56 @@ def start_mqtt_subscriber():
 
 ### Backend as MQTT Publisher
 
-The backend publishes control commands to devices via MQTT.
+The backend publishes signed control commands to devices via MQTT over TLS 1.3.
 
 **Published Topics**:
 
-- `smartplug/{device_id}/control` (device commands)
+- `smartplug/{device_id}/control` (signed device commands)
 - `smartplug/{device_id}/config` (configuration updates)
 
 **Control Flow**:
 
 1. API receives command via POST `/devices/{device_id}/command`
-2. Validate command and user permissions
-3. Publish MQTT message to `smartplug/{device_id}/control`
-4. Device receives command and executes
-5. Device publishes status update
-6. Backend receives status update and returns to API caller
+2. Validate command and user permissions (RBAC)
+3. Sign command with server's private key (ECDSA)
+4. Publish MQTT message to `smartplug/{device_id}/control` over TLS
+5. Device receives command, verifies signature using server's public key
+6. Device executes command if signature is valid
+7. Device publishes status update
+8. Backend receives status update and returns to API caller
+9. Log to audit trail
 
-**Example MQTT Publisher** (see `app/mqtt/publisher.py`):
+**Example MQTT Publisher with Signed Commands** (see `app/mqtt/publisher.py`):
 
 ```python
 import paho.mqtt.client as mqtt
 import json
+import ssl
+from app.services.crypto import sign_command
 
 def send_device_command(device_id: str, command: str):
     client = mqtt.Client()
+    
+    # Configure TLS 1.3
+    client.tls_set(
+        ca_certs=MQTT_CA_CERT,
+        certfile=MQTT_CLIENT_CERT,
+        keyfile=MQTT_CLIENT_KEY,
+        tls_version=ssl.PROTOCOL_TLS
+    )
+    
     client.username_pw_set(MQTT_USERNAME, MQTT_PASSWORD)
-    client.connect(MQTT_BROKER_HOST, MQTT_BROKER_PORT)
+    client.connect(MQTT_BROKER_HOST, 8883)  # Port 8883 for TLS
+    
+    # Sign the command
+    signature = sign_command(command)
     
     topic = f"smartplug/{device_id}/control"
-    payload = json.dumps({"command": command})
+    payload = json.dumps({
+        "command": command,
+        "signature": signature,
+        "timestamp": int(time.time())
+    })
     
     client.publish(topic, payload, qos=1)
     client.disconnect()
@@ -891,3 +999,5 @@ See [CONTRIBUTING.md](../CONTRIBUTING.md) for general guidelines.
 ---
 
 **Ready to build a scalable IoT backend!** ☁️⚡
+
+For comprehensive security architecture, ATECC608A device provisioning workflows, TLS certificate management, SABS/ICASA compliance guidelines, and SOC2 readiness roadmap, see [docs/SECURITY.md](../docs/SECURITY.md) and [docs/ROADMAP.md](../docs/ROADMAP.md) for Phase 1 (12 weeks) timeline with security milestones.

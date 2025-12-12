@@ -5,19 +5,22 @@ React-based admin dashboard for monitoring, managing, and analyzing smart plug d
 ## 🎯 Overview
 
 The web dashboard provides administrators and power users with:
-- **Multi-device overview**: Monitor all connected devices at a glance
-- **Advanced analytics**: Deep dive into power consumption patterns
-- **User management**: Manage user accounts and permissions (future)
-- **Device administration**: Configure and troubleshoot devices remotely
+- **Multi-device overview**: Monitor all connected devices at a glance with security status
+- **Advanced analytics**: Deep dive into power consumption patterns with encrypted data visualization
+- **User management**: Manage user accounts, permissions, and role-based access control (RBAC)
+- **Device administration**: Configure and troubleshoot devices remotely with secure commands
 - **Data export**: Generate reports and export data for analysis
-- **System monitoring**: View system health and performance metrics
+- **System monitoring**: View system health, performance metrics, and security alerts
+- **Security dashboard**: Display device attestation status, tamper alerts, and security audit logs
+- **Real-time updates**: WebSocket over TLS for live data streaming
 
 ## 🌐 Target Users
 
-- **Homeowners**: Manage multiple smart plugs in their home
-- **Facility managers**: Monitor power usage across buildings
-- **Energy analysts**: Analyze consumption patterns and trends
-- **System administrators**: Configure and maintain the platform
+- **Homeowners**: Manage multiple smart plugs in their home with secure access
+- **Facility managers**: Monitor power usage across buildings with RBAC
+- **Energy analysts**: Analyze consumption patterns and trends with encrypted data access
+- **System administrators**: Configure and maintain the platform with OAuth2/SSO authentication
+- **Security auditors**: Review audit logs, device attestation status, and tamper alerts
 
 ## 🚀 Getting Started
 
@@ -127,10 +130,10 @@ web/
 Build these features with placeholder/mock data:
 
 #### 1. Dashboard Overview
-- [ ] **Summary cards**: Total devices, active devices, total power consumption, cost estimate
-- [ ] **Real-time power chart**: Line chart showing aggregate power usage over time
-- [ ] **Device status grid**: Visual grid showing all devices and their states
-- [ ] **Recent alerts**: List of recent high-power events or anomalies
+- [ ] **Summary cards**: Total devices, active devices, total power consumption, cost estimate, security health score
+- [ ] **Real-time power chart**: Line chart showing aggregate power usage over time (encrypted data)
+- [ ] **Device status grid**: Visual grid showing all devices, their states, and security status (attestation, tamper detection)
+- [ ] **Recent alerts**: List of recent high-power events, anomalies, and security alerts (tamper attempts, failed attestations)
 
 **Suggested Mock Implementation**:
 ```typescript
@@ -193,21 +196,25 @@ export const getMockPowerHistory = () => {
 - [ ] **Display preferences** (units, time zone, theme)
 - [ ] **API keys** (for future integrations)
 
-#### 5. Authentication
-- [ ] **Login page** with form validation
+#### 5. Authentication with OAuth2/SSO
+- [ ] **Login page** with OAuth2/SSO support (Auth0, Google, Microsoft)
 - [ ] **Mock authentication** (bypass real auth initially)
-- [ ] **Protected routes**
+- [ ] **Protected routes** with role-based access control
 - [ ] **Logout functionality**
+- [ ] **2FA support** for admin accounts
 
 ### Phase 2: Backend Integration (After Hardware Ready)
 
-- [ ] Replace mock data with real API calls
-- [ ] Implement WebSocket for real-time device updates
-- [ ] Add user authentication (Firebase/Auth0/custom)
-- [ ] Implement device control (relay on/off via API)
-- [ ] Add data export (CSV, PDF reports)
-- [ ] Implement role-based access control
-- [ ] Add system health monitoring
+- [ ] Replace mock data with real API calls over HTTPS
+- [ ] Implement WebSocket over TLS for real-time device updates
+- [ ] Add OAuth2/SSO user authentication (Auth0/Firebase)
+- [ ] Implement device control with signed commands (relay on/off via API)
+- [ ] Add data export (CSV, PDF reports) with encryption
+- [ ] Implement role-based access control (admin, user, viewer roles)
+- [ ] Add system health monitoring dashboard
+- [ ] Display device security state: attestation status, tamper alerts, certificate expiry
+- [ ] Implement audit log viewer for security events
+- [ ] Add security dashboard with compliance metrics (SABS/ICASA readiness, SOC2 status)
 
 ## 📦 Recommended Tech Stack
 
@@ -363,22 +370,30 @@ export const breakpoints = {
 
 ## 🔒 Security Considerations
 
-- Use HTTPS in production
-- Implement CSRF protection
-- Sanitize user inputs
-- Use secure authentication (JWT, OAuth)
-- Store sensitive data securely (not in localStorage)
+- Use HTTPS exclusively in production (TLS 1.3)
+- Implement CSRF protection with tokens
+- Sanitize all user inputs to prevent XSS attacks
+- Use secure authentication (OAuth2/SSO with Auth0 or Firebase)
+- Store sensitive data securely (never in localStorage - use secure httpOnly cookies)
 - Implement rate limiting on API calls
 - Regular dependency updates for security patches
+- Display security status: device attestation, tamper alerts, certificate expiry
+- Implement audit logging for all administrative actions
+- Use Content Security Policy (CSP) headers
+- Enable Subresource Integrity (SRI) for external dependencies
 
 ## 📝 Environment Variables
 
 Create `.env.local` file:
 
 ```env
-VITE_API_BASE_URL=http://localhost:8000
-VITE_MQTT_BROKER_URL=ws://localhost:9001
+VITE_API_BASE_URL=https://api.smartplugai.com
+VITE_MQTT_BROKER_URL=wss://mqtt.smartplugai.com:9001
 VITE_ENABLE_MOCK_DATA=true
+VITE_AUTH_PROVIDER=auth0
+VITE_AUTH0_DOMAIN=your-tenant.auth0.com
+VITE_AUTH0_CLIENT_ID=your-client-id
+VITE_WEBSOCKET_TLS_ENABLED=true
 ```
 
 Access in code:
@@ -426,3 +441,5 @@ npm install
 ---
 
 **Let's create a powerful analytics dashboard for Smart Plug AI!** 📊⚡
+
+For comprehensive security architecture, OAuth2/SSO configuration, RBAC implementation, audit logging details, and compliance guidelines (SABS/ICASA/SOC2), see [docs/SECURITY.md](../docs/SECURITY.md) and [docs/ROADMAP.md](../docs/ROADMAP.md) for Phase 1 (12 weeks) timeline with security milestones.
