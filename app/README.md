@@ -5,12 +5,13 @@ Flutter-based cross-platform mobile application for monitoring and controlling s
 ## 🎯 Overview
 
 The mobile app provides users with:
-- **Real-time power monitoring**: Live voltage, current, and power consumption
-- **Device control**: Turn devices on/off remotely
-- **Historical data**: View power usage trends and analytics
+- **Real-time power monitoring**: Live current and power consumption with end-to-end encryption
+- **Secure device control**: Turn devices on/off remotely with signed commands
+- **Historical data**: View encrypted 24-hour power usage trends and analytics
 - **Smart notifications**: Alerts for high power usage or anomalies
-- **QR code pairing**: Easy device setup by scanning QR codes
-- **Multi-device management**: Control multiple smart plugs from one app
+- **Secure QR code pairing**: Easy device setup with challenge-response authentication
+- **Multi-device management**: Control multiple smart plugs with secure 2FA authentication
+- **Security features**: Firebase/Auth0 authentication with 2FA, encrypted telemetry in transit, device attestation status display
 
 ## 📱 Supported Platforms
 
@@ -98,15 +99,15 @@ app/
 
 ## 🎨 Key Features to Implement
 
-### Phase 1: UI Mockups (Before Hardware Ready)
+### Phase 1: UI Mockups (Before Hardware Ready) - Mobile App V0.1
 
 These can be built and tested with mock/placeholder data:
 
-#### 1. Authentication Flow
-- [ ] **Login screen** with email/password (disabled Firebase initially)
+#### 1. Authentication Flow with 2FA
+- [ ] **Login screen** with email/password and 2FA support (Firebase/Auth0 integration planned)
 - [ ] **Sign-up screen** with basic validation
-- [ ] **Mock auth service** that simulates login without backend
-- [ ] **Onboarding screens** explaining app features
+- [ ] **Mock auth service** that simulates login with 2FA flow
+- [ ] **Onboarding screens** explaining app features and security model
 
 **Suggested Mock Implementation**:
 ```dart
@@ -118,12 +119,12 @@ class MockAuthService {
 }
 ```
 
-#### 2. Real-Time Power Monitoring UI
-- [ ] **Dashboard screen** showing list of devices
-- [ ] **Device card widget** displaying device name, status, current power
+#### 2. Real-Time Power Monitoring UI (Encrypted Display)
+- [ ] **Dashboard screen** showing list of devices with encryption status indicator
+- [ ] **Device card widget** displaying device name, status, current power (encrypted in transit)
 - [ ] **Power gauge widget** with animated needle/circular indicator
-- [ ] **Real-time chart** using fl_chart or syncfusion_flutter_charts
-- [ ] **Mock data generator** to simulate live power readings
+- [ ] **Real-time chart** using fl_chart showing 24-hour encrypted historical data
+- [ ] **Mock data generator** to simulate live encrypted power readings with security status
 
 **Suggested Mock Implementation**:
 ```dart
@@ -140,34 +141,38 @@ Stream<PowerReading> getMockPowerStream() async* {
 }
 ```
 
-#### 3. QR Code Pairing Flow
-- [ ] **QR scanner screen** using mobile_scanner or qr_code_scanner package
-- [ ] **Pairing instructions screen**
-- [ ] **Success/failure feedback**
-- [ ] **Mock device addition** (adds device to local list)
+#### 3. Secure QR Code Pairing Flow with Challenge-Response
+- [ ] **QR scanner screen** using mobile_scanner for secure device pairing
+- [ ] **Challenge-response authentication** flow after QR scan
+- [ ] **Pairing instructions screen** with security explanations
+- [ ] **Success/failure feedback** with security validation status
+- [ ] **Mock device addition** with simulated challenge-response (adds device to local list)
 
-#### 4. Device Management
-- [ ] **Device list view** with search/filter
-- [ ] **Device detail screen** with controls and settings
-- [ ] **Device settings** (rename, icon, notifications)
-- [ ] **Delete device** confirmation
+#### 4. Device Management with Signed Commands
+- [ ] **Device list view** with search/filter and security status
+- [ ] **Device detail screen** with controls (signed ON/OFF commands) and settings
+- [ ] **Device settings** (rename, icon, notifications, attestation status)
+- [ ] **Delete device** confirmation with security considerations
 
-#### 5. Settings & Profile
-- [ ] **User profile screen**
-- [ ] **App settings** (theme, units, notifications)
-- [ ] **About screen** with version info
+#### 5. Settings & Profile with Security
+- [ ] **User profile screen** with 2FA management
+- [ ] **App settings** (theme, units, notifications, security preferences)
+- [ ] **Security dashboard** showing encryption status and device attestation
+- [ ] **About screen** with version info and security certifications
 
-### Phase 2: Backend Integration (After Hardware Ready)
+### Phase 2: Backend Integration (After Hardware Ready) - Mobile App V2
 
 Once the hardware and backend are functional:
 
-- [ ] Replace mock auth with Firebase/Supabase authentication
-- [ ] Implement MQTT client to receive real device data
-- [ ] Add WebSocket support for real-time updates
-- [ ] Implement device control (relay on/off commands)
-- [ ] Add push notifications for alerts
-- [ ] Implement data persistence with local database (sqflite/hive)
-- [ ] Add offline mode support
+- [ ] Replace mock auth with Firebase/Auth0 authentication with 2FA enabled
+- [ ] Implement MQTT client with TLS 1.3 to receive real encrypted device data
+- [ ] Add WebSocket support for real-time encrypted updates
+- [ ] Implement device control with signed commands (relay on/off via API)
+- [ ] Add push notifications for security alerts and tamper detection
+- [ ] Implement data persistence with local database (sqflite/hive) using encryption
+- [ ] Add offline mode support with encrypted local storage
+- [ ] Implement challenge-response pairing with real devices
+- [ ] Display device attestation status and security health
 
 ## 📦 Recommended Packages
 
@@ -320,3 +325,5 @@ For app-specific contributions:
 ---
 
 **Let's build an amazing mobile experience for Smart Plug AI!** 📱⚡
+
+For comprehensive security architecture, encryption details, and Phase 1 (12 weeks) timeline with security milestones, see [docs/SECURITY.md](../docs/SECURITY.md) and [docs/ROADMAP.md](../docs/ROADMAP.md).
