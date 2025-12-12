@@ -1,0 +1,684 @@
+COMPLETE SMART PLUG AI PROJECT PLAN
+Security-Enhanced Implementation Roadmap
+Version 2.0 - December 2025
+
+================================================================================
+PROJECT OVERVIEW
+================================================================================
+
+Smart Plug AI is an intelligent IoT smart plug system that combines hardware,
+mobile applications, web dashboards, and cloud infrastructure to monitor power
+consumption, learn usage patterns, and provide actionable insights while
+maintaining the highest standards of security and privacy.
+
+Core Objectives:
+- Real-time power monitoring with ESP32 and INA219 sensor
+- Cross-platform mobile app (Flutter) for device control and monitoring
+- Web-based admin dashboard (React) for analytics and management
+- Secure cloud backend with Firebase/Supabase integration
+- Machine learning for pattern recognition and anomaly detection
+- Hardware and software security as foundational design principles
+
+================================================================================
+PHASE 1: HARDWARE DEVELOPMENT & INITIAL FIRMWARE (SECURITY-FIRST)
+================================================================================
+
+Hardware Components:
+- ESP32 microcontroller with built-in security features
+- INA219 current/voltage sensor for power monitoring
+- Solid-state relay for load control (10A rating)
+- Power supply module (5V/3.3V)
+- Safety components: fuse, MOV, current limiting resistors
+- Optional: Hardware Security Module (HSM) or secure element chip
+
+Phase 1 Security Requirements:
+1. Secure Boot Configuration
+   - Enable ESP32 secure boot to verify firmware authenticity
+   - Flash encryption for protecting firmware and data at rest
+   - Signed firmware images with cryptographic verification
+
+2. Hardware Security
+   - Implement tamper detection mechanisms
+   - Secure storage for cryptographic keys (use secure element if available)
+   - Protection against side-channel attacks
+   - Physical security considerations in enclosure design
+
+3. Initial Firmware Security Features
+   - Minimal attack surface (disable unused peripherals)
+   - Memory protection and stack canaries
+   - Input validation for all sensor readings
+   - Secure random number generation for cryptographic operations
+   - Watchdog timer for fault detection
+
+Hardware Development Tasks:
+□ Component procurement with verified suppliers
+□ Breadboard prototyping and component testing
+□ PCB design with security considerations (tamper detection traces)
+□ Soldering and assembly following safety checklist
+□ Electrical safety testing and certification preparation
+□ Security testing (power analysis, fault injection resistance)
+
+Firmware Development (Phase 1):
+□ ESP-IDF setup with security features enabled
+□ INA219 driver integration with input validation
+□ Basic power measurement and relay control
+□ WiFi connection with WPA3 support
+□ MQTT client with TLS 1.3 and certificate validation
+□ OTA update framework with signature verification
+□ Secure storage API for credentials and certificates
+□ Factory reset and recovery mechanisms
+□ Logging framework (without exposing sensitive data)
+
+Budget (Hardware Phase 1): R 2,000 - R 3,500
+- ESP32 dev boards and modules
+- INA219 sensors and relay modules
+- PCB fabrication and components
+- Power supplies and safety components
+- Testing equipment and tools
+- Security testing tools
+
+Timeline: 2-3 weeks
+
+================================================================================
+PHASE 2: SECURE CLOUD INFRASTRUCTURE & DEVICE PROVISIONING
+================================================================================
+
+Backend Architecture:
+- Cloud provider selection (AWS, GCP, or Azure with compliance certifications)
+- PostgreSQL database with encryption at rest
+- Redis cache for real-time data with encryption
+- MQTT broker (Mosquitto/HiveMQ) with TLS and authentication
+- API gateway with rate limiting and DDoS protection
+- Certificate Authority (CA) infrastructure for device certificates
+
+Phase 2 Security Requirements:
+1. Device Identity and Provisioning
+   - Unique device certificates generated during manufacturing
+   - Secure provisioning protocol (e.g., EST - Enrollment over Secure Transport)
+   - Device attestation and authentication
+   - Secure pairing with QR codes containing time-limited tokens
+
+2. Communication Security
+   - Mutual TLS (mTLS) for all device-to-cloud communications
+   - Certificate pinning in firmware and apps
+   - Encrypted MQTT payload for sensitive data
+   - Secure WebSocket connections for real-time updates
+   - API authentication using OAuth 2.0 / JWT tokens
+
+3. Backend Security Hardening
+   - Infrastructure as Code (IaC) with security scanning
+   - Network segmentation and security groups
+   - Principle of least privilege for service accounts
+   - Secrets management using vault solutions
+   - Regular security patches and updates
+   - Comprehensive logging and monitoring (SIEM integration)
+
+Backend Development Tasks:
+□ Set up cloud infrastructure with security groups
+□ Deploy PostgreSQL with encryption and access controls
+□ Configure Redis with authentication and encryption
+□ Set up MQTT broker with TLS and ACL
+□ Implement device registration and provisioning API
+□ Create certificate management system (issuance, renewal, revocation)
+□ Build REST API with authentication and authorization
+□ Implement rate limiting and API security controls
+□ Set up monitoring and alerting (CloudWatch, Prometheus)
+□ Configure backup and disaster recovery
+□ Implement GDPR/POPIA compliance features (data export, deletion)
+
+Certificate Lifecycle Management:
+□ Internal CA setup with HSM-backed root key
+□ Automated certificate issuance for devices
+□ Certificate renewal automation (30 days before expiry)
+□ Certificate revocation list (CRL) and OCSP responder
+□ Secure key storage and rotation policies
+
+Device Provisioning Flow:
+1. Manufacturing: Device receives unique certificate and private key
+2. Factory Test: Device verifies secure boot and certificate
+3. User Setup: QR code scan initiates secure pairing
+4. Authentication: Device proves identity with certificate
+5. Authorization: User grants device access to their account
+6. Ongoing: Certificate renewal and revocation as needed
+
+Budget (Backend Phase 2): R 1,500 - R 3,000
+- Cloud hosting costs (3-6 months initial)
+- Domain registration and SSL certificates
+- Development tools and testing services
+- Security scanning and monitoring tools
+
+Timeline: 3-4 weeks
+
+================================================================================
+PHASE 3: MOBILE APPLICATION DEVELOPMENT (SECURE UX)
+================================================================================
+
+Mobile App Features:
+- User authentication and registration (email/social/biometric)
+- Device discovery and secure pairing via QR code
+- Real-time power monitoring dashboard
+- Device control (on/off, scheduling)
+- Usage history and analytics
+- Notifications and alerts
+- Settings and user preferences
+- Energy-saving recommendations
+
+Phase 3 Security Requirements:
+1. Application Security
+   - Secure storage for authentication tokens (Keychain/Keystore)
+   - Certificate pinning for API communications
+   - Code obfuscation and tamper detection
+   - Biometric authentication support
+   - Secure session management with timeout
+   - Input validation and sanitization
+
+2. Data Protection
+   - Encryption of local data (SQLite encryption)
+   - No sensitive data in logs or crash reports
+   - Secure inter-process communication
+   - Memory clearing for sensitive operations
+   - Secure handling of QR code pairing data
+
+3. Privacy Features
+   - Clear privacy policy and consent management
+   - Opt-in for analytics and telemetry
+   - Data minimization principles
+   - User control over data sharing
+   - GDPR/POPIA compliance (data access, deletion)
+
+Mobile Development Tasks:
+□ Flutter project setup with security plugins
+□ Implement authentication flow with biometric support
+□ Create secure storage module for credentials
+□ Build device pairing UI with QR code scanner
+□ Implement certificate validation and pinning
+□ Develop real-time power monitoring dashboard
+□ Create device control interface
+□ Build usage history and analytics views
+□ Implement push notifications (secure channels)
+□ Add settings and preferences management
+□ Implement offline support with secure local storage
+□ Add accessibility features (WCAG compliance)
+□ Comprehensive error handling and user feedback
+□ Security testing (OWASP Mobile Top 10)
+
+App Store Preparation:
+□ Privacy policy creation and integration
+□ Terms of service and user agreements
+□ App store optimization (ASO)
+□ Beta testing with TestFlight/Google Play Beta
+□ Security review and penetration testing
+□ App store submission and review
+
+Budget (Mobile Phase 3): R 1,000 - R 2,000
+- Developer accounts (Apple/Google)
+- Testing devices and simulators
+- Third-party services (analytics, crash reporting)
+- Security testing tools and services
+
+Timeline: 4-6 weeks
+
+================================================================================
+PHASE 4: WEB DASHBOARD & ADMIN PANEL
+================================================================================
+
+Web Dashboard Features:
+- Admin authentication and role-based access control
+- Multi-device monitoring and management
+- Advanced analytics and reporting
+- User management and permissions
+- System health monitoring
+- Firmware update management
+- Security audit logs and alerts
+- API management and developer tools
+
+Phase 4 Security Requirements:
+1. Web Application Security
+   - HTTPS only with HSTS headers
+   - Content Security Policy (CSP)
+   - Protection against XSS, CSRF, SQL injection
+   - Secure authentication with MFA support
+   - Session management and timeout
+   - Rate limiting and brute force protection
+
+2. Admin Panel Security
+   - Role-based access control (RBAC)
+   - Audit logging for all admin actions
+   - Privileged operation confirmation
+   - IP whitelisting for sensitive operations
+   - Security event monitoring and alerting
+
+3. Data Visualization Security
+   - Sanitized data rendering
+   - Export controls for sensitive data
+   - Access control for reports and dashboards
+   - Data retention policies
+
+Web Development Tasks:
+□ React project setup with security libraries
+□ Implement authentication with MFA
+□ Create admin role management system
+□ Build device monitoring dashboard
+□ Develop analytics and reporting features
+□ Create user management interface
+□ Implement audit log viewer
+□ Build firmware update management UI
+□ Create API documentation portal
+□ Implement real-time data visualization
+□ Add export and reporting capabilities
+□ Security hardening (CSP, security headers)
+□ Accessibility compliance (WCAG 2.1 AA)
+□ Performance optimization
+□ Security testing (OWASP Top 10)
+
+Budget (Web Phase 4): R 800 - R 1,500
+- Hosting and CDN services
+- SSL certificates
+- Third-party components and libraries
+- Testing and security scanning tools
+
+Timeline: 3-4 weeks
+
+================================================================================
+PHASE 5: MACHINE LEARNING & ADVANCED FEATURES
+================================================================================
+
+ML Features:
+- Usage pattern recognition
+- Anomaly detection (unusual consumption, device tampering)
+- Predictive maintenance
+- Energy optimization recommendations
+- Load forecasting
+- Device behavior modeling
+
+Phase 5 Security Requirements:
+1. ML Model Security
+   - Model encryption at rest
+   - Secure model serving infrastructure
+   - Input validation for ML inference
+   - Protection against adversarial attacks
+   - Model versioning and rollback capability
+   - Privacy-preserving ML techniques (differential privacy)
+
+2. Data Pipeline Security
+   - Secure data collection and preprocessing
+   - Access control for training data
+   - Data anonymization and pseudonymization
+   - Secure model training environment
+   - Model integrity verification
+
+ML Development Tasks:
+□ Data collection pipeline implementation
+□ Feature engineering for power consumption data
+□ Pattern recognition model development
+□ Anomaly detection algorithm implementation
+□ Security-focused anomaly detection (tampering, attacks)
+□ Model training and validation
+□ Secure model deployment
+□ A/B testing framework for model updates
+□ Model monitoring and retraining automation
+□ Privacy-preserving techniques integration
+□ Explainable AI for user transparency
+
+Budget (ML Phase 5): R 1,000 - R 2,000
+- Cloud compute for training
+- ML platform services (SageMaker, Vertex AI)
+- Data storage for training datasets
+- ML monitoring and experiment tracking tools
+
+Timeline: 3-4 weeks
+
+================================================================================
+TECHNICAL IMPLEMENTATION DETAILS
+================================================================================
+
+Technology Stack:
+
+Firmware:
+- Language: C/C++ (ESP-IDF)
+- IDE: VS Code with PlatformIO or ESP-IDF extension
+- Libraries: ESP32 secure boot, mbedTLS, ESP-TLS, ArduinoJson
+- Security: Secure boot, flash encryption, hardware security
+
+Backend:
+- Language: Python 3.10+ (FastAPI) or Node.js (NestJS)
+- Database: PostgreSQL 14+ with encryption
+- Cache: Redis 7+ with TLS
+- Message Broker: Mosquitto/HiveMQ with TLS 1.3
+- Authentication: OAuth 2.0, JWT, bcrypt for passwords
+- Security: OWASP ZAP, Bandit, dependency scanning
+
+Mobile:
+- Framework: Flutter 3.x
+- State Management: Provider/Riverpod/Bloc
+- Local DB: SQLite with encryption (sqflite_sqlcipher)
+- HTTP: Dio with certificate pinning
+- Storage: flutter_secure_storage
+- Security: SSL pinning, code obfuscation, biometric auth
+
+Web:
+- Framework: React 18+ with TypeScript
+- State Management: Redux Toolkit or Zustand
+- UI Library: Material-UI or Ant Design
+- Build: Vite or Create React App
+- Security: Helmet.js, DOMPurify, CSP headers
+
+DevOps & Infrastructure:
+- CI/CD: GitHub Actions with security scanning
+- Containerization: Docker with minimal base images
+- Orchestration: Kubernetes or Docker Swarm
+- IaC: Terraform with security modules
+- Monitoring: Prometheus, Grafana, ELK stack
+- Security: Trivy, Snyk, OWASP Dependency-Check
+- Secrets Management: HashiCorp Vault or AWS Secrets Manager
+
+Development Workflow:
+1. Feature branch from main
+2. Local development and testing
+3. Security scanning (SAST, dependency check)
+4. Code review with security checklist
+5. Automated testing (unit, integration, security)
+6. Staging deployment and QA
+7. Production deployment with monitoring
+8. Post-deployment verification
+
+================================================================================
+SECURITY ARCHITECTURE (COMPREHENSIVE)
+================================================================================
+
+Defense in Depth Strategy:
+
+Layer 1: Device Security
+- Secure boot and firmware verification
+- Flash encryption for code and data
+- Hardware security module (HSM) integration
+- Tamper detection and response
+- Secure OTA updates with rollback
+- Minimal attack surface (disabled debug)
+
+Layer 2: Communication Security
+- TLS 1.3 for all network traffic
+- Mutual TLS (mTLS) for device authentication
+- Certificate pinning in clients
+- Encrypted MQTT payloads
+- VPN support for sensitive deployments
+- Network segmentation
+
+Layer 3: Application Security
+- Input validation and sanitization
+- Output encoding to prevent XSS
+- Parameterized queries to prevent SQL injection
+- CSRF protection with tokens
+- Security headers (CSP, HSTS, X-Frame-Options)
+- Rate limiting and DDoS protection
+
+Layer 4: Data Security
+- Encryption at rest (AES-256)
+- Encryption in transit (TLS 1.3)
+- Secure key management (HSM, KMS)
+- Data classification and handling
+- Regular backups with encryption
+- Secure data disposal
+
+Layer 5: Access Control
+- Multi-factor authentication (MFA)
+- Role-based access control (RBAC)
+- Principle of least privilege
+- Session management and timeout
+- Account lockout policies
+- Privileged access management
+
+Layer 6: Monitoring & Response
+- Security event logging (SIEM)
+- Anomaly detection and alerting
+- Intrusion detection systems (IDS)
+- Incident response procedures
+- Regular security audits
+- Vulnerability management program
+
+Threat Modeling:
+□ STRIDE analysis for each component
+□ Attack surface mapping
+□ Data flow diagrams with trust boundaries
+□ Risk assessment and prioritization
+□ Mitigation strategies for identified threats
+□ Regular threat model updates
+
+Security Testing Program:
+□ Static Application Security Testing (SAST)
+□ Dynamic Application Security Testing (DAST)
+□ Software Composition Analysis (SCA)
+□ Penetration testing (internal and external)
+□ Security code reviews
+□ Fuzz testing for input validation
+□ Hardware security testing (side-channel, fault injection)
+
+Compliance Framework:
+- POPIA (South African Protection of Personal Information Act)
+  * Accountability principle
+  * Processing limitation
+  * Purpose specification
+  * Further processing limitation
+  * Information quality
+  * Openness principle
+  * Security safeguards
+  * Data subject participation
+
+- GDPR (General Data Protection Regulation)
+  * Lawfulness, fairness, transparency
+  * Purpose limitation
+  * Data minimization
+  * Accuracy principle
+  * Storage limitation
+  * Integrity and confidentiality
+  * Accountability principle
+
+- OWASP IoT Top 10
+  * Weak, guessable, or hardcoded passwords
+  * Insecure network services
+  * Insecure ecosystem interfaces
+  * Lack of secure update mechanism
+  * Use of insecure or outdated components
+  * Insufficient privacy protection
+  * Insecure data transfer and storage
+  * Lack of device management
+  * Insecure default settings
+  * Lack of physical hardening
+
+================================================================================
+APPENDICES
+================================================================================
+
+Appendix A: Development Environment Setup
+
+Required Software:
+- Git for version control
+- Docker for containerization
+- VS Code or JetBrains IDEs
+- ESP-IDF or PlatformIO for firmware
+- Flutter SDK for mobile development
+- Node.js for web development
+- Python for backend development
+- PostgreSQL client tools
+- MQTT client (MQTT Explorer, mosquitto-pub/sub)
+- Security testing tools (Burp Suite, OWASP ZAP)
+
+Development Machine Requirements:
+- OS: Windows 10/11, macOS, or Linux
+- RAM: 16GB minimum (32GB recommended)
+- Storage: 500GB SSD minimum
+- CPU: Multi-core processor (Intel i5/i7 or AMD equivalent)
+- Internet: Stable broadband connection
+
+Appendix B: Testing Strategy
+
+Testing Pyramid:
+1. Unit Tests (70%)
+   - Individual function and component testing
+   - Mock external dependencies
+   - High code coverage (>80%)
+   - Fast execution (<1 second per test)
+
+2. Integration Tests (20%)
+   - Component interaction testing
+   - Database and API integration
+   - MQTT message flow testing
+   - Certificate validation testing
+
+3. End-to-End Tests (10%)
+   - User scenario testing
+   - Full system integration
+   - Security scenario testing
+   - Performance testing
+
+Security Testing:
+- OWASP Top 10 coverage
+- Penetration testing quarterly
+- Vulnerability scanning weekly
+- Dependency scanning on every build
+- Security code review for all changes
+
+Appendix C: Deployment Strategy
+
+Environments:
+1. Development (local)
+   - Local MQTT broker
+   - Local database
+   - Mock services
+   - Debug logging enabled
+
+2. Staging
+   - Cloud infrastructure (scaled down)
+   - Production-like configuration
+   - Integration testing
+   - Security scanning
+
+3. Production
+   - Full cloud infrastructure
+   - High availability setup
+   - Monitoring and alerting
+   - Automated backups
+   - DDoS protection
+
+Deployment Process:
+1. Code merge to main branch
+2. Automated build and tests
+3. Security scanning (SAST, SCA)
+4. Deploy to staging
+5. Automated E2E tests
+6. Manual QA verification
+7. Security approval gate
+8. Deploy to production (blue-green or canary)
+9. Post-deployment monitoring
+10. Rollback procedure if issues detected
+
+Appendix D: Resource Links
+
+Documentation:
+- ESP-IDF Security Features: https://docs.espressif.com/projects/esp-idf/en/latest/esp32/security/index.html
+- OWASP IoT Security: https://owasp.org/www-project-internet-of-things/
+- MQTT Security Best Practices: https://www.hivemq.com/mqtt-security-fundamentals/
+- Flutter Security: https://docs.flutter.dev/security
+- POPIA Compliance: https://popia.co.za/
+- GDPR Resources: https://gdpr.eu/
+
+Community:
+- GitHub Repository: https://github.com/imperfectperson-max/smartplugai
+- Issue Tracker: GitHub Issues
+- Security Disclosures: SECURITY.md
+- Contributing Guidelines: CONTRIBUTING.md
+
+================================================================================
+PROJECT ROADMAP (TIMELINE)
+================================================================================
+
+Month 1: Foundation
+Week 1-2: Hardware prototyping and firmware basics
+Week 3-4: Backend infrastructure and device provisioning
+
+Month 2: Core Development
+Week 5-6: Mobile app development (auth, pairing, monitoring)
+Week 7-8: Web dashboard and admin features
+
+Month 3: Enhancement & Testing
+Week 9-10: ML features and advanced analytics
+Week 11-12: Comprehensive testing and security hardening
+
+Month 4: Launch Preparation
+Week 13-14: Beta testing and bug fixes
+Week 15-16: Final security audit, documentation, and launch
+
+Ongoing:
+- Security monitoring and incident response
+- Feature updates and improvements
+- Performance optimization
+- User feedback incorporation
+- Compliance maintenance
+
+================================================================================
+TOTAL BUDGET ESTIMATE
+================================================================================
+
+Phase 1 (Hardware & Firmware): R 2,000 - R 3,500
+Phase 2 (Backend Infrastructure): R 1,500 - R 3,000
+Phase 3 (Mobile Application): R 1,000 - R 2,000
+Phase 4 (Web Dashboard): R 800 - R 1,500
+Phase 5 (ML & Advanced Features): R 1,000 - R 2,000
+
+Total Estimated Budget: R 6,300 - R 12,000
+
+Additional Considerations:
+- Security tools and services: R 1,000 - R 2,000
+- Cloud hosting (first 6 months): R 2,000 - R 4,000
+- Testing devices and equipment: R 1,000 - R 2,000
+- Compliance and legal consultation: R 2,000 - R 5,000
+- Contingency (15%): R 1,800 - R 3,700
+
+Grand Total: R 14,100 - R 28,700
+
+Note: Budget in South African Rand (ZAR). Costs are estimates and may vary
+based on component availability, service pricing, and project scope changes.
+
+================================================================================
+FINAL SECURITY ROADMAP
+================================================================================
+
+Immediate Security Priorities (Month 1):
+✓ Enable ESP32 secure boot and flash encryption
+✓ Implement TLS for all communications
+✓ Set up certificate-based device authentication
+✓ Secure credential storage in firmware and apps
+✓ Basic input validation and sanitization
+
+Short-term Security Goals (Months 2-3):
+✓ Complete certificate lifecycle management
+✓ Implement comprehensive logging and monitoring
+✓ Security testing and vulnerability assessment
+✓ OWASP Top 10 and IoT Top 10 compliance
+✓ Penetration testing and fixes
+✓ Privacy policy and GDPR/POPIA implementation
+
+Long-term Security Objectives (Months 4-6):
+✓ Security certification (if applicable)
+✓ Bug bounty program establishment
+✓ Advanced threat detection and ML-based anomaly detection
+✓ Regular security audits (quarterly)
+✓ Community security engagement
+✓ Continuous security improvement program
+
+Security is not a feature—it's a fundamental requirement that must be
+integrated into every aspect of the Smart Plug AI project from day one.
+
+================================================================================
+END OF PLAN
+================================================================================
+
+This plan is a living document and will be updated as the project evolves.
+All contributors should familiarize themselves with this plan and the
+security requirements outlined herein.
+
+For questions or clarifications, contact the project maintainer:
+GitHub: @imperfectperson-max
+
+Last Updated: December 12, 2025
+Version: 2.0 - Security-Enhanced Edition
