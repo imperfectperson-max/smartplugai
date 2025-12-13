@@ -84,7 +84,7 @@ Our security audit results (Appendix F) are shared transparently with the commun
 #### Cybersecurity Team & CSO Role
 
 We're building a dedicated security team:
-- **CSO (Chief Security Officer)**: [Cybersecurity Friend] - architecture and compliance
+- **CSO (Chief Security Officer)**: TBD - Cybersecurity specialist role (Phase 1-2 hiring priority)
 - **Security Engineers**: Penetration testing, vulnerability management
 - **DevSecOps**: Secure CI/CD, automated scanning
 

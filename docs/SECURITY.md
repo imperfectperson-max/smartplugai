@@ -830,14 +830,18 @@ allow_anonymous false
 ### F.1 Initial Penetration Test Results (Phase 1 - Week 11)
 
 **Test Date**: December 2024  
-**Tested By**: [Independent Security Firm]  
+**Tested By**: TBD - Independent Security Firm (to be selected in Phase 1)  
 **Scope**: Mobile app, web dashboard, backend API, MQTT broker, device firmware  
 **Methodology**: OWASP Top 10, OWASP IoT Top 10, manual testing, automated scanning
 
 **Executive Summary**:
-- **Total Issues Found**: 12 (0 Critical, 2 High, 5 Medium, 5 Low)
-- **Remediation Status**: 10/12 fixed, 2 Low accepted as risk
-- **Overall Security Score**: 92/100 (A- grade)
+- **Total Issues Found**: TBD (baseline target: 0 Critical, <3 High, <10 Medium)
+- **Remediation Status**: To be determined after initial audit
+- **Overall Security Score**: Target: 90+ / 100 (A grade or better)
+
+**Findings by Severity** (Template - to be updated after actual audit):
+
+**Note**: The following findings are illustrative examples based on common IoT security issues. Actual audit results will replace this template in Week 11-12 of Phase 1.
 
 **Findings by Severity**:
 

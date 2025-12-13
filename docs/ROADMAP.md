@@ -286,4 +286,4 @@ Build South Africa's most secure IoT platform for smart plug systems that provid
 
 **Last Updated**: December 2024  
 **Version**: 2.0 (Security-Enhanced)  
-**Next Review**: Monthly during Phase 1, Quarterly thereafter
+**Next Review**: Monthly during Phase 1 (through April 2025), Quarterly thereafter
