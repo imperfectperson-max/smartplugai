@@ -4,22 +4,43 @@ An intelligent IoT smart plug system that monitors power consumption in real-tim
 
 ## 🚀 Project Overview
 
-Smart Plug AI combines:
-- **Hardware**: ESP32-S3-based smart plug with SCT-013 non-invasive current sensing, ATECC608A secure element, tamper detection, and certified power supply
-- **Mobile App**: Flutter-based cross-platform app for real-time monitoring with end-to-end encryption
-- **Web Dashboard**: React-based admin dashboard for analytics with role-based access control
-- **Backend**: Secure cloud API (FastAPI) with Auth0/Firebase Auth, field-level encryption, and TLS 1.3
-- **Intelligence**: Pattern recognition and anomaly detection for power usage
-- **Security**: Secure boot, flash encryption, signed commands, device attestation, and tamper detection
+Smart Plug AI is South Africa's first **bank-grade security IoT platform** combining:
+- **Hardware**: ESP32-S3-WROOM-1-N8 with hardware crypto acceleration, ATECC608A-TNGTLS secure element for key storage, SCT-013-030 non-invasive current sensor (30A/1V), MAX6316 tamper watchdog, 24C256 encrypted EEPROM, and certified 5V/2A phone charger
+- **Mobile App**: Flutter-based cross-platform app with Firebase Auth + 2FA, real-time encrypted monitoring, QR-based secure pairing with challenge-response authentication
+- **Web Dashboard**: React-based admin dashboard with OAuth2/SSO, RBAC, encrypted analytics, and security audit log viewer
+- **Backend**: FastAPI with Auth0/Firebase Auth, field-level encryption (AES-256-GCM), MQTT over TLS 1.3 with client certificates, and signed commands (ECDSA)
+- **Intelligence**: Pattern recognition, anomaly detection, and tamper alert system
+- **Security**: Secure boot, flash encryption, device attestation, tamper detection, end-to-end encryption, SOC2 compliance readiness
+
+**Phase 1 Budget**: R2,736 - R3,182 (3 secure prototypes with bank-grade security)
 
 ## 📋 Quick Start for Developers
 
 ### Prerequisites
-- **Hardware Development**: ESP32-S3-WROOM-1-N8, ATECC608A secure element, SCT-013 current sensor with burden resistor, relay modules, certified 5V/2A phone charger (see [soldering checklist](docs/soldering-checklist.md))
+
+**Hardware Components** (Phase 1: 3 Plugs - R2,736-R3,182 total):
+- **ESP32-S3-WROOM-1-N8** (3x @ R160 each): Hardware RSA/ECC acceleration, secure boot, flash encryption
+- **ATECC608A-TNGTLS** (3x @ R65 each): Hardware secure element for cryptographic key storage (ECDSA P256)
+- **SCT-013-030** (3x @ R105 each): 30A/1V non-invasive current sensor with 3.5mm jack
+- **MAX6316** (3x @ R40 each): Tamper detection watchdog (physical security)
+- **24C256 EEPROM** (3x @ R25 each): 32KB encrypted configuration storage
+- **5V/2A Phone Charger** (3x @ R50 each): Certified power supply (safer than HLK-PM01)
+- **Relay Module** (3x @ R85 each): 5V, 10A+ with optocoupler isolation
+- **33Ω 1W Burden Resistor** (3x @ R8 each): For SCT-013 calibration
+- **Fuse + MOV** (3x @ R30/R18 each): Safety protection (3A quick-blow + 275V varistor)
+- **PC817 Optocouplers** (6x @ R8 each): Extra isolation for safety
+- **Professional Enclosures** (3x @ R150 each): ABS with anti-tamper screws and seals
+- **SA Plugs + Sockets** (3 sets @ R90 each): Professional appearance, not salvaged
+- **Basic Electronics Kit**: Breadboard, jumpers, resistors, capacitors, diodes, LEDs (shared)
+- **Tools**: Multimeter (R280), soldering iron (R200), screwdrivers with security bits (R100), wire strippers (R80)
+
+See [soldering checklist](docs/soldering-checklist.md) for complete shopping list and assembly guide.
+
+**Software Development**:
 - **Secure Provisioning**: ATECC608A provisioning tools, ESP-IDF for secure boot and flash encryption setup
-- **Mobile App**: Flutter SDK 3.x+, Dart 3.x+
-- **Web Dashboard**: Node.js 18+, npm/yarn
-- **Backend**: Python 3.10+, FastAPI, Auth0/Firebase Auth, Firestore with field-level encryption, Docker (for local MQTT with TLS)
+- **Mobile App**: Flutter SDK 3.x+, Dart 3.x+ (Firebase Auth + 2FA integration)
+- **Web Dashboard**: Node.js 18+, npm/yarn (OAuth2/SSO with Auth0)
+- **Backend**: Python 3.10+, FastAPI, Auth0/Firebase Auth, PostgreSQL/Firestore with field-level encryption, Docker (for local MQTT broker with TLS 1.3)
 
 ### Getting Started
 
@@ -35,19 +56,35 @@ Smart Plug AI combines:
    - 🔧 **Firmware**: See [firmware/README.md](firmware/README.md)
    - ☁️ **Backend**: See [backend/README.md](backend/README.md)
 
-3. **Review the roadmap**: Check [docs/ROADMAP.md](docs/ROADMAP.md) for milestones and priorities (Phase 1: 12 weeks with security milestones)
+3. **Review the roadmap**: Check [docs/ROADMAP.md](docs/ROADMAP.md) for Phase 1-3 milestones (Phase 1: Secure MVP Development, now-4 months, R200,000; Phase 2: Pilot & Refinement, months 5-8, R3M; Phase 3: Commercial Launch, months 9-12, R6M). Detailed week-by-week Phase 1 plan (weeks 1-12) included.
 
-4. **Security documentation**: See [docs/SECURITY.md](docs/SECURITY.md) for comprehensive security architecture and threat model
+4. **Security documentation**: See [docs/SECURITY.md](docs/SECURITY.md) for comprehensive security architecture, device layer (ESP32-S3 + ATECC608A + MAX6316 + 24C256), MQTT over TLS 1.3, certificate management, secure boot, flash encryption, tamper detection, device attestation, and Security Roadmap (phases 1-6). Includes Appendices E (security specifications) and F (security audit results).
 
 ## 🔨 Hardware Soldering Preparation
 
 **Next Session**: [Soldering Checklist](docs/soldering-checklist.md)
 
+**Phase 1 Hardware Shopping List** (3 plugs with bank-grade security):
+- ✅ ESP32-S3-WROOM-1-N8 (3x @ R160 each): Hardware crypto acceleration
+- ✅ ATECC608A-TNGTLS (3x @ R65 each): Secure element for key storage
+- ✅ SCT-013-030 (3x @ R105 each): 30A/1V current sensor with burden resistor (33Ω 1W)
+- ✅ MAX6316 (3x @ R40 each): Tamper watchdog for physical security
+- ✅ 24C256 EEPROM (3x @ R25 each): Encrypted configuration storage
+- ✅ 5V/2A Phone Charger (3x @ R50 each): Certified power supply (safer than HLK-PM01)
+- ✅ Relay Modules (3x @ R85 each): 5V, 10A+ with optocoupler isolation
+- ✅ Fuse & MOV (3x): 3A quick-blow fuses + 275V 7mm varistors for safety
+- ✅ PC817 Optocouplers (6x @ R8 each): Extra isolation
+- ✅ Professional Enclosures (3x @ R150 each): ABS with anti-tamper screws and seals
+- ✅ SA Plugs + Sockets (3 sets @ R90 each): Professional appearance
+- ✅ Basic Electronics Kit (shared): Breadboard, jumpers, resistors, capacitors, diodes, LEDs
+
+**Phase 1 Budget**: R2,736 - R3,182 (3 secure prototypes)
+
 Before the soldering session:
-- ✅ Verify parts list (ESP32-S3-WROOM-1-N8, ATECC608A secure element, SCT-013 with burden resistor, relay, connectors, 24C256 secure storage, MAX6316 tamper watchdog)
-- ✅ Review safety procedures and workspace setup including fuse and MOV (Metal Oxide Varistor) protection
+- ✅ Verify complete parts list (see [soldering checklist](docs/soldering-checklist.md))
+- ✅ Review safety procedures and workspace setup including fuse and MOV protection
 - ✅ Test components individually with breadboard
-- ✅ Plan data collection and initial firmware test
+- ✅ Plan ATECC608A provisioning and secure boot setup
 - ✅ Prepare professional enclosure with tamper-evident seals
 - ✅ Verify certified 5V/2A phone charger for power supply (prototype phase)
 
@@ -63,11 +100,11 @@ Also review our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
 ## 📚 Documentation
 
-- [Roadmap](docs/ROADMAP.md) - Project phases and milestones (Phase 1: 12 weeks with security focus)
-- [Security Architecture](docs/SECURITY.md) - Comprehensive security design, threat model, and certifications
-- [Soldering Checklist](docs/soldering-checklist.md) - Hardware preparation guide
-- [Architecture](docs/ARCHITECTURE.md) - System architecture and design
-- [API Documentation](docs/API.md) - REST API, WebSocket, and MQTT reference
+- [Roadmap](docs/ROADMAP.md) - Phase 1-3 implementation plan with week-by-week Phase 1 (weeks 1-12) security milestones, budgets (Phase 1: R200k, Phase 2: R3M, Phase 3: R6M)
+- [Security Architecture](docs/SECURITY.md) - Comprehensive security design: device layer (ESP32-S3 + ATECC608A + MAX6316 + 24C256), MQTT over TLS 1.3, certificate management, secure boot, flash encryption, tamper detection, device attestation, Security Roadmap (phases 1-6), Appendices E & F
+- [Soldering Checklist](docs/soldering-checklist.md) - Hardware shopping list and assembly guide with Phase 1 budget (R2,736-R3,182 for 3 plugs)
+- [Architecture](docs/ARCHITECTURE.md) - Secure system stack: Presentation/Application/Data/Device layers with TLS 1.3, client certs, RBAC
+- [API Documentation](docs/API.md) - REST API, WebSocket over TLS, MQTT topics with signed commands and client certificate requirements
 
 ## 🔒 Security Enhancements
 
