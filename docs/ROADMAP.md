@@ -12,7 +12,7 @@ Build South Africa's most secure IoT platform for smart plug systems that provid
 
 | Phase | Timeline | Budget | Focus |
 |-------|----------|--------|-------|
-| **Phase 1** | Now - 4 months | R200,000 | Secure MVP Development |
+| **Phase 1** | Now - 4 months | R5,000 | Secure MVP Development |
 | **Phase 2** | Months 5-8 | R3,000,000 | Pilot & Refinement |
 | **Phase 3** | Months 9-12 | R6,000,000 | Commercial Launch |
 
@@ -21,12 +21,6 @@ Build South Africa's most secure IoT platform for smart plug systems that provid
 ## 📅 Phase 1: Secure MVP Development (Now - 4 Months)
 
 **Goal**: Build a working secure prototype with 3 devices, mobile app with 2FA, and secure cloud backend.
-
-**Budget**: R200,000
-- Hardware development (secure components): R120,000
-- Cloud infrastructure (TLS, encryption, Auth0): R50,000
-- Security tools & audits: R20,000
-- Team compensation: R10,000
 
 ### Week-by-Week Implementation Plan
 
