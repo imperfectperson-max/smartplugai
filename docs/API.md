@@ -859,6 +859,176 @@ Backend subscribes to all devices using wildcards:
 - `smartplug/+/telemetry` - All device telemetry
 - `smartplug/+/status` - All device status updates
 
+## 🔐 Security: TLS 1.3 & Client Certificates
+
+### TLS 1.3 Configuration
+
+All Smart Plug AI API communications use **TLS 1.3** exclusively for maximum security:
+
+**Supported Cipher Suites** (in preference order):
+1. `TLS_AES_256_GCM_SHA384` (preferred)
+2. `TLS_CHACHA20_POLY1305_SHA256` (for constrained devices)
+3. `TLS_AES_128_GCM_SHA256` (fallback)
+
+**TLS Features**:
+- **Perfect Forward Secrecy (PFS)**: Ephemeral key exchange (ECDHE P-256)
+- **Session Resumption**: 0-RTT for faster reconnections (TLS 1.3)
+- **Certificate Pinning**: Required for mobile apps (prevents MITM)
+- **HSTS**: Strict-Transport-Security header enforced
+- **Certificate Transparency**: CT logs verified
+
+**API Endpoints** (HTTPS):
+- Base URL: `https://api.smartplugai.com/v1`
+- WebSocket: `wss://api.smartplugai.com/ws`
+- All endpoints require TLS 1.3 (TLS 1.2 rejected)
+
+**MQTT over TLS**:
+- Broker: `mqtt.smartplugai.com:8883` (MQTTS)
+- WebSocket: `wss://mqtt.smartplugai.com:9001` (for browsers)
+- Protocol: MQTT 5.0 over TLS 1.3
+- Authentication: Client certificates (mTLS) for devices
+
+### Client Certificates for Device Endpoints
+
+Devices authenticate using **X.509 client certificates** generated with ATECC608A:
+
+**Certificate Specifications**:
+- **Algorithm**: ECDSA with P-256 (secp256r1) curve
+- **Hash**: SHA-256
+- **Validity**: 5 years (renewed at 4 years via OTA)
+- **Subject**: `CN=smartplug_{device_id}, O=SmartPlugAI, C=ZA`
+- **Key Storage**: Private key in ATECC608A Slot 0 (never readable)
+
+**Certificate Chain**:
+```
+Root CA (offline, HSM-protected)
+  └── Device CA (intermediate, online)
+      └── Device Certificate (ATECC608A-generated key)
+```
+
+**mTLS Handshake Flow** (MQTT):
+1. Device initiates TLS connection to broker
+2. Broker presents server certificate
+3. Device verifies server cert (pinned CA)
+4. Broker requests client certificate
+5. Device presents certificate from ATECC608A
+6. Broker verifies client cert against Device CA
+7. Device signs challenge using ATECC608A (proves key possession)
+8. TLS handshake complete, MQTT connection established
+
+**Certificate Verification** (backend):
+- **Subject validation**: Device ID matches certificate CN
+- **Signature verification**: Valid signature from Device CA
+- **Expiry check**: Certificate not expired
+- **Revocation check**: CRL/OCSP for revoked certificates
+- **Key usage**: Correct key usage extensions (digitalSignature, keyAgreement)
+
+**Certificate Lifecycle**:
+1. **Provisioning**: Device cert generated during factory provisioning
+2. **Initial connection**: Device authenticates with cert on first connection
+3. **Renewal**: Backend notifies device 30 days before expiry
+4. **OTA Update**: New cert delivered via secure OTA
+5. **Revocation**: Compromised devices added to CRL, cert revoked
+
+### Signed Commands
+
+All device control commands are **cryptographically signed** to prevent unauthorized control:
+
+**Signing Process** (backend):
+1. Backend generates command JSON: `{"command": "relay_on", "timestamp": <unix_time>, "nonce": "<random>"}`
+2. Backend computes SHA-256 hash of command JSON
+3. Backend signs hash with server private key (ECDSA P-256)
+4. Backend appends signature to command: `{"command": "relay_on", ..., "signature": "<base64>"}`
+5. Backend publishes signed command to MQTT topic: `smartplug/{device_id}/control`
+
+**Verification Process** (device):
+1. Device receives command via MQTT
+2. Device extracts signature from command JSON
+3. Device computes SHA-256 hash of command (excluding signature field)
+4. Device retrieves server public key from ATECC608A Slot 1
+5. Device verifies signature using ECDSA (ATECC608A hardware accelerated)
+6. If signature valid AND timestamp within 5 minutes: execute command
+7. If invalid: log security event, discard command, send alert to backend
+
+**Command Format**:
+```json
+{
+  "command": "relay_on",
+  "timestamp": 1705321530,
+  "nonce": "a1b2c3d4e5f6",
+  "signature": "MEUCIQDm8YjZ3...Base64EncodedECDSASignature...fGhIjKlMn"
+}
+```
+
+**Security Properties**:
+- **Authentication**: Only backend with server private key can sign commands
+- **Integrity**: Any modification invalidates signature
+- **Non-repudiation**: Backend cannot deny sending command (audit log)
+- **Replay prevention**: Nonce + timestamp prevents replay attacks
+- **Command expiry**: Commands expire after 5 minutes
+
+**Supported Commands** (all require signature):
+- `relay_on`: Turn relay ON
+- `relay_off`: Turn relay OFF
+- `relay_toggle`: Toggle relay state
+- `update_interval`: Change telemetry interval (include `interval_ms` parameter)
+- `restart`: Restart device (reboot ESP32)
+- `ota_update`: Initiate secure OTA update (include `firmware_url` and `checksum`)
+
+**Example Signed Command**:
+```bash
+# Backend generates signed command (Python example)
+import json
+import time
+import secrets
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import ec
+from cryptography.hazmat.backends import default_backend
+
+# Command payload
+command = {
+    "command": "relay_on",
+    "timestamp": int(time.time()),
+    "nonce": secrets.token_hex(16)
+}
+
+# Sign command
+command_json = json.dumps(command, sort_keys=True)
+signature = server_private_key.sign(
+    command_json.encode(),
+    ec.ECDSA(hashes.SHA256())
+)
+
+# Add signature
+command["signature"] = signature.hex()
+
+# Publish to MQTT
+mqtt_client.publish(f"smartplug/{device_id}/control", json.dumps(command))
+```
+
+### API Authentication Headers
+
+**Bearer Authentication** (for user endpoints):
+```http
+GET /devices HTTP/1.1
+Host: api.smartplugai.com
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+**Client Certificate Authentication** (for device endpoints):
+- Device endpoints automatically authenticate via mTLS
+- No additional Authorization header required
+- Device identity extracted from client certificate CN
+
+**API Key Authentication** (for third-party integrations):
+```http
+GET /public/devices HTTP/1.1
+Host: api.smartplugai.com
+X-API-Key: sk_live_1234567890abcdef
+```
+
+For comprehensive security architecture, certificate management, and device provisioning workflows, see [docs/SECURITY.md](SECURITY.md).
+
 ## ⏱️ Rate Limits
 
 Rate limits are enforced per user account:
