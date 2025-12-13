@@ -22,6 +22,47 @@ The web dashboard provides administrators and power users with:
 - **System administrators**: Configure and maintain the platform with OAuth2/SSO authentication
 - **Security auditors**: Review audit logs, device attestation status, and tamper alerts
 
+## 🔒 Security Features
+
+Smart Plug AI Web Dashboard implements **enterprise-grade security**:
+
+### Authentication & Authorization
+- **OAuth2 / SSO** integration (Auth0, Google, Microsoft, Okta)
+- **2FA/MFA** support for admin accounts
+- **Role-Based Access Control (RBAC)**: Admin, User, Viewer, Auditor roles
+- **Session management** with secure httpOnly cookies (no localStorage for tokens)
+- **Automatic session timeout** and re-authentication
+
+### Communication Security
+- **HTTPS/TLS 1.3** exclusively (no HTTP in production)
+- **Content Security Policy (CSP)** headers
+- **Subresource Integrity (SRI)** for external dependencies
+- **WebSocket over TLS** for real-time data streaming
+- **Certificate pinning** for API connections
+
+### Data Protection
+- **Field-level encryption** display (data encrypted at rest in backend)
+- **Encrypted telemetry** transmission over TLS
+- **CSRF protection** with tokens for state-changing operations
+- **XSS prevention** through input sanitization and output encoding
+- **Rate limiting** on API calls (60 requests/minute per user)
+
+### Security Monitoring Dashboard
+- **Device attestation status** display (secure boot, firmware integrity)
+- **Tamper alert viewer** with real-time notifications
+- **Audit log viewer** for all administrative actions and security events
+- **Certificate expiry dashboard** with renewal reminders
+- **Security health score** per device and system-wide
+- **Compliance metrics** (SABS/ICASA/SOC2 readiness indicators)
+
+### Security Audit & Compliance
+- **Audit logging** for all user actions, device commands, configuration changes
+- **Security event tracking**: Failed logins, invalid signatures, tamper detections
+- **Compliance reports**: SOC2 Type II controls, ISO 27001 alignment
+- **Export capabilities**: Encrypted CSV/PDF reports with digital signatures
+
+For comprehensive security architecture and compliance details, see [docs/SECURITY.md](../docs/SECURITY.md).
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -29,6 +70,12 @@ The web dashboard provides administrators and power users with:
 - Node.js 18.x or higher
 - npm 9.x or yarn 1.22.x
 - Modern web browser (Chrome, Firefox, Safari, Edge)
+
+**Security Prerequisites**:
+- **OAuth2/SSO provider** account (Auth0, Google, Microsoft)
+- **TLS certificates** for HTTPS (Let's Encrypt or commercial CA)
+- **API base URL** with TLS 1.3 enabled
+- **WebSocket endpoint** with TLS support
 
 ### Installation
 
