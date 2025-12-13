@@ -6,15 +6,80 @@ Cloud-based backend service for device management, data ingestion, real-time ana
 
 The backend provides:
 
-- **MQTT Broker**: Secure message broker for device-to-cloud communication over TLS 1.3 with client certificates
-- **REST API**: Device management, telemetry query, and control endpoints with signed command support
-- **WebSocket**: Real-time encrypted data streaming to web and mobile clients
-- **Data Ingestion**: Process and store encrypted telemetry from smart plug devices
-- **Data Storage**: Time-series data (InfluxDB) with field-level encryption and metadata (PostgreSQL/Firestore)
-- **Authentication**: User authentication and authorization with Auth0/Firebase Auth, 2FA, and RBAC
-- **Analytics**: Aggregation, pattern recognition, and anomaly detection
-- **ML Pipeline Integration**: Data export and hooks for machine learning workflows
-- **Security**: Rate limiting, audit logging, ATECC608A device provisioning endpoints, SOC2 compliance readiness
+- **MQTT Broker**: Secure message broker for device-to-cloud communication over TLS 1.3 with client certificates (mTLS)
+- **REST API**: Device management, telemetry query, and control endpoints with signed command support (ECDSA)
+- **WebSocket**: Real-time encrypted data streaming to web and mobile clients over TLS
+- **Data Ingestion**: Process and store encrypted telemetry from smart plug devices with signature verification
+- **Data Storage**: Time-series data (InfluxDB) with field-level encryption and metadata (PostgreSQL/Firestore) with sensitive field encryption
+- **Authentication**: User authentication and authorization with Auth0/Firebase Auth, 2FA/MFA, and RBAC
+- **Analytics**: Aggregation, pattern recognition, and anomaly detection with encrypted data processing
+- **ML Pipeline Integration**: Secure data export and hooks for machine learning workflows
+- **Security**: Rate limiting, audit logging, device attestation endpoints, ATECC608A provisioning, SOC2 Type II compliance readiness
+- **Device Security**: Signed command generation, certificate management, tamper alert processing
+
+## 🔒 Security Features
+
+Smart Plug AI Backend implements **bank-grade security** across all layers:
+
+### Communication Security
+- **TLS 1.3** exclusively for all connections (HTTPS, MQTTS, WebSocket over TLS)
+- **Client certificates** for device authentication (mTLS with ATECC608A-generated certs)
+- **Certificate pinning** enforced for mobile/web clients
+- **Perfect forward secrecy** (PFS) with ephemeral key exchange
+- **Strong cipher suites**: TLS_AES_256_GCM_SHA384, TLS_CHACHA20_POLY1305_SHA256
+
+### Authentication & Authorization
+- **Auth0 / Firebase Auth** with OAuth2/OpenID Connect
+- **2FA/MFA** support (TOTP, SMS) for user accounts
+- **Role-Based Access Control (RBAC)**: Admin, User, Viewer, Service, Auditor roles
+- **Short-lived JWT tokens** (30 minutes) with secure refresh mechanism
+- **Device authentication**: Unique device ID + ECDSA private key (ATECC608A)
+- **API key support** for third-party integrations with rate limiting
+
+### Data Protection
+- **Field-level encryption** (AES-256-GCM) for sensitive data in PostgreSQL/Firestore
+- **Encrypted telemetry** in transit and at rest (InfluxDB with encryption at rest)
+- **Key management**: AWS KMS / Google Cloud KMS with automatic quarterly rotation
+- **Encrypted backups**: Separate keys for backup encryption
+- **No plaintext secrets**: All credentials in Kubernetes Secrets / AWS Secrets Manager
+
+### Device Security
+- **Signed commands** (ECDSA P256) for all device control operations
+- **Command verification**: Devices verify signature using server's public key
+- **Device attestation**: Periodic firmware integrity checks (SHA-256 hashes)
+- **Tamper detection processing**: Real-time alerts from MAX6316 watchdog
+- **Secure OTA updates**: Code signing with RSA-3072, rollback protection
+- **Device provisioning**: ATECC608A key generation, certificate issuance, configuration locking
+
+### API Security
+- **Input validation**: Pydantic schemas for all endpoints
+- **Rate limiting**: 
+  - Authentication: 5 requests/15 minutes
+  - API calls: 60 requests/minute per user
+  - Device commands: 10 requests/minute per device
+- **CORS**: Strict origin policy (whitelist only)
+- **CSRF protection**: Token-based protection for state-changing operations
+- **SQL injection prevention**: Parameterized queries (SQLAlchemy ORM)
+- **XSS prevention**: Output sanitization
+
+### Monitoring & Compliance
+- **Comprehensive audit logging**: All authentication, authorization, device commands, data access
+- **Security event tracking**: Failed auth, invalid signatures, tamper alerts, anomalies
+- **Structured logging** (JSON) with encryption for sensitive fields
+- **Log retention**: Security events (2 years), audit logs (1 year), access logs (90 days)
+- **Real-time alerting**: PagerDuty/Opsgenie for critical security events
+- **SOC2 Type II controls**: Implemented and documented
+- **SABS/ICASA compliance**: Ready for certification
+- **POPIA/GDPR compliance**: Data protection and privacy controls
+
+### Incident Response
+- **Automated threat detection**: Anomaly detection, brute force protection
+- **Incident classification**: P0 (Critical) to P3 (Low) with SLAs
+- **Containment procedures**: Isolate devices, disable accounts, block IPs
+- **Forensics**: Immutable audit logs for investigation
+- **Communication plan**: User notification for breaches
+
+For comprehensive security architecture, threat model, and Security Roadmap (phases 1-6), see [docs/SECURITY.md](../docs/SECURITY.md).
 
 ## 🏗️ Tech Stack
 

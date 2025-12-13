@@ -10,121 +10,146 @@ Smart Plug AI is a distributed IoT system consisting of edge devices (ESP32-base
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                            DEVICE LAYER (Edge)                          │
+│                   SECURE PRESENTATION LAYER                             │
 │                                                                         │
-│  ┌──────────────────┐      ┌──────────────────┐                       │
-│  │   ESP32 Device   │      │   ESP32 Device   │                       │
-│  │  + INA219        │      │  + INA219        │  ... (N devices)      │
-│  │  + Relay Module  │      │  + Relay Module  │                       │
-│  └────────┬─────────┘      └────────┬─────────┘                       │
-│           │                         │                                  │
-│           │  Wi-Fi (MQTT over TLS)  │                                  │
-└───────────┼─────────────────────────┼──────────────────────────────────┘
-            │                         │
-            └────────────┬────────────┘
-                         │
-                         ▼
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐       │
+│  │   Mobile App    │  │  Admin Dashboard│  │  Public API     │       │
+│  │   (Flutter)     │  │  (React)        │  │  (REST/GraphQL) │       │
+│  │  - TLS 1.3      │  │  - TLS 1.3      │  │  - TLS 1.3      │       │
+│  │  - Cert Pinning │  │  - OAuth2/SSO   │  │  - API Keys     │       │
+│  │  - 2FA          │  │  - RBAC         │  │  - Rate Limiting│       │
+│  └────────┬────────┘  └────────┬────────┘  └────────┬────────┘       │
+└───────────┼─────────────────────┼─────────────────────┼────────────────┘
+            │                     │                     │
+            │                     └──────────┬──────────┘
+            │                                │
+            ▼                                ▼
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                       MESSAGE BROKER LAYER                              │
+│                   SECURE APPLICATION LAYER                              │
 │                                                                         │
-│                   ┌─────────────────────────┐                          │
-│                   │   MQTT Broker           │                          │
-│                   │   (Mosquitto)           │                          │
-│                   │   - Port 1883 (MQTT)    │                          │
-│                   │   - Port 8883 (MQTTS)   │                          │
-│                   │   - Port 9001 (WS)      │                          │
-│                   └──────────┬──────────────┘                          │
-└──────────────────────────────┼──────────────────────────────────────────┘
-                               │
-              ┌────────────────┼────────────────┐
-              │                │                │
-              ▼                ▼                ▼
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌───────────┐ │
+│  │  FastAPI     │  │  Auth0       │  │  Redis Cache │  │  MQTT     │ │
+│  │  (Python)    │  │  (OAuth2)    │  │  (Encrypted) │  │  Broker   │ │
+│  │  - Input Val │  │  - 2FA/MFA   │  │  - Sessions  │  │  - TLS 1.3│ │
+│  │  - Rate Limit│  │  - JWT Tokens│  │  - Rate Ctr  │  │  - mTLS   │ │
+│  │  - RBAC      │  │  - RBAC      │  │  - Telemetry │  │  - ACL    │ │
+│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘  └─────┬─────┘ │
+└─────────┼──────────────────┼──────────────────┼────────────────┼───────┘
+          │                  │                  │                │
+          │                  └──────────┬───────┘                │
+          │                             │                        │
+          ▼                             ▼                        ▼
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                        BACKEND LAYER (Cloud)                            │
+│                       SECURE DATA LAYER                                 │
 │                                                                         │
-│  ┌────────────────┐  ┌────────────────┐  ┌─────────────────┐          │
-│  │  MQTT          │  │  FastAPI       │  │  WebSocket      │          │
-│  │  Subscriber    │  │  REST API      │  │  Server         │          │
-│  │  (Ingestion)   │  │  (v1)          │  │  (Real-time)    │          │
-│  └───────┬────────┘  └───────┬────────┘  └────────┬────────┘          │
-│          │                   │                     │                   │
-│          │    ┌──────────────┴──────────────┐      │                   │
-│          │    │                             │      │                   │
-│          ▼    ▼                             ▼      ▼                   │
-│  ┌──────────────────┐              ┌──────────────────┐               │
-│  │   InfluxDB       │              │   PostgreSQL     │               │
-│  │   (Time-series)  │              │   (Metadata)     │               │
-│  │   - Telemetry    │              │   - Users        │               │
-│  │   - Metrics      │              │   - Devices      │               │
-│  │   - Aggregates   │              │   - Schedules    │               │
-│  └──────────────────┘              └──────────────────┘               │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐       │
+│  │  Snowflake/     │  │  PostgreSQL /   │  │  InfluxDB       │       │
+│  │  (OLAP)         │  │  Firestore      │  │  (Time-series)  │       │
+│  │  - Row-Level    │  │  - Field-Level  │  │  - Retention    │       │
+│  │    Security     │  │    Encryption   │  │  - Downsampling │       │
+│  │  - Aggregates   │  │  - Users, Dev.  │  │  - Encrypted    │       │
+│  └─────────────────┘  └─────────────────┘  └─────────────────┘       │
 │                                                                         │
-│          ┌──────────────────┐              ┌──────────────────┐       │
-│          │   Redis          │              │   S3 / Storage   │       │
-│          │   (Cache)        │              │   (ML Data)      │       │
-│          │   - Sessions     │              │   - Exports      │       │
-│          │   - Rate Limit   │              │   - Backups      │       │
-│          └──────────────────┘              └──────────────────┘       │
-│                                                                         │
-└─────────────────────────┬───────────────────────────────────────────────┘
-                          │
-          ┌───────────────┼───────────────┐
-          │               │               │
-          ▼               ▼               ▼
+│  ┌─────────────────┐  ┌─────────────────────────────────────────┐    │
+│  │  S3 / Cloud     │  │  KMS (Key Management Service)           │    │
+│  │  Storage        │  │  - AWS KMS / Google Cloud KMS           │    │
+│  │  - ML Data      │  │  - Quarterly Key Rotation               │    │
+│  │  - Encrypted    │  │  - HSM-backed for production            │    │
+│  └─────────────────┘  └─────────────────────────────────────────┘    │
+└─────────────────────────────┬───────────────────────────────────────────┘
+                              │
+                              ▼
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                        CLIENT LAYER                                     │
+│                       SECURE DEVICE LAYER (Edge)                        │
 │                                                                         │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐        │
-│  │   Mobile App    │  │  Web Dashboard  │  │  ML Pipeline    │        │
-│  │   (Flutter)     │  │  (React)        │  │  (Python)       │        │
-│  │  - iOS          │  │  - Analytics    │  │  - Training     │        │
-│  │  - Android      │  │  - Admin Panel  │  │  - Inference    │        │
-│  └─────────────────┘  └─────────────────┘  └─────────────────┘        │
-│                                                                         │
-└─────────────────────────────────────────────────────────────────────────┘
+│  ┌──────────────────────────────────────────────────────────┐         │
+│  │                    ESP32-S3 + Security ICs                │         │
+│  │                                                            │         │
+│  │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐   │         │
+│  │  │  ESP32-S3    │  │  ATECC608A   │  │  MAX6316     │   │         │
+│  │  │  - Secure    │  │  - ECDSA P256│  │  - Tamper    │   │         │
+│  │  │    Boot      │  │  - Key Slots │  │    Watchdog  │   │         │
+│  │  │  - Flash     │  │  - Hardware  │  │  - Reset on  │   │         │
+│  │  │    Encrypt   │  │    RNG       │  │    Tamper    │   │         │
+│  │  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘   │         │
+│  │         └──────────────────┴──────────────────┘           │         │
+│  │                          │                                 │         │
+│  │  ┌──────────────┐  ┌────┴────────┐  ┌──────────────┐   │         │
+│  │  │  24C256      │  │  SCT-013    │  │  Relay Module│   │         │
+│  │  │  - Encrypted │  │  - Current  │  │  + PC817     │   │         │
+│  │  │    EEPROM    │  │    Sensor   │  │  - Optoisol. │   │         │
+│  │  └──────────────┘  └─────────────┘  └──────────────┘   │         │
+│  └──────────────────────────────────────────────────────────┘         │
+│           │  MQTT over TLS 1.3 (Port 8883)                             │
+│           │  Client Certificates (mTLS)                                │
+│           │  Signed Commands (ECDSA)                                   │
+└───────────┴─────────────────────────────────────────────────────────────┘
 ```
 
 ## 🔧 Component Responsibilities
 
-### Device Layer (ESP32)
+### Device Layer (ESP32-S3 + Security ICs)
 
 **Responsibilities**:
 
-- Read power metrics from INA219 sensor (voltage, current, power)
-- Control relay module based on commands
-- Publish telemetry data to MQTT broker (1-second intervals)
-- Subscribe to control commands from MQTT broker
-- Implement OTA firmware update mechanism
-- Handle Wi-Fi connectivity and reconnection
-- Maintain device status (online/offline)
-- Execute fail-safe mechanisms (watchdog, brownout detection)
+- Read power metrics from SCT-013 current sensor (30A/1V output)
+- Control relay module based on signed commands with signature verification
+- Publish encrypted telemetry data to MQTT broker (1-second intervals)
+- Subscribe to control commands from MQTT broker and verify signatures
+- Implement secure OTA firmware update mechanism with code signing
+- Handle Wi-Fi connectivity and secure reconnection (encrypted credentials)
+- Maintain device status and attestation reporting
+- Execute fail-safe mechanisms (watchdog, tamper detection, brownout detection)
+- Generate device attestation reports (firmware hash, secure boot status)
+
+**Security Features**:
+- **Secure Boot V2**: RSA-PSS 3072-bit signature verification on boot
+- **Flash Encryption**: AES-256-XTS encryption for all flash contents
+- **ATECC608A Integration**: ECDSA P256 operations for signing and verification
+- **Tamper Detection**: MAX6316 watchdog monitors for physical tampering
+- **Encrypted Storage**: 24C256 EEPROM with AES-256-GCM encryption
+- **Client Certificates**: mTLS authentication with MQTT broker
+- **Command Verification**: ECDSA signature verification for all commands
 
 **Technology**:
 
-- ESP32 microcontroller (dual-core, 240MHz)
-- Arduino framework / ESP-IDF
-- INA219 I2C driver
-- MQTT client library (PubSubClient)
-- ArduinoOTA for updates
+- ESP32-S3 microcontroller (dual-core Xtensa LX7, 240MHz, hardware crypto)
+- ESP-IDF framework (v5.0+) with secure boot and flash encryption
+- ATECC608A secure element (I2C, address 0x60)
+- SCT-013-030 current sensor (30A/1V) with 33Ω burden resistor
+- 24C256 EEPROM (32KB, I2C, address 0x50)
+- MAX6316 tamper watchdog (reset on tamper, battery-backed)
+- MQTT client library with TLS 1.3 support (ESP-MQTT)
 
-### Message Broker Layer (MQTT)
+### Message Broker Layer (MQTT over TLS)
 
 **Responsibilities**:
 
-- Route messages between devices and backend
-- Maintain persistent connections with devices
-- Handle message queuing and delivery (QoS 0, 1, 2)
+- Route messages between devices and backend over secure channels
+- Maintain persistent TLS connections with mutual authentication
+- Handle message queuing and guaranteed delivery (QoS 0, 1)
 - Support Last Will and Testament (LWT) for device offline detection
-- Provide WebSocket support for browser clients
-- Enforce authentication and authorization
-- Scale to thousands of concurrent connections
+- Provide WebSocket over TLS support for browser clients
+- Enforce authentication via client certificates (mTLS)
+- Enforce authorization via Access Control Lists (ACLs)
+- Scale to thousands of concurrent connections with load balancing
+
+**Security Features**:
+- **TLS 1.3**: Latest protocol with perfect forward secrecy
+- **Client Certificates**: Mutual TLS (mTLS) with ATECC608A-generated device certs
+- **Access Control Lists**: Per-device topic restrictions
+- **Certificate Validation**: CRL and OCSP checking for revoked certificates
+- **Cipher Suites**: TLS_AES_256_GCM_SHA384, TLS_CHACHA20_POLY1305_SHA256
+- **Rate Limiting**: Connection and message rate limits per device
 
 **Technology**:
 
-- Eclipse Mosquitto MQTT broker
-- TLS/SSL for secure communication
-- WebSocket bridge for browsers
-- Access Control Lists (ACLs)
+- Eclipse Mosquitto MQTT broker 2.0+ (with TLS plugin)
+- TLS/SSL with OpenSSL 3.0+ (TLS 1.3 support)
+- WebSocket bridge over TLS for browsers (port 9001)
+- Access Control Lists (ACLs) with dynamic authorization
+- Certificate-based authentication (X.509v3 with ECDSA P-256)
+- CRL and OCSP for certificate revocation checking
 
 ### Backend Layer (Cloud Services)
 
@@ -144,23 +169,35 @@ Smart Plug AI is a distributed IoT system consisting of edge devices (ESP32-base
 
 **Responsibilities**:
 
-- Authenticate users (JWT tokens)
-- Manage user accounts and profiles
-- Provide device CRUD operations
-- Query historical telemetry data
-- Send control commands to devices via MQTT
-- Manage device schedules and automation rules
-- Generate reports and analytics
-- Expose OpenAPI documentation
+- Authenticate users (JWT tokens with Auth0/Firebase Auth + 2FA)
+- Manage user accounts and profiles with RBAC
+- Provide device CRUD operations with ownership validation
+- Query historical telemetry data (encrypted)
+- Send signed control commands to devices via MQTT
+- Manage device schedules and automation rules with rate limiting
+- Generate reports and analytics with field-level encryption
+- Expose OpenAPI documentation (Swagger/ReDoc)
+- Audit logging for all operations
+
+**Security Features**:
+- **TLS 1.3**: HTTPS exclusively
+- **Input Validation**: Pydantic schemas prevent injection attacks
+- **Rate Limiting**: Distributed rate limiting with Redis
+- **CORS**: Strict whitelist-only origin policy
+- **CSRF Protection**: Token-based protection
+- **Command Signing**: ECDSA signatures for all device commands
+- **Audit Logging**: Comprehensive logging of all actions
 
 **Endpoints**:
 
-- `/auth/*` - Authentication and authorization
-- `/devices/*` - Device management and control
-- `/telemetry/*` - Historical data queries
-- `/users/*` - User management
-- `/schedules/*` - Automation rules
-- `/alerts/*` - Alert configuration
+- `/auth/*` - Authentication and authorization (2FA, JWT, OAuth2)
+- `/devices/*` - Device management and control (signed commands)
+- `/telemetry/*` - Historical data queries (field-level decryption)
+- `/users/*` - User management (RBAC enforcement)
+- `/schedules/*` - Automation rules (validated and rate-limited)
+- `/alerts/*` - Alert configuration (tamper alerts, thresholds)
+- `/attestation/*` - Device attestation and firmware verification
+- `/certificates/*` - Certificate lifecycle management (renewal, revocation)
 
 #### WebSocket Service
 
@@ -448,54 +485,77 @@ Smart Plug AI is a distributed IoT system consisting of edge devices (ESP32-base
 
 ### Authentication & Authorization
 
-- **User Authentication**: JWT tokens with RS256 or HS256 signing
-- **Token Expiry**: Short-lived access tokens (30 minutes)
-- **Refresh Tokens**: Long-lived refresh tokens (7 days) stored in Redis
-- **Device Authentication**: Unique device ID + secret key for MQTT
-- **API Key**: Optional API keys for third-party integrations
+- **User Authentication**: JWT tokens with RS256 or HS256 signing, Auth0/Firebase Auth
+- **Token Expiry**: Short-lived access tokens (30 minutes), refresh tokens (7 days) in Redis
+- **2FA/MFA**: TOTP or SMS for admin accounts and sensitive operations
+- **Device Authentication**: 
+  - Unique device ID + ECDSA private key (ATECC608A Slot 0)
+  - Client certificates (X.509v3 with ECDSA P-256)
+  - mTLS for MQTT connections
+- **API Key**: Optional API keys for third-party integrations with scoped permissions
+- **RBAC**: Role-Based Access Control (Admin, User, Viewer, Service, Auditor)
 
 ### Data Encryption
 
 - **In Transit**:
   - TLS 1.3 for HTTPS (API, WebSocket)
-  - MQTT over TLS (MQTTS on port 8883)
+  - MQTT over TLS (MQTTS on port 8883) with mTLS
   - Certificate pinning for mobile apps
+  - Perfect forward secrecy (PFS) with ephemeral keys
+  - Strong cipher suites: TLS_AES_256_GCM_SHA384, TLS_CHACHA20_POLY1305_SHA256
   
 - **At Rest**:
   - Encrypted database volumes (AES-256)
-  - Encrypted S3 buckets for ML data
+  - Field-level encryption for sensitive data (AES-256-GCM with KMS)
+  - Encrypted S3 buckets for ML data (server-side encryption)
   - Encrypted secrets in Kubernetes Secrets or AWS Secrets Manager
+  - Encrypted backups with separate keys
+  - Device flash encryption (AES-256-XTS on ESP32-S3)
+  - Encrypted EEPROM (24C256 with AES-256-GCM)
 
 ### Network Security
 
-- **Firewall Rules**: Restrict access to backend services
-- **Rate Limiting**: Prevent abuse (100 req/min per user)
+- **Firewall Rules**: Restrict access to backend services (allowlist only)
+- **Rate Limiting**: Prevent abuse and DDoS attacks
+  - Authentication: 5 requests/15 minutes
+  - API calls: 60 requests/minute per user
+  - Device commands: 10 requests/minute per device
 - **DDoS Protection**: Use Cloudflare or AWS Shield
 - **IP Whitelisting**: Optional for admin endpoints
+- **Security Headers**: CSP, HSTS, X-Frame-Options, X-Content-Type-Options
 
 ### Input Validation
 
 - **API Endpoints**: Pydantic schemas for request validation
 - **MQTT Messages**: JSON schema validation
-- **SQL Injection**: Use parameterized queries (SQLAlchemy ORM)
+- **SQL Injection**: Parameterized queries (SQLAlchemy ORM only)
 - **XSS Prevention**: Sanitize outputs in web dashboard
+- **Command Injection**: No shell execution, validated inputs only
 
 ### Device Security
 
-- **OTA Security**: Verify firmware signature before flashing
-- **Secure Boot**: Enable ESP32 secure boot in production
-- **Flash Encryption**: Encrypt firmware in ESP32 flash memory
-- **Credential Storage**: Use ESP32 NVS encryption for Wi-Fi credentials
+- **Signed Commands**: All commands signed with ECDSA (server private key)
+- **Command Verification**: Device verifies signature using server public key (ATECC608A Slot 1)
+- **Nonce + Timestamp**: Prevent replay attacks (commands expire after 5 minutes)
+- **OTA Security**: Verify firmware signature before flashing (RSA-3072 or ECDSA P-256)
+- **Secure Boot**: ESP32-S3 secure boot v2 enabled in production
+- **Flash Encryption**: Encrypt firmware and data in flash memory
+- **Credential Storage**: ESP32 NVS encryption for Wi-Fi credentials
+- **Device Attestation**: Periodic firmware integrity checks (SHA-256 hash)
+- **Tamper Detection**: MAX6316 watchdog monitors for physical tampering
 
 ### Access Control
 
 - **Role-Based Access Control (RBAC)**:
-  - Admin: Full system access
-  - User: Access to owned devices
-  - Guest: Read-only access to shared devices
+  - **Admin**: Full system access, user management, security settings
+  - **User**: Access to owned devices, device control, data viewing
+  - **Viewer**: Read-only access to shared devices, no control
+  - **Service**: Backend service accounts, API-only access
+  - **Auditor**: Security log access, no device control
 
 - **Device Ownership**: Users can only control devices they own or are shared with
 - **Multi-tenancy**: Logical separation of user data
+- **Least Privilege**: Each role has minimum necessary permissions
 
 ## 📈 Scalability Considerations
 
