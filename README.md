@@ -56,7 +56,7 @@ See [soldering checklist](docs/soldering-checklist.md) for complete shopping lis
    - 🔧 **Firmware**: See [firmware/README.md](firmware/README.md)
    - ☁️ **Backend**: See [backend/README.md](backend/README.md)
 
-3. **Review the roadmap**: Check [docs/ROADMAP.md](docs/ROADMAP.md) for Phase 1-3 milestones (Phase 1: Secure MVP Development, now-4 months, R200,000; Phase 2: Pilot & Refinement, months 5-8, R3M; Phase 3: Commercial Launch, months 9-12, R6M). Detailed week-by-week Phase 1 plan (weeks 1-12) included.
+3. **Review the roadmap**: Check [docs/ROADMAP.md](docs/ROADMAP.md) for Phase 1-3 milestones (Phase 1: Secure MVP Development, now-4 months, R5,000; Phase 2: Pilot & Refinement, months 5-8, R3M; Phase 3: Commercial Launch, months 9-12, R6M). Detailed week-by-week Phase 1 plan (weeks 1-12) included.
 
 4. **Security documentation**: See [docs/SECURITY.md](docs/SECURITY.md) for comprehensive security architecture, device layer (ESP32-S3 + ATECC608A + MAX6316 + 24C256), MQTT over TLS 1.3, certificate management, secure boot, flash encryption, tamper detection, device attestation, and Security Roadmap (phases 1-6). Includes Appendices E (security specifications) and F (security audit results).
 
