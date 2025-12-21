@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/device.dart';
 import '../services/device_service.dart';
+import '../theme/app_theme.dart';
 import 'device_detail_screen.dart';
 
 class DeviceCard extends StatelessWidget {
@@ -63,19 +64,19 @@ class DeviceCard extends StatelessWidget {
                                   vertical: 2,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF3B82F6).withOpacity(0.1),
+                                  color: AppTheme.encryptedBadgeColor.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                                 child: const Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Icon(Icons.lock, size: 10, color: Color(0xFF3B82F6)),
+                                    Icon(Icons.lock, size: 10, color: AppTheme.encryptedBadgeColor),
                                     SizedBox(width: 2),
                                     Text(
                                       'Encrypted',
                                       style: TextStyle(
                                         fontSize: 10,
-                                        color: Color(0xFF3B82F6),
+                                        color: AppTheme.encryptedBadgeColor,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),

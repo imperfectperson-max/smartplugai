@@ -32,7 +32,10 @@ class AuthService {
       this.currentUser = user;
       this.accessToken = response.accessToken;
 
-      // Store in sessionStorage (in production, use secure httpOnly cookies)
+      // Store in sessionStorage for pre-hardware demo only
+      // SECURITY NOTE: In production, use secure httpOnly cookies with SameSite=Strict
+      // and implement proper CSRF protection. Never store tokens in localStorage or
+      // sessionStorage in production as they are vulnerable to XSS attacks.
       sessionStorage.setItem('user', JSON.stringify(user));
       sessionStorage.setItem('accessToken', response.accessToken);
 
