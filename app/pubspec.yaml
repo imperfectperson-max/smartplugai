@@ -1,0 +1,58 @@
+name: smartplug_app
+description: Smart Plug AI Mobile Application with bank-grade security
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # State management
+  provider: ^6.1.0
+  
+  # Networking
+  http: ^1.1.0
+  mqtt_client: ^10.0.0
+  
+  # Charts & Visualization
+  fl_chart: ^0.65.0
+  
+  # QR Code scanning
+  mobile_scanner: ^3.5.0
+  
+  # Local Storage
+  shared_preferences: ^2.2.0
+  sqflite: ^2.3.0
+  
+  # Authentication (Firebase/Auth0 ready)
+  firebase_auth: ^4.15.0
+  firebase_core: ^2.24.0
+  
+  # Notifications
+  flutter_local_notifications: ^16.0.0
+  
+  # UI Utilities
+  google_fonts: ^6.1.0
+  flutter_svg: ^2.0.0
+  intl: ^0.18.0
+  
+  # Secure storage
+  flutter_secure_storage: ^9.0.0
+  
+  # Crypto for encryption display
+  crypto: ^3.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/images/
+    - assets/icons/
