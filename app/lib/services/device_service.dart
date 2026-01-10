@@ -86,7 +86,7 @@ class DeviceService {
         final newPower = (basePower + variation).clamp(0, 3000);
         
         _devices[i] = _devices[i].copyWith(
-          currentPower: newPower,
+          currentPower: newPower.toDouble(),
           voltage: 230.0 + (random.nextDouble() - 0.5) * 4, // ±2V variation
           current: newPower / 230.0,
           lastSeen: DateTime.now(),
@@ -202,8 +202,10 @@ class DeviceService {
   Future<bool> removeDevice(String deviceId) async {
     await Future.delayed(const Duration(milliseconds: 500));
     
-    final removed = _devices.removeWhere((d) => d.id == deviceId);
-    if (removed > 0) {
+    final initialLength = _devices.length;
+    _devices.removeWhere((d) => d.id == deviceId);
+    final removedCount = initialLength - _devices.length;
+    if (removedCount > 0) {
       _deviceStreamController.add(_devices);
       return true;
     }

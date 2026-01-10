@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/device.dart';
 import '../services/device_service.dart';
 import '../theme/app_theme.dart';
-import 'device_detail_screen.dart';
+import '../screens/device_detail_screen.dart';
 
 class DeviceCard extends StatelessWidget {
   final Device device;
