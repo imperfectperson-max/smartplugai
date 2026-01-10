@@ -240,8 +240,8 @@ dependencies:
   sqflite: ^2.3.0  # or hive
   
   # Authentication (when ready)
-  firebase_auth: ^4.15.0
-  firebase_core: ^2.24.0
+  firebase_auth: ^5.3.1
+  firebase_core: ^3.6.0
   
   # Notifications
   flutter_local_notifications: ^16.0.0
