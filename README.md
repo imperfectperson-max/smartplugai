@@ -100,7 +100,7 @@ Also review our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
 ## 📚 Documentation
 
-- [Roadmap](docs/ROADMAP.md) - Phase 1-3 implementation plan with week-by-week Phase 1 (weeks 1-12) security milestones, budgets (Phase 1: R200k, Phase 2: R3M, Phase 3: R6M)
+- [Roadmap](docs/ROADMAP.md) - Phase 1-3 implementation plan with week-by-week Phase 1 (weeks 1-12) security milestones, budgets (Phase 1: R5k, Phase 2: R3M, Phase 3: R6M)
 - [Security Architecture](docs/SECURITY.md) - Comprehensive security design: device layer (ESP32-S3 + ATECC608A + MAX6316 + 24C256), MQTT over TLS 1.3, certificate management, secure boot, flash encryption, tamper detection, device attestation, Security Roadmap (phases 1-6), Appendices E & F
 - [Soldering Checklist](docs/soldering-checklist.md) - Hardware shopping list and assembly guide with Phase 1 budget (R2,736-R3,182 for 3 plugs)
 - [Architecture](docs/ARCHITECTURE.md) - Secure system stack: Presentation/Application/Data/Device layers with TLS 1.3, client certs, RBAC
