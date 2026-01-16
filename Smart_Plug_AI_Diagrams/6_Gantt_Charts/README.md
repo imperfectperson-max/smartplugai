@@ -165,7 +165,7 @@ For creating Gantt charts in Visual Paradigm:
 
 ## References
 
-See `source_d24e744d.txt` for additional timeline diagrams including:
+See `diagram_specifications.txt` for additional timeline diagrams including:
 - Security milestone timeline
 - Risk management timeline
 - Deliverable timeline

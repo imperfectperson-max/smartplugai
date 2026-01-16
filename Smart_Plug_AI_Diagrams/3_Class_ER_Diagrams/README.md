@@ -316,7 +316,7 @@ Key indexes for performance (see SQL DDL file for complete list):
 
 ## References
 
-For complete class diagram specifications and service layer architecture, see `source_d24e744d.txt` in the parent directory, which includes:
+For complete class diagram specifications and service layer architecture, see `diagram_specifications.txt` in the parent directory, which includes:
 - Backend service layer class diagrams
 - Security components class diagram
 - Firmware class structures

@@ -56,7 +56,7 @@ Smart_Plug_AI_Diagrams/
 ## 📖 Source Documentation
 
 The original source text from which these diagrams were generated is stored at:
-`Smart_Plug_AI_Diagrams/source_d24e744d.txt`
+`Smart_Plug_AI_Diagrams/diagram_specifications.txt`
 
 This file contains:
 - Complete diagram specifications
@@ -73,7 +73,6 @@ This file contains:
 1. Open the diagram in Visual Paradigm
 2. Go to **File → Export → Image**
 3. Choose format: PDF, PNG, or SVG
-4. For presentations: Export to PowerPoint directly via **File → Export → MS PowerPoint**
 
 ### For Diagrams.net Files (.drawio)
 
@@ -99,9 +98,8 @@ To export Mermaid diagrams:
 
 Pre-generated exports are available in the `7_Exports/` directory:
 - `All_Diagrams.pdf` - Complete diagram collection in PDF format
-- `Presentation_Slides.pptx` - PowerPoint presentation with key diagrams
 
-**Note**: Large binary exports (PDF/PPTX) are placeholders in this repository and need to be generated locally using the tools above.
+**Note**: Large binary export (PDF) is a placeholder in this repository and needs to be generated locally using the tools above.
 
 ## 🔒 Security Features Documented
 

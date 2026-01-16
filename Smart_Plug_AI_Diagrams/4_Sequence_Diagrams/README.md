@@ -146,7 +146,7 @@ sequenceDiagram
 
 ## Additional Sequences
 
-See `source_d24e744d.txt` in the parent directory for additional sequence diagrams:
+See `diagram_specifications.txt` in the parent directory for additional sequence diagrams:
 - **Secure Command Execution**: MQTT command flow with signature verification
 - **Tamper Detection & Response**: Hardware tamper detection and incident response
 - **Secure OTA Update**: Firmware update with rollback protection

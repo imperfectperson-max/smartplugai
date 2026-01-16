@@ -235,4 +235,4 @@ For creating or editing use case diagrams:
 
 ## References
 
-See `source_d24e744d.txt` in the parent directory for complete diagram specifications and additional details.
+See `diagram_specifications.txt` in the parent directory for complete diagram specifications and additional details.

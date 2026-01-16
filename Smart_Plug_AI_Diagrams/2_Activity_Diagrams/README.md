@@ -169,7 +169,7 @@ flowchart TD
 
 ## References
 
-See `source_d24e744d.txt` in the parent directory for additional activity diagrams including:
+See `diagram_specifications.txt` in the parent directory for additional activity diagrams including:
 - Secure command execution flow
 - Tamper detection and response
 - OTA firmware update process

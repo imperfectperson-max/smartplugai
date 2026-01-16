@@ -93,9 +93,7 @@ Smart_Plug_AI_Diagrams/
 
 └── 7_Exports/
 
- ├── All_Diagrams.pdf
-
- └── Presentation_Slides.pptx
+ └── All_Diagrams.pdf
 
 1. HIGH-LEVEL SYSTEM USE CASE DIAGRAM
 [Full Mermaid diagram included in 1_Use_Case_Diagrams/README.md]
@@ -193,9 +191,8 @@ Key Milestones:
 
 Files to generate:
 - All_Diagrams.pdf (complete collection, 15-30MB)
-- Presentation_Slides.pptx (key diagrams, 5-15MB)
 
-Note: Placeholder files provided. Generate locally using Visual Paradigm or Diagrams.net.
+Note: Placeholder file provided. Generate locally using Visual Paradigm or Diagrams.net.
 
 === END OF DIAGRAM SPECIFICATIONS ===
 
@@ -225,10 +222,9 @@ Smart_Plug_AI_Diagrams/
 │   └── README.md (contains Phase 1 Gantt chart)
 ├── 7_Exports/
 │   ├── README.md (export instructions)
-│   ├── All_Diagrams.pdf (placeholder)
-│   └── Presentation_Slides.pptx (placeholder)
+│   └── All_Diagrams.pdf (placeholder)
 ├── README.md (top-level overview and tool recommendations)
-└── source_d24e744d.txt (this file - original source documentation)
+└── diagram_specifications.txt (this file - original source documentation)
 
 The Mermaid diagram syntax renders automatically in GitHub and supports:
 - Use Case diagrams (graph TB)
