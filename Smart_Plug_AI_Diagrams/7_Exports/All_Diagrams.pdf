@@ -1,0 +1,22 @@
+PLACEHOLDER - Export not included in repository
+
+This file is a placeholder for the All_Diagrams.pdf export.
+
+To generate this file:
+1. Open all diagram files in their respective tools (Visual Paradigm, Diagrams.net)
+2. Export each diagram to PDF format (300 DPI recommended)
+3. Use PDFtk, Adobe Acrobat, or similar tool to combine all PDFs
+4. Name the combined file "All_Diagrams.pdf"
+
+The complete PDF should include:
+- Use Case Diagrams (System Overview, Authentication, Device Management, Analytics, Security)
+- Activity Diagrams (Pairing, Command Execution, Tamper Detection, OTA Update, Telemetry)
+- Class & ER Diagrams (Database Schema, Backend Classes, Security Components)
+- Sequence Diagrams (Pairing, Commands, Tamper, OTA, Authentication)
+- Component Diagrams (System Architecture, Deployment)
+- Gantt Charts (Phase 1 Timeline, Security Milestones)
+
+Expected file size: 15-30MB
+Recommended page count: 20-30 pages
+
+See 7_Exports/README.md for detailed generation instructions.

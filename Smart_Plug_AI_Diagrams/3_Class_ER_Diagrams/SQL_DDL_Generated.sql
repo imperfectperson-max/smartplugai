@@ -1,0 +1,28 @@
+-- Smart Plug AI Database Schema
+-- SQL DDL Generated from ER Diagram
+--
+-- This is a placeholder file. The complete SQL DDL should be generated from
+-- the ER diagram using Visual Paradigm's database generation features:
+--   Tools → Database → Generate Database...
+--
+-- The generated DDL will include:
+--   - CREATE TABLE statements for all entities
+--   - PRIMARY KEY and FOREIGN KEY constraints
+--   - Indexes for performance optimization
+--   - CHECK constraints for validation
+--   - DEFAULT values and sequences
+--   - Table and column comments
+--
+-- Database System: PostgreSQL 14+
+-- Character Set: UTF8
+-- Collation: en_US.UTF-8
+--
+-- Security Notes:
+--   - Enable field-level encryption for sensitive data
+--   - Configure row-level security policies
+--   - Set up audit logging triggers
+--   - Implement backup encryption
+--
+-- See README.md in this folder for the complete ER diagram and entity descriptions.
+
+-- Placeholder: Generate this file from 3.3_ER_Diagram_Database.vpp using Visual Paradigm

@@ -1,0 +1,248 @@
+Creating Architecture Diagrams for Smart Plug AI
+
+Here's a comprehensive guide on creating all required diagrams with tool
+recommendations and step-by-step approaches:
+
+   Tool Selection Recommendation
+
+For your university project, I recommend this combination:
+
+ Diagram Type         Primary Tool      Backup Tool          Reasoning
+
+
+ Use Case             Visual                                 Visual Paradigm has excellent
+                                        Diagrams.net
+ Diagrams             Paradigm                               UML support with auto-layout
+
+
+ Activity             Visual                                 Professional UML notation
+                                        UMLet
+ Diagrams             Paradigm                               support
+
+
+ Class & ER           Visual                                 Superior database modeling
+                                        Diagrams.net
+ Diagrams             Paradigm                               tools
+
+
+ Sequence             Visual                                 Best sequence diagram
+                                        UMLet
+ Diagrams             Paradigm                               generation
+
+
+ Component                              Visual               Great for system architecture
+                      Diagrams.net
+ Diagrams                               Paradigm             visualization
+
+
+                      Visual                                 Built-in project management
+ Gantt Charts                           Diagrams.net
+                      Paradigm                               features
+
+Final Recommendation: Use Visual Paradigm Community Edition (free for students) for
+most diagrams, with Diagrams.net as backup for component diagrams.
+
+   Suggested File Organization:
+
+Smart_Plug_AI_Diagrams/
+
+├── 1_Use_Case_Diagrams/
+
+│ ├── 1.1_System_Use_Case.vpp
+│ ├── 1.2_User_Use_Case.vpp
+
+│ └── 1.3_Admin_Use_Case.vpp
+
+├── 2_Activity_Diagrams/
+
+│ ├── 2.1_Device_Pairing_Flow.vpp
+
+│ ├── 2.2_Secure_Command_Flow.vpp
+
+│ └── 2.3_Tamper_Response_Flow.vpp
+
+├── 3_Class_ER_Diagrams/
+
+│ ├── 3.1_Class_Diagram_Backend.vpp
+
+│ ├── 3.2_Class_Diagram_Firmware.vpp
+
+│ ├── 3.3_ER_Diagram_Database.vpp
+
+│ └── 3.4_SQL_DDL_Generated.sql
+
+├── 4_Sequence_Diagrams/
+
+│ ├── 4.1_Secure_Control_Sequence.vpp
+
+│ ├── 4.2_Tamper_Detection_Sequence.vpp
+
+│ └── 4.3_OTA_Update_Sequence.vpp
+
+├── 5_Component_Diagrams/
+
+│ ├── 5.1_System_Architecture.drawio
+
+│ └── 5.2_Deployment_Architecture.drawio
+
+├── 6_Gantt_Charts/
+
+│ ├── 6.1_Project_Timeline.vpp
+
+│ └── 6.2_Phase1_Detailed.vpp
+
+└── 7_Exports/
+
+ ├── All_Diagrams.pdf
+
+ └── Presentation_Slides.pptx
+
+1. HIGH-LEVEL SYSTEM USE CASE DIAGRAM
+[Full Mermaid diagram included in 1_Use_Case_Diagrams/README.md]
+
+Primary Actors:
+   1. Homeowner - Primary user, residential customer
+   2. Facility Manager - Commercial/industrial user
+   3. System Administrator - Technical administrator
+   4. Security Auditor - Compliance and security reviewer
+   5. IoT Device - ESP32-S3 smart plug
+   6. Mobile Application - Flutter-based mobile interface
+   7. Web Dashboard - React-based admin interface
+
+Main Use Case Domains:
+- Authentication & Security Domain (UC-1 through UC-4)
+- Device Management Domain (UC-5 through UC-8)
+- Data & Analytics Domain (UC-9 through UC-12)
+- System Administration Domain (UC-13 through UC-16)
+- Security Operations Domain (UC-17 through UC-20)
+
+[Additional use case diagrams in separate markdown files:]
+- authentication_security.md - Authentication & Security use cases
+- device_management.md - Device Management use cases
+- data_analytics.md - Data Analytics & Reporting use cases
+- security_operations.md - Security Operations Center use cases
+
+2. ACTIVITY DIAGRAMS
+[Full Mermaid diagrams included in 2_Activity_Diagrams/README.md]
+
+- Secure Device Pairing Activity Diagram (with ATECC608A challenge-response)
+- Secure Command Execution Activity Diagram (with ECDSA signature verification)
+- Tamper Detection & Response Activity Diagram (with MAX6316 watchdog)
+- Secure OTA Firmware Update Activity Diagram (with rollback protection)
+- Real-time Telemetry Data Flow Activity Diagram (with end-to-end encryption)
+- User Authentication with 2FA Activity Diagram (with TOTP/SMS)
+
+3. CLASS & ER DIAGRAMS
+[Full Mermaid ER diagram included in 3_Class_ER_Diagrams/README.md]
+
+Database Entities:
+- USERS (with 2FA and RBAC)
+- DEVICES (with tamper tracking and attestation)
+- POWER_READINGS (encrypted telemetry)
+- SECURITY_EVENTS (incident logging)
+- COMMANDS (with ECDSA signatures)
+- CERTIFICATES (PKI certificate management)
+- ALERTS (user notifications)
+- AUDIT_LOGS (complete audit trail)
+- DEVICE_SHARING (multi-user access)
+- SCHEDULES (automation rules)
+- API_KEYS (API access management)
+
+SQL DDL: See SQL_DDL_Generated.sql (placeholder for Visual Paradigm export)
+
+4. SEQUENCE DIAGRAMS
+[Full Mermaid diagram included in 4_Sequence_Diagrams/README.md]
+
+- Secure Device Pairing Sequence (7 phases with ATECC608A verification)
+- Secure Command Execution Sequence (9 phases with signature verification)
+- Tamper Detection & Response Sequence (10 phases with MAX6316 integration)
+- Secure OTA Update Sequence (with secure boot verification)
+- Real-time Telemetry Flow Sequence (end-to-end encrypted)
+- User Authentication with 2FA Sequence (TOTP/SMS verification)
+
+5. COMPONENT DIAGRAMS
+[Instructions in 5_Component_Diagrams/README.md]
+
+Recommended tool: Diagrams.net (draw.io)
+Architecture layers:
+- Presentation Layer (Mobile App, Web Dashboard, API)
+- Application Layer (FastAPI, Auth Service, MQTT Broker)
+- Data Layer (PostgreSQL, InfluxDB, Redis, S3, KMS)
+- Device Layer (ESP32-S3, ATECC608A, MAX6316, Sensors)
+
+6. GANTT CHARTS
+[Full Mermaid Gantt chart included in 6_Gantt_Charts/README.md]
+
+Phase 1: Secure MVP Development (Weeks 1-12)
+- Week 1-2: Hardware & Firmware Foundation
+- Week 3-4: Mobile App Security Features
+- Week 5-6: Cloud Backend Security
+- Week 7-8: Safety & Enclosure
+- Week 9-10: Rule Engine & Automation
+- Week 11-12: Testing & Security Audit
+
+Key Milestones:
+- Hardware Ready (Week 2)
+- Mobile App Ready (Week 4)
+- Backend Ready (Week 6)
+- Enclosure Ready (Week 8)
+- Phase 1 Complete (Week 12)
+
+7. EXPORTS
+[Export instructions in 7_Exports/README.md]
+
+Files to generate:
+- All_Diagrams.pdf (complete collection, 15-30MB)
+- Presentation_Slides.pptx (key diagrams, 5-15MB)
+
+Note: Placeholder files provided. Generate locally using Visual Paradigm or Diagrams.net.
+
+=== END OF DIAGRAM SPECIFICATIONS ===
+
+IMPLEMENTATION NOTES:
+
+All Mermaid diagrams from this source document have been embedded in the respective
+README.md files within the Smart_Plug_AI_Diagrams folder structure:
+
+Smart_Plug_AI_Diagrams/
+├── 1_Use_Case_Diagrams/
+│   ├── README.md (contains System Overview Use Case diagram in Mermaid)
+│   ├── authentication_security.md (Authentication & Security use cases)
+│   ├── device_management.md (Device Management use cases)
+│   ├── data_analytics.md (Data Analytics use cases)
+│   └── security_operations.md (Security Operations use cases)
+├── 2_Activity_Diagrams/
+│   └── README.md (contains Secure Device Pairing activity diagram)
+├── 3_Class_ER_Diagrams/
+│   ├── README.md (contains complete ER diagram)
+│   └── SQL_DDL_Generated.sql (placeholder for generated DDL)
+├── 4_Sequence_Diagrams/
+│   └── README.md (contains Secure Device Pairing sequence diagram)
+├── 5_Component_Diagrams/
+│   ├── README.md (instructions for creating component diagrams)
+│   └── .gitkeep
+├── 6_Gantt_Charts/
+│   └── README.md (contains Phase 1 Gantt chart)
+├── 7_Exports/
+│   ├── README.md (export instructions)
+│   ├── All_Diagrams.pdf (placeholder)
+│   └── Presentation_Slides.pptx (placeholder)
+├── README.md (top-level overview and tool recommendations)
+└── source_d24e744d.txt (this file - original source documentation)
+
+The Mermaid diagram syntax renders automatically in GitHub and supports:
+- Use Case diagrams (graph TB)
+- Activity diagrams (flowchart TD)
+- ER diagrams (erDiagram)
+- Sequence diagrams (sequenceDiagram)
+- Gantt charts (gantt)
+
+Security Features Documented:
+- Hardware: ESP32-S3, ATECC608A, MAX6316, 24C256 EEPROM
+- Communication: TLS 1.3, MQTT over TLS with mTLS, WebSocket over TLS
+- Authentication: 2FA/MFA, ECDSA P256 signatures, challenge-response
+- Data: Field-level encryption, AES-256-GCM, end-to-end encryption
+- Compliance: SOC2, POPIA/GDPR, SABS/ICASA ready
+
+For complete Mermaid syntax and additional diagram specifications, refer to the
+individual README.md files in each subfolder.
