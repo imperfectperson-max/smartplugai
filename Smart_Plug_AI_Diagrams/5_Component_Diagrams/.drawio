@@ -1,0 +1,52 @@
+# Diagrams.net (draw.io) Usage Guide
+
+This file provides guidance on using Diagrams.net (draw.io) for creating component diagrams.
+
+## Why Diagrams.net?
+
+- **Free and Open Source**: No licensing costs
+- **Web-based**: Works in any browser, no installation required
+- **Desktop App**: Available for offline work
+- **Cloud Integration**: Save to Google Drive, OneDrive, GitHub
+- **Version Control**: Git-friendly XML format
+- **Export Options**: PNG, SVG, PDF, VSDX
+- **Collaboration**: Real-time collaboration with cloud storage
+- **Templates**: Rich library of AWS, Azure, GCP, network icons
+
+## Getting Started
+
+1. Visit https://app.diagrams.net/ or install desktop app
+2. Choose storage location (Device, Google Drive, OneDrive, GitHub)
+3. Select "Blank Diagram" or use a template
+4. Use the shape libraries for IoT, cloud services, network components
+
+## Recommended Shape Libraries
+
+For Smart Plug AI diagrams, enable these shape libraries:
+- **AWS**: For cloud infrastructure icons
+- **Network**: For routers, firewalls, connections
+- **Infographic**: For devices and sensors
+- **Entity Relation**: For database components
+- **ArchiMate 3**: For enterprise architecture
+- **C4**: For software architecture (Context, Container, Component, Code)
+
+## File Naming Convention
+
+- Use descriptive names: `5.1_System_Architecture.drawio`
+- Include version numbers if needed: `5.1_System_Architecture_v2.drawio`
+- Export to PNG/PDF for documentation: `5.1_System_Architecture.png`
+
+## Collaboration Tips
+
+- Store `.drawio` files in GitHub for version control
+- Export rendered images (PNG/SVG) for README files
+- Use layers for different views (logical, physical, security)
+- Add notes and documentation within the diagram
+- Use consistent colors: blue for devices, green for data, red for security
+
+## Integration with Visual Paradigm
+
+If you need UML-compliant diagrams:
+1. Create initial layout in Diagrams.net for speed
+2. Import to Visual Paradigm for UML formalization
+3. Or maintain both: Diagrams.net for presentations, VP for technical specs
