@@ -65,11 +65,14 @@ This checklist ensures you're prepared for the hardware assembly session and can
 
 ### Soldering Tools
 - [ ] Soldering iron (temperature controlled, 350-400°C)
-- [ ] Solder (60/40 or lead-free)
-- [ ] Flux (optional but recommended)
+- [ ] Solder (60/40 or lead-free, 0.7mm diameter)
+- [ ] Flux pen (essential for clean joints)
 - [ ] Desoldering wick or pump (for mistakes)
-- [ ] Soldering iron stand
-- [ ] Tip cleaner (sponge or brass wool)
+- [ ] Soldering iron stand with tip cleaner
+- [ ] Tip cleaner (brass wool + wet sponge)
+- [ ] Helping hands or PCB holder
+- [ ] Magnifying glass or head-mounted magnifier
+- [ ] 99% isopropyl alcohol for flux cleanup
 
 ### Hand Tools
 - [ ] Wire strippers (for 16-20 AWG)
@@ -92,6 +95,313 @@ This checklist ensures you're prepared for the hardware assembly session and can
 - [ ] Computer with Arduino IDE or PlatformIO
 - [ ] Test load (light bulb, 40-60W)
 - [ ] Breadboard (for initial component testing)
+
+## 🎓 SOLDERING BEST PRACTICES & COMMON MISTAKES
+
+### Perfect Soldering Technique
+
+**The 5-Step Method:**
+
+```text
+Step 1: Clean & Prepare
+- Clean tip on brass wool
+- Apply fresh solder to tip (tinning)
+- Component leads should be clean and pre-tinned
+
+Step 2: Heat the Joint
+- Touch iron to BOTH pad and component lead
+- Hold for 1-2 seconds to preheat
+- Temperature: 350°C for lead-free
+
+Step 3: Apply Solder
+- Feed solder to the JOINT, not the iron
+- Solder should flow smoothly around joint
+- Use just enough to form concave fillet
+
+Step 4: Remove & Inspect
+- Remove solder first, then iron
+- Let cool naturally (don't blow on it)
+- Joint should be shiny and smooth
+
+Step 5: Clean
+- Remove flux residue with isopropyl alcohol
+- Inspect under magnification
+```
+
+### Solder Joint Quality Visual Guide
+
+```text
+✓ GOOD JOINTS:              ✗ BAD JOINTS:
+
+Shiny & Smooth              Dull (Cold Joint)
+     ╱╲                          ╱══╲
+  Pin││Pin                   Pin ████ Pin
+     ││                          ████
+  ═══╧╧═══                   ═════╧═════
+      ▲                           ▲
+   Perfect!                   REDO - Not heated enough
+
+Concave Fillet              Too Much Solder
+     ╱╲                          ╱══╲
+  Pin││Pin                   Pin ███  Pin
+    ╱  ╲                         ███
+  ═══  ═══                   ════════════
+      ▲                           ▲
+   Perfect!                   Excess - Remove some
+
+Good Coverage               Bridge (SHORT!)
+   ╱╲                          ╱══╲
+Pin││Pin                    Pin││  ││Pin
+   ││                          ████████
+═══╧╧═══                    ═══════════
+    ▲                             ▲
+ Perfect!                    DANGEROUS! Fix immediately
+
+Smooth Cone                 Rosin Joint (No solder flow)
+    ╱╲                           ╱╲
+ Pin││Pin                     Pin  ╱╲  Pin
+   ╱  ╲                           ▓▓▓▓
+ ═══  ═══                    ═══════════
+     ▲                             ▲
+  Perfect!                    REDO - Flux not activated
+```
+
+### 10 Common Soldering Mistakes to Avoid
+
+#### 1. Cold Solder Joint
+**Problem**: Joint not heated enough, dull gray appearance  
+**Cause**: Insufficient temperature or time  
+**Fix**: Reheat joint properly (350°C, 2-3 seconds)  
+**Prevention**: Preheat both pad and lead before applying solder
+
+#### 2. Solder Bridges
+**Problem**: Solder connecting adjacent pins  
+**Cause**: Too much solder or shaky hand  
+**Fix**: Use solder wick to remove excess, or drag technique with clean tip  
+**Prevention**: Use less solder, work under magnification for fine pitch
+
+#### 3. Overheating Components
+**Problem**: Component damage from excessive heat  
+**Cause**: Iron too hot or held too long  
+**Fix**: Replace damaged component  
+**Prevention**: 2-3 second rule, use heat sinks on sensitive parts
+
+#### 4. Lifted Pads
+**Problem**: PCB copper trace separated from board  
+**Cause**: Too much force or heat  
+**Fix**: Carefully solder wire directly to trace  
+**Prevention**: Gentle pressure, proper desoldering technique
+
+#### 5. Flux Residue
+**Problem**: Sticky brown residue on board  
+**Cause**: Not cleaning after soldering  
+**Fix**: Clean with 99% isopropyl alcohol and soft brush  
+**Prevention**: Clean immediately after soldering while still warm
+
+#### 6. Wrong Solder Type
+**Problem**: Poor joints with lead-free solder at low temp  
+**Cause**: Using leaded solder temperature for lead-free  
+**Fix**: Increase temperature to 350°C for lead-free  
+**Prevention**: Check solder type, adjust temperature accordingly
+
+#### 7. Disturbed Joint
+**Problem**: Joint moved before cooling, cracked appearance  
+**Cause**: Moving component while solder solidifies  
+**Fix**: Reheat and let cool completely still  
+**Prevention**: Hold still 3-5 seconds after removing iron
+
+#### 8. Insufficient Solder
+**Problem**: Weak mechanical connection  
+**Cause**: Too little solder applied  
+**Fix**: Add more solder to form proper fillet  
+**Prevention**: Use enough solder to form small cone/fillet
+
+#### 9. Oxidized Tip
+**Problem**: Solder won't stick to iron tip  
+**Cause**: Dirty or oxidized tip  
+**Fix**: Clean on brass wool, re-tin with fresh solder  
+**Prevention**: Keep tip tinned, clean frequently, use tip tinner
+
+#### 10. Wrong Iron Temperature
+**Problem**: Either cold joints or damage  
+**Cause**: Temperature not calibrated  
+**Fix**: Use temperature-controlled iron, test on scrap  
+**Prevention**: 
+- Lead-free: 350-370°C
+- Leaded (60/40): 315-340°C
+- Fine-pitch SMD: 315-330°C
+
+### SOT23 & Fine-Pitch Soldering
+
+**Special Techniques for Small Components:**
+
+```text
+TPS3823 SOT23-5 Package (3mm wide!)
+
+Method 1: Tack & Drag
+1. Apply flux to all pads
+2. Tack pin 1 with tiny solder dot
+3. Align chip while reheating pin 1
+4. Add small amount of solder to iron tip
+5. Drag across all pins with light pressure
+6. Inspect for bridges, remove with wick if needed
+
+Method 2: Individual Pin
+1. Apply flux to all pads
+2. Tack one corner pin
+3. Check alignment
+4. Solder each pin individually
+5. Use fine tip (0.5mm)
+6. Touch pad + pin simultaneously
+7. Feed solder (very small amount)
+8. Remove and let cool
+
+Equipment needed:
+- Fine tip (0.5mm conical)
+- Good magnification (10x minimum)
+- Steady hands (rest wrists on table)
+- Good lighting
+- Flux pen
+- Fine solder (0.5mm diameter)
+```
+
+### I2C Pull-up Resistor Installation
+
+```text
+Critical for ATECC608A and 24C256!
+
+        3.3V Rail
+           │
+      ┌────┴────┐
+    [2.2kΩ]  [2.2kΩ]
+      │         │
+      │         │
+    (SDA)     (SCL)
+
+Installation Tips:
+1. Use 1/4W through-hole resistors (easier than SMD)
+2. Bend leads 90° at resistor body
+3. Insert into breadboard:
+   - One end to 3.3V rail
+   - Other end to signal line
+4. Solder both connections
+5. Trim excess leads
+6. Test: Measure resistance from SDA to 3.3V should be ~2.2kΩ
+7. Test: Measure resistance from SCL to 3.3V should be ~2.2kΩ
+
+Common mistakes:
+✗ Forgetting pull-ups entirely (I2C won't work!)
+✗ Using wrong value (too high = slow, too low = current waste)
+✗ Only one resistor (both SDA and SCL need pull-ups)
+✗ Pull-up to 5V instead of 3.3V (can damage ESP32!)
+```
+
+### Assembly Sequence Best Practices
+
+**The Right Order Matters:**
+
+```text
+✓ Recommended Assembly Order:
+
+1. ESP32-S3 base board (establishes reference)
+2. Power distribution (3.3V and GND rails)
+3. Add decoupling capacitors (100µF + 0.1µF)
+4. I2C pull-ups (2.2kΩ resistors)
+5. ATECC608A (test I2C communication before proceeding)
+6. 24C256 EEPROM (test I2C, should see both devices)
+7. Current sensor circuit (with burden resistor)
+8. Relay control (optocoupler first, then relay)
+9. Watchdog circuit (TPS3823 - requires fine soldering)
+10. Final wiring and cable management
+
+Why this order?
+- Power first ensures everything has supply
+- I2C devices next allows early testing
+- Complex circuits last (easier to troubleshoot if issues)
+- Each stage can be tested before moving on
+
+✗ Don't do this:
+- Soldering everything at once without testing
+- Starting with the hardest part (SOT23)
+- Forgetting decoupling capacitors until the end
+- Adding power supply last
+```
+
+### Troubleshooting Guide
+
+```text
+Problem: ESP32 won't boot
+→ Check 3.3V present (measure with multimeter)
+→ Check no shorts: 3.3V to GND should be >50Ω
+→ Check EN pin not pulled low
+→ Remove other components one by one to isolate issue
+
+Problem: I2C device not detected
+→ Check pull-up resistors (2.2kΩ to 3.3V on SDA/SCL)
+→ Check power to device (3.3V at VCC pin)
+→ Check no solder bridges on I2C pins
+→ Verify correct I2C address (ATECC608A: 0x60, 24C256: 0x50)
+→ Try I2C scanner sketch
+
+Problem: Solder won't stick
+→ Clean iron tip on brass wool
+→ Re-tin tip with fresh solder
+→ Check temperature (should be 350°C for lead-free)
+→ Apply flux to component and pad
+→ Component leads might be oxidized (gently scrape/sand)
+
+Problem: Keep making solder bridges
+→ Use less solder (small amount goes long way)
+→ Use finer solder (0.5mm instead of 1mm)
+→ Use magnification
+→ Clean tip before each joint
+→ Practice drag technique on scrap board
+
+Problem: Components getting damaged
+→ Reduce iron temperature if components getting hot
+→ Reduce time on joint (2-3 seconds max)
+→ Use heatsink (clip to lead between joint and component)
+→ Work faster with proper technique
+
+Problem: Joints look dull/grainy
+→ Cold joint - reheat properly
+→ Ensure both pad and lead heated before adding solder
+→ Check iron temperature
+→ Use fresh solder (old solder oxidizes)
+→ Apply flux
+```
+
+### Pre-Assembly Testing
+
+**Test components BEFORE soldering:**
+
+```bash
+ESP32-S3:
+1. Visual: Check for bent pins, clean pads
+2. USB test: Connect to computer, COM port appears
+3. Resistance: GND to 3.3V should be >100Ω
+
+ATECC608A:
+1. Visual: Check for damage, verify markings
+2. Breadboard test: Wire up with jumpers
+3. I2C scan: Should detect at address 0x60
+
+SCT-013-030:
+1. Visual: Check cable for damage
+2. Resistance: Secondary ~30-40Ω (tip to sleeve)
+3. Continuity: Primary should be OPEN (split core)
+
+Relay Module:
+1. Visual: Check for damage, clean contacts
+2. Resistance: Coil should be 50-100Ω
+3. Test: Apply 5V to coil, relay should click
+
+Why pre-test?
+- Much easier to test before soldering
+- Prevents wasted time if component faulty
+- Can return defective parts if new
+- Identifies bent pins before they break
+```
 
 ## 🛡️ Safety Checklist
 

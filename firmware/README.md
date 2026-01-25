@@ -75,57 +75,162 @@ The firmware is responsible for:
 ### Pinout Configuration
 
 ```cpp
-// Default GPIO assignments for ESP32-S3
+// Default GPIO assignments for ESP32-S3 (Week 1 Configuration)
 #define I2C_SDA_PIN     8     // I2C SDA for ATECC608A and 24C256
 #define I2C_SCL_PIN     9     // I2C SCL for ATECC608A and 24C256
-#define RELAY_PIN       4     // Relay control
+#define CURRENT_ADC_PIN 4     // SCT-013 current sensor ADC input (ADC1_CH3)
+#define RELAY_PIN       18    // Relay control via PC817 optocoupler
+#define WATCHDOG_PIN    11    // TPS3823 watchdog toggle output
+#define TAMPER_PIN      10    // TPS3823 tamper detection input
 #define STATUS_LED_PIN  2     // Built-in LED (optional)
 #define BUTTON_PIN      0     // Boot button for pairing/reset
-#define TAMPER_PIN      5     // MAX6316 tamper detection input
 
-// For SCT-013 current sensor (recommended)
-#define SCT_PIN         1     // ADC input for current sensor (ADC1_CH0)
-
-// For INA219 (legacy/optional)
-#define I2C_SDA_PIN_ALT 21    // INA219 SDA (if using INA219 instead)
-#define I2C_SCL_PIN_ALT 22    // INA219 SCL (if using INA219 instead)
+// I2C Device Addresses
+#define ATECC608A_ADDR  0x60  // ATECC608A secure element
+#define EEPROM_ADDR     0x50  // 24C256 EEPROM (A0/A1/A2 = GND)
 ```
 
-**Connection Diagram (Text-based)**:
+**Detailed Connection Diagrams:**
 
+#### Power Distribution
 ```
-ESP32-S3 DevKit        ATECC608A          SCT-013 Sensor       Relay Module
----------------        ----------         ---------------      --------------
-3.3V ──────────────> VCC                                      VCC <──── 5V
-GND ───────────────> GND                  GND (burden res)    GND <──── GND
-GPIO 8 ────────────> SDA                                      
-GPIO 9 ────────────> SCL                                      
-GPIO 1 ──────────────────────────────> Signal (via burden)
-GPIO 4 ───────────────────────────────────────────────────> IN (Control)
-GPIO 5 ──────────> Tamper Detect (MAX6316)
-
-Power Supply (Certified 5V/2A Charger)
----------------------------------------
-USB-C/Micro USB Input ──> 5V DC Output
-                            │
-                            ├──> ESP32-S3 5V
-                            └──> Relay VCC
-
-SCT-013 Installation (Non-Invasive)
------------------------------------
-AC Line ──> [ Clamp around wire ] ──> Signal Output ──> Burden Resistor + Divider ──> ESP32-S3 GPIO 1
-Relay Common (C) ──> AC Output Socket
-Relay NO ──> AC Line (switched)
-AC Neutral ──> AC Output Socket (Direct)
-AC Ground ──> AC Output Socket (Direct)
-
-Security Components
--------------------
-24C256 EEPROM ──> I2C (same bus as ATECC608A)
-MAX6316 Watchdog ──> Tamper detect to GPIO 5
-Fuse (2A) + MOV ──> AC line protection
-Tamper-evident seal ──> Physical enclosure
+External 5V Supply           ESP32-S3
+┌──────────┐                ┌─────────┐
+│  5V/2A   │                │         │
+│ Charger  │                │  3.3V ──┼──┐
+│          │                │  REG    │  │
+│  +5V ────┼────────────────┼→ VIN    │  │
+│          │    │           │         │  │
+│  GND ────┼────┼───────────┼→ GND    │  │
+└──────────┘    │           └─────────┘  │
+                │                        │
+        ┌───────┴───────┐        ┌──────┴──────┐
+        │               │        │             │
+    5V Rail          GND Rail  3.3V Rail      │
+    (Blue)           (Black)   (Red)          │
+        │               │        │             │
+        ├───────────────┼────────┼─────────┐   │
+        │               │        │         │   │
+     [Relay]       [100µF Cap]  │      [ATECC] │
+      Coil         3.3V-GND     │      [24C256]│
+                                └──────────────┘
+                                Decoupling: 0.1µF each
 ```
+
+#### I2C Bus with Pull-ups (CRITICAL!)
+```
+        3.3V Rail
+           │
+      ┌────┴────┐
+    2.2kΩ     2.2kΩ  ← Required pull-up resistors
+      │         │
+      │         │
+┌─────┴─────────┴─────┐
+│                     │
+│   I2C Bus (Shared)  │
+│                     │
+├──SDA (GPIO8)────────┤
+│   │                 │
+│   ├─→ ATECC608A SDA │ (0x60)
+│   └─→ 24C256 SDA    │ (0x50)
+│                     │
+├──SCL (GPIO9)────────┤
+│   │                 │
+│   ├─→ ATECC608A SCL │
+│   └─→ 24C256 SCL    │
+└─────────────────────┘
+```
+
+#### Current Sensor Circuit (SCT-013-030)
+```
+SCT-013-030                    ESP32-S3
+(AC Current)                   ADC Input
+┌──────────┐                  ┌─────────┐
+│  Clamp   │                  │         │
+│  around  │                  │ GPIO4 ←─┼─── Voltage Reading
+│  AC wire │                  │ (ADC1_  │    (0-1V for 0-30A)
+│          │                  │  CH3)   │
+│   TIP ───┼──┐               │         │
+│          │  │               │ GND   ──┼──┐
+│  SLEEVE ─┼──┼──────┐        └─────────┘  │
+└──────────┘  │      │                     │
+              │      │                     │
+           [33Ω 1W]  │    ← Burden Resistor
+              │      │       (CRITICAL!)
+              ├──────┤
+              │   [1N4007]  ← Protection Diode
+              │      │
+              └──────┴─────────────────────┘
+                     │
+                 [100nF]    ← Noise Filter Cap
+                     │
+                    GND
+
+Formula: Voltage at ADC = Current(A) × 33Ω × (30A/1V ratio)
+Example: 1A → 0.033V, 10A → 0.33V, 30A → 1.0V
+```
+
+#### Relay Control with Optocoupler Isolation
+```
+ESP32-S3                PC817              Relay Module
+┌─────────┐          ┌─────────┐         ┌──────────┐
+│         │          │   LED   │         │          │
+│ GPIO18 ─┼──[220Ω]─→│  Anode  │         │  Coil+   │
+│         │          │    ↓    │         │    │     │
+│ GND    ─┼─────────→│ Cathode │         │  [1N4007]│ ← Flyback
+│         │          │         │         │    │     │    Protection
+└─────────┘          │  Photo  │         │  Coil-   │
+                     │  Trans. │    5V →─┼→   │     │
+        Optical      │    ├────┼─────────┼→ Coll.   │
+        Isolation    │    └────┼─────────┼→ Emit.   │
+        (Safety!)    └─────────┘         │          │
+                                         │ COM  NO  │
+                                         │  │    │  │
+                                         └──┼────┼──┘
+                                            │    │
+                                         AC IN  AC OUT
+                                        (Connect during
+                                         AC assembly phase)
+```
+
+#### Watchdog & Tamper Detection (TPS3823)
+```
+        3.3V
+         │
+      [10kΩ]  ← Pull-up for reset line
+         │
+         ├──────────────┐
+         │              │
+    TPS3823           ESP32-S3
+   ┌─────────┐       ┌─────────┐
+   │ VDD  (1)├───┐   │         │
+   │         │   │   │  EN ────┼←── Reset input
+   │ GND  (2)├───┼───┼→ GND    │
+   │         │   │   │         │
+   │ MR   (3)├───┼───┼← GPIO10 │ (Tamper detect)
+   │         │   │   │         │
+   │ WDI  (4)├───┼───┼← GPIO11 │ (Watchdog toggle)
+   │         │   │   │         │
+   │/RST  (5)├───┴───┼→ EN     │ (Reset on tamper/watchdog fail)
+   └─────────┘       └─────────┘
+         │
+    [Tamper SW]  ← Normally Closed
+    Enclosure       Opens when tampered
+         │
+        GND
+
+Operation:
+- GPIO11 toggles every 500ms to feed watchdog
+- If toggle stops, /RST goes LOW → ESP32 resets
+- If enclosure opened, switch opens → MR HIGH → /RST LOW → ESP32 resets
+```
+
+### Assembly Reference
+
+For complete Week 1 assembly procedures with detailed soldering guides and ASCII diagrams:
+- **Full Guide**: [Week 1 Hardware Mastery](../docs/WEEK1_HARDWARE_MASTERY.md)
+- **Soldering Best Practices**: [Soldering Checklist](../docs/soldering-checklist.md)
+- **Quick Reference**: [Week 1 Quick Reference](../docs/WEEK1_QUICK_REFERENCE.md)
 
 ## 🔒 Secure Provisioning & Setup
 
