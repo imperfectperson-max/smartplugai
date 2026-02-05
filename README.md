@@ -4,7 +4,7 @@ An intelligent IoT smart plug system that monitors power consumption in real-tim
 
 ## 🚀 Project Overview
 
-Smart Plug AI is South Africa's first **bank-grade security IoT platform** combining:
+Smart Plug AI is South Africa's **bank-grade security IoT platform** combining:
 - **Hardware**: ESP32-S3-WROOM-1-N8 with hardware crypto acceleration, ATECC608A-TNGTLS secure element for key storage, SCT-013-030 non-invasive current sensor (30A/1V), MAX6316 tamper watchdog, 24C256 encrypted EEPROM, and certified 5V/2A phone charger
 - **Mobile App**: Flutter-based cross-platform app with Firebase Auth + 2FA, real-time encrypted monitoring, QR-based secure pairing with challenge-response authentication
 - **Web Dashboard**: React-based admin dashboard with OAuth2/SSO, RBAC, encrypted analytics, and security audit log viewer
@@ -33,6 +33,8 @@ Smart Plug AI is South Africa's first **bank-grade security IoT platform** combi
 - **SA Plugs + Sockets** (3 sets @ R90 each): Professional appearance, not salvaged
 - **Basic Electronics Kit**: Breadboard, jumpers, resistors, capacitors, diodes, LEDs (shared)
 - **Tools**: Multimeter (R280), soldering iron (R200), screwdrivers with security bits (R100), wire strippers (R80)
+
+***Note***: Need to consider delivery fees if ordering online
 
 See [soldering checklist](docs/soldering-checklist.md) for complete shopping list and assembly guide.
 
