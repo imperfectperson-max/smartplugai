@@ -5,6 +5,17 @@
 
 ## 📅 DAY 22-23: PCB DESIGN WITH SECURITY ZONES
 
+⚠️ **IMPORTANT WORKFLOW CHANGE**: Before designing your PCB, you should first 
+select and measure your commercial plug enclosure (see Day 24-25). However, 
+if you're learning PCB design concepts first, you can read through this section 
+then return to finalize dimensions after measuring your enclosure.
+
+**Recommended Approach:**
+1. Read through Days 22-23 to understand PCB design principles
+2. Jump to Day 24-25 to select and measure your enclosure
+3. Return to Days 22-23 to design PCB with correct dimensions
+4. Continue with Days 26-28 for assembly and testing
+
 ### MORNING (9AM-12PM): Circuit Schematic Design
 
 #### Step 1: Select PCB Design Software
@@ -194,7 +205,8 @@ Calibration Formula:
 ```
 ┌─────────────────────────────────────────────────────┐
 │                  PCB LAYOUT (Top View)              │
-│         100mm x 80mm (fits in enclosure)           │
+│      Dimensions: Based on YOUR enclosure            │
+│      (Example shown: 100mm x 80mm reference)        │
 ├─────────────────────────────────────────────────────┤
 │                                                      │
 │  [ZONE 1: HIGH VOLTAGE] (Top Left - Red Zone)      │
@@ -243,7 +255,10 @@ Calibration Formula:
 **PCB Manufacturing Specifications:**
 ```yaml
 Board Specs:
-  Dimensions: 100mm x 80mm
+  Dimensions: MEASURE YOUR ENCLOSURE FIRST!
+              Reference size: 100mm x 80mm (adjust to fit your plug)
+              ⚠️ PCB dimensions will vary based on chosen enclosure
+              See Day 24-25 for enclosure measurement instructions
   Layers: 2 (Top + Bottom)
   Material: FR4 (1.6mm thickness)
   Copper Weight: 1oz (35µm) both sides
@@ -335,229 +350,335 @@ Option 3: Local PCB (Johannesburg)
 
 ---
 
-## 📅 DAY 24-25: 3D ENCLOSURE DESIGN & PRINTING
+## 📅 DAY 24-25: WORKING WITH PRE-EXISTING PLUG ENCLOSURES
 
-### MORNING (9AM-12PM): Enclosure Design in CAD
+### MORNING (9AM-12PM): Selecting a Commercial Plug
 
-#### Step 1: Measure PCB and Components
+#### Step 1: Understand South African Plug Standards
 
 ```text
-Checklist - Critical Measurements:
-[√] PCB dimensions: 100mm x 80mm x 1.6mm
-[√] Highest component (ESP32-S3): 3mm above PCB
-[√] Relay module height: 15mm above PCB
-[√] SCT-013 cable entry point: 10mm diameter
-[√] Power input cable: 6mm diameter (phone charger cable)
-[√] Programming header clearance: 5mm
-[√] Ventilation requirements: 20% surface area
-[√] Mounting hole positions: M3 screws, 4 corners
+South African Plug Requirements (SANS 164):
+[√] 3-pin configuration (Live, Neutral, Earth)
+[√] 230V AC, 50Hz operation
+[√] 10A - 16A rating typical
+[√] SABS approved marking required
+[√] Round pins (4mm diameter, 19mm apart for L and N)
+[√] Earth pin larger (7mm diameter, offset)
 ```
 
-**Enclosure Design Requirements:**
+**Why Use Pre-Existing Plugs:**
 ```
 ┌─────────────────────────────────────────────────────┐
-│          ENCLOSURE SPECIFICATIONS                    │
+│     COMMERCIAL PLUG vs 3D PRINTING COMPARISON        │
 ├─────────────────────────────────────────────────────┤
 │                                                      │
-│  Internal Dimensions:                               │
-│  - Length: 110mm (PCB + 5mm each side)             │
-│  - Width: 90mm (PCB + 5mm each side)               │
-│  - Height: 30mm (components + 10mm clearance)      │
+│  Pre-Existing Commercial Plug:                      │
+│  ✓ Already SABS certified                          │
+│  ✓ Professional appearance                          │
+│  ✓ Lower cost (R50-R150)                           │
+│  ✓ Proven safety and durability                    │
+│  ✓ Faster deployment (no printing time)            │
+│  ✓ Consistent quality                               │
+│  ✗ Fixed internal dimensions                        │
+│  ✗ Requires modification planning                   │
 │                                                      │
-│  Wall Thickness: 3mm (ABS plastic)                  │
-│                                                      │
-│  Features:                                          │
-│  - Top/Bottom halves with snap-fit clips           │
-│  - 4x M3 PCB mounting posts (heat-set inserts)     │
-│  - Cable entry grommets (2x 10mm holes)            │
-│  - Ventilation slots (3x 50mm x 3mm on sides)     │
-│  - LED light pipes (status indicators)             │
-│  - Tamper-evident screw holes (security bits)      │
-│  - Anti-slip rubber feet (4 corners)               │
-│                                                      │
-│  Labels:                                            │
-│  - Logo area (20mm x 20mm)                         │
-│  - QR code area (25mm x 25mm for device pairing)   │
-│  - Safety warnings (SABS compliance labels)         │
-│  - Rating plate area (230V, 10A, 2300W)            │
+│  3D Printed Custom Enclosure:                       │
+│  ✓ Custom dimensions                                │
+│  ✓ Perfect component fit                            │
+│  ✗ Not SABS certified (requires testing)           │
+│  ✗ Higher cost (R300+ including materials/time)    │
+│  ✗ Less professional appearance                     │
+│  ✗ Durability concerns                              │
+│  ✗ 8-16 hours printing time per unit               │
 │                                                      │
 └─────────────────────────────────────────────────────┘
 ```
 
-#### Step 2: Create 3D Model in Fusion 360 or FreeCAD
+#### Step 2: Select Appropriate Commercial Plug
 
-**File**: `hardware/enclosure/smartplug_enclosure_v1.f3d`
-
-**Enclosure Assembly Diagram:**
+**Recommended Plug Types for South Africa:**
 ```
-                Top View of Bottom Half
-        ┌───────────────────────────────────┐
-        │                                   │
-        │  ┌─────────────────────────────┐ │
-        │  │                             │ │
-        │  │      PCB Mounting Posts     │ │
-        │  │      (4x M3 heat-set)       │ │
-        │  │                             │ │
-        │  │    ●                    ●   │ │
-        │  │                             │ │
-        │  │                             │ │
-        │  │                             │ │
-        │  │    ●                    ●   │ │
-        │  │                             │ │
-        │  └─────────────────────────────┘ │
-        │                                   │
-        │  [Cable Entry]      [Vent Slots] │
-        │      ○○                  ≡≡≡      │
-        │                                   │
-        └───────────────────────────────────┘
+Option 1: Standard SA 3-Pin Plug Enclosure
+├─ Rating: 16A, 230V
+├─ Internal Space: ~70mm x 50mm x 25mm (typical)
+├─ Suppliers: Communica, Mantech, DIY Electronics
+├─ Cost: R50-R80 per unit
+├─ Pros: Widely available, easy to source
+└─ Cons: Limited internal space
 
-                Side View (Cross-section)
-        ┌─────────────────────────────────────┐
-        │  Top Half                           │ ← Snap-fit clips
-        │  ┌───────────────────────────────┐ │
-        │  │  ~~~~~~~~~ (ventilation)      │ │
-        │  └───────────────────────────────┘ │
-        ├─────────────────────────────────────┤
-        │  Components                         │
-        │  ╔═══════════════════════════════╗ │
-        │  ║ ESP32  ATECC608A  Relay       ║ │ ← PCB
-        │  ╚═══════════════════════════════╝ │
-        ├─────────────────────────────────────┤
-        │  Bottom Half                        │
-        │  │ │ │ │ (mounting posts)         │ │
-        │  [○] [○] [○] [○] (rubber feet)    │ │
-        └─────────────────────────────────────┘
+Option 2: Industrial Plug Housing
+├─ Rating: 16A, 230V
+├─ Internal Space: ~90mm x 60mm x 30mm
+├─ Suppliers: RS Components, Voltex
+├─ Cost: R120-R150 per unit
+├─ Pros: More internal space, robust construction
+└─ Cons: Bulkier, slightly more expensive
+
+Option 3: Universal Extension Lead Plug
+├─ Rating: 16A, 230V
+├─ Internal Space: ~85mm x 55mm x 28mm
+├─ Suppliers: Builders Warehouse, Makro
+├─ Cost: R60-R100 per unit
+├─ Pros: Good balance of space and cost
+└─ Cons: May need more modifications
 ```
 
-**Design Features in Detail:**
-
-1. **Snap-Fit Clips (6 total):**
+**Example South African Suppliers:**
 ```
-Clip Design:
-  Base Width: 8mm
-  Clip Height: 2mm
-  Engagement: 1.5mm
-  Angle: 45° entry chamfer
+Communica (Online & Stores):
+  Website: https://www.communica.co.za/
+  Locations: Cape Town, Johannesburg, Durban
+  Products: Standard plugs, industrial enclosures
+  Delivery: 2-3 days nationwide
   
-Position: 2 on each long side, 1 on each short side
-```
-
-2. **Tamper-Evident Features:**
-```
-Security Screws:
-  Type: Torx with center pin (T10H)
-  Quantity: 4 (one per corner)
-  Purpose: Requires special driver to open
+Mantech Electronics:
+  Website: https://www.mantech.co.za/
+  Locations: Nationwide stores
+  Products: Electrical enclosures, plug housings
+  Delivery: Same-day in major metros
   
-Tamper Seals:
-  Type: Holographic "VOID IF REMOVED" stickers
-  Size: 10mm diameter
-  Position: Over each screw
+RS Components South Africa:
+  Website: https://za.rs-online.com/
+  Products: Industrial-grade plug housings
+  Delivery: Next-day for stock items
   
-MAX6316 Integration:
-  Micro-switch on lid hinge
-  Triggers GPIO19 on ESP32 when opened
-  Logs tamper event with timestamp to EEPROM
+DIY Electronics:
+  Website: https://www.diyelectronics.co.za/
+  Locations: Cape Town
+  Products: Hobby/maker-friendly enclosures
 ```
 
-3. **Ventilation Design:**
-```
-Total Vent Area: 15cm² (20% of surface area)
-
-Slot Configuration:
-  6 slots total (3 per side)
-  Each slot: 50mm x 3mm x 3mm deep
-  Angled at 45° (prevents dust/water)
-  
-Airflow Path:
-  Cold air in (bottom vents)
-    ↓
-  Heat rises from relay/regulator
-    ↓
-  Hot air out (top vents)
-```
-
-### AFTERNOON (1PM-5PM): 3D Printing & Post-Processing
-
-#### Step 3: Prepare for 3D Printing
-
-```bash
-# Export STL files from CAD software
-File → Export → STL (Binary)
-
-# Files to generate:
-1. enclosure_bottom.stl
-2. enclosure_top.stl
-3. cable_grommet.stl (flexible TPU)
-4. light_pipe.stl (clear PETG)
-
-# Slice in PrusaSlicer or Cura
-Settings for ABS:
-  Layer Height: 0.2mm
-  Wall Thickness: 3mm (12 perimeters)
-  Infill: 30% (gyroid pattern)
-  Supports: Only for screw posts
-  Bed Adhesion: Brim (5mm)
-  Print Temperature: 240°C
-  Bed Temperature: 100°C
-  Print Time: ~8 hours per half
-```
-
-**3D Printing Tips:**
-```
-Material Selection:
-  
-ABS (Recommended):
-  ✓ Heat resistant (up to 80°C)
-  ✓ Strong and durable
-  ✓ Good for electrical enclosures
-  ✗ Requires enclosed printer (warping)
-  ✗ Fumes (ventilation needed)
-
-PETG (Alternative):
-  ✓ Easy to print
-  ✓ Good strength
-  ✓ Slight flexibility
-  ✗ Lower heat resistance (70°C max)
-
-PLA (NOT Recommended):
-  ✗ Low heat resistance (60°C)
-  ✗ Brittle
-  ✗ Not suitable for electrical devices
-```
-
-#### Step 4: Post-Processing
+#### Step 3: Measure Internal Cavity
 
 ```text
-Checklist - Finishing Steps:
-[√] Remove support material with pliers
-[√] Sand visible layer lines (220 grit → 400 grit)
-[√] Install M3 heat-set inserts (8 total: 4 for PCB, 4 for case screws)
-[√] Apply acetone vapor smoothing (ABS only, optional)
-[√] Drill out cable entry holes to exact size (10mm)
-[√] Test fit PCB and all components
-[√] Clean with isopropyl alcohol
-[√] Apply anti-slip rubber feet (self-adhesive)
+Checklist - Enclosure Measurements:
+[√] Disassemble plug safely (disconnect from power!)
+[√] Measure internal length (longest dimension)
+[√] Measure internal width (shortest dimension)
+[√] Measure internal height (depth available for PCB)
+[√] Identify existing screw posts/mounting points
+[√] Measure cable entry hole diameter
+[√] Check for ventilation openings
+[√] Identify modification points (where to drill)
+[√] Take photos for reference
+[√] Note material type (ABS, PVC, polycarbonate)
 ```
 
-**Heat-Set Insert Installation:**
+**How to Measure Your Enclosure:**
 ```
 Tools Needed:
-  - Soldering iron (set to 200°C)
-  - M3 brass heat-set inserts (8x)
-  - Needle-nose pliers
+  - Digital calipers (or ruler)
+  - Notepad and pen
+  - Camera (smartphone)
+  - Small screwdriver set
 
-Steps:
-1. Place insert in hole (printed hole should be 4.5mm for M3)
-2. Apply soldering iron tip to top of insert
-3. Gently push insert into plastic (2-3mm deep)
-4. Hold for 5 seconds until plastic cools
-5. Test with M3 screw (should thread smoothly)
+Measuring Process:
+  
+1. External Dimensions (for reference):
+   Length x Width x Height (mm)
+   Example: 85mm x 55mm x 30mm
 
-⚠️ Common Mistakes:
-  - Too hot = melted plastic bulges out
-  - Too cold = insert doesn't seat properly
-  - Uneven pressure = insert goes in crooked
+2. Internal Cavity (CRITICAL for PCB design):
+   ┌──────────────────────┐
+   │                      │ ← Width (W)
+   │   Available Space    │
+   │   for PCB & Parts    │ ← Height (H)
+   │                      │
+   └──────────────────────┘
+   Length (L)
+   
+   Measure: L, W, H minus 2-3mm for clearance
+   Example: 75mm x 48mm x 22mm usable space
+
+3. Existing Mounting Points:
+   - Location of screw posts (X, Y coordinates)
+   - Diameter of screw holes
+   - Height of mounting posts above base
+   
+4. Obstruction Assessment:
+   - Any internal ribs or supports
+   - Pin connector locations
+   - Areas that cannot be used
+
+⚠️ IMPORTANT: Design PCB to fit YOUR measured dimensions
+(Note: 100mm x 80mm was the reference size for 3D printed enclosures.
+Commercial plugs vary - use YOUR actual measurements!)
+```
+
+### AFTERNOON (1PM-5PM): PCB Sizing & Modification Planning
+
+#### Step 4: Adjust PCB Dimensions to Fit
+
+**PCB Sizing Guidelines:**
+```
+Based on YOUR Enclosure Measurements:
+
+If Internal Space is 75mm x 48mm x 22mm:
+  
+PCB Dimensions:
+  Length: 70mm (5mm clearance)
+  Width: 43mm (5mm clearance)
+  Height: Keep components under 18mm (4mm clearance)
+  
+Component Placement Strategy:
+  ┌─────────────────────────────────┐
+  │  [Power In]    [Relay]          │
+  │                                 │
+  │  [ESP32-S3]   [ATECC608A]      │
+  │                                 │
+  │  [SCT-013 Input]   [Regulator] │
+  └─────────────────────────────────┘
+  
+  Compact Layout Required:
+  - Use SMD components where possible
+  - Stack modules if needed (ESP32-S3 is low profile)
+  - Route cables carefully
+  - May need smaller relay (HF115F-005-1ZS3 is 15.5mm)
+```
+
+**Component Height Considerations:**
+```
+Critical Height Measurements:
+  
+ESP32-S3 WROOM-1-N8: ~3mm profile
+Relay Module (HF115F): 15mm height ⚠️ (may be too tall for enclosures with <20mm internal height)
+ATECC608A (SOIC-8): 1.5mm (surface mount)
+MAX6316 (SOT-23): 1mm (surface mount)
+Screw Terminals: 10-12mm height
+  
+Height Reduction Options:
+1. Use SMD relay (Omron G3VM series): 3mm height
+2. Use horizontal-mount relay: 10mm height
+3. Right-angle screw terminals: 8mm height
+4. Remove ESP32 module, use bare IC: 1mm
+   (Advanced - requires ESP32-S3-WROOM soldering)
+```
+
+#### Step 5: Plan Enclosure Modifications
+
+```text
+Checklist - Modification Plan:
+[√] Identify cable entry points (power in, SCT-013, load out)
+[√] Mark drill locations for cables (use masking tape)
+[√] Plan ventilation holes if needed (relay heat dissipation)
+[√] Identify PCB mounting strategy (screws, standoffs, adhesive)
+[√] Check clearance for programming header access
+[√] Plan LED light pipe locations (status indicators)
+[√] Verify earth connection accessibility
+[√] Document all planned modifications with photos/sketches
+```
+
+**Safe Modification Guidelines:**
+```
+┌─────────────────────────────────────────────────────┐
+│     SAFETY GUIDELINES FOR MODIFYING PLUGS            │
+├─────────────────────────────────────────────────────┤
+│                                                      │
+│  DO:                                                 │
+│  ✓ Work with plug UNPLUGGED and de-energized       │
+│  ✓ Use proper drill bits for plastic (high-speed)  │
+│  ✓ Start with small pilot holes, then enlarge      │
+│  ✓ Deburr all holes with sandpaper                 │
+│  ✓ Maintain 3mm clearance between AC and DC       │
+│  ✓ Use grommets for cable entry (strain relief)   │
+│  ✓ Test fit components before final assembly       │
+│  ✓ Document your modifications                      │
+│                                                      │
+│  DON'T:                                             │
+│  ✗ Drill through existing safety barriers          │
+│  ✗ Remove essential structural supports            │
+│  ✗ Compromise the earth connection                 │
+│  ✗ Create sharp edges that could cut wires        │
+│  ✗ Over-drill holes (weakens enclosure)           │
+│  ✗ Modify mains pins or connections                │
+│                                                      │
+└─────────────────────────────────────────────────────┘
+```
+
+**Modification Steps:**
+```
+1. Cable Entry Holes:
+   Tools: Drill (2.5mm, 5mm, 8mm bits), step drill bit
+   
+   For Power Input Cable (6mm diameter):
+   - Mark location on enclosure side
+   - Drill pilot hole (2.5mm)
+   - Enlarge to 6.5mm
+   - Install rubber grommet (waterproofing)
+   
+   For SCT-013 Cable (10mm diameter):
+   - Same process, final hole 10.5mm
+   - Use larger grommet
+
+2. Ventilation (if needed):
+   If relay gets hot (>50°C in testing):
+   - Drill 3-4 holes (5mm diameter)
+   - Location: Top and side (convection flow)
+   - Cover with mesh tape (dust prevention)
+
+3. PCB Mounting:
+   Option A - Existing Posts:
+     - Check if existing screw posts align with PCB holes
+     - May need to drill new holes in PCB to match
+   
+   Option B - Adhesive Standoffs:
+     - Use M3 nylon standoffs (3M adhesive base)
+     - Position to support PCB corners
+     - Height: 3-5mm
+   
+   Option C - Hot Glue Dots:
+     - Quick and removable
+     - Apply dots at PCB corners
+     - Not recommended for high-heat areas
+
+4. Tamper Detection Integration:
+   - Identify existing screw holes
+   - Replace standard screws with security screws
+   - Install micro-switch to detect opening
+   - Wire switch to MAX6316 MR pin
+```
+
+#### Step 6: Assembly and Testing
+
+```text
+Assembly Process:
+[√] Modify enclosure (drill holes, install grommets)
+[√] Clean all plastic shavings (vacuum and wipe)
+[√] Install PCB mounting standoffs
+[√] Test fit PCB (no forcing!)
+[√] Mount PCB securely
+[√] Route cables through grommets
+[√] Connect all wiring
+[√] Verify no shorts with multimeter
+[√] Check earth continuity
+[√] Close enclosure (test fit before final assembly)
+[√] Install security screws
+[√] Add tamper-evident labels if desired
+[√] Label device (rating plate, QR code)
+```
+
+**Cost Comparison:**
+```
+Commercial Plug Approach:
+  Plug enclosure: R80
+  Modification time: 1 hour
+  Tools needed: Drill, bits, grommets (R50 if not owned)
+  
+  Total if tools owned: R80 + 1 hour labor
+  Total if tools needed: R130 + 1 hour labor
+  
+vs
+  
+3D Printing Approach:
+  Filament cost: R150 (100g ABS)
+  Print time: 16 hours (both halves)
+  Heat-set inserts: R30
+  Post-processing time: 2 hours
+  
+  Total: R180 + 18 hours + printer access
+  
+Savings: R50-R100 + 17 hours per device!
+(Plus no need to find/access 3D printer)
 ```
 
 ---
@@ -992,6 +1113,159 @@ void sendTamperAlert() {
 }
 ```
 
+#### Step 1b: Adapting Tamper Detection for Pre-Existing Enclosures
+
+**Working with Existing Enclosure Screws:**
+```
+┌────────────────────────────────────────────────────┐
+│   TAMPER DETECTION FOR COMMERCIAL PLUG ENCLOSURES  │
+├────────────────────────────────────────────────────┤
+│                                                     │
+│  Challenge: Pre-existing plugs have fixed screw    │
+│  locations and may not have room for micro-switch  │
+│                                                     │
+│  Solution Options:                                  │
+│                                                     │
+│  Option 1: Use Existing Screw Holes                │
+│  ─────────────────────────────────                 │
+│  - Replace standard screws with security screws    │
+│  - Install micro-switch at screw post              │
+│  - Switch actuator contacts screw head when closed │
+│  - When screw removed, switch opens                │
+│                                                     │
+│  Installation:                                      │
+│  1. Identify screw post inside enclosure           │
+│  2. Hot-glue micro-switch next to post             │
+│  3. Position so switch is pressed when assembled   │
+│  4. Wire switch NC terminal to MAX6316 MR pin      │
+│  5. Test: Open case should trigger reset           │
+│                                                     │
+│  Option 2: Reed Switch (Magnetic)                  │
+│  ───────────────────────────────                   │
+│  - Glue small magnet to inside of lid              │
+│  - Mount reed switch on PCB                        │
+│  - When lid closed, magnet closes reed switch      │
+│  - When lid opened, switch opens                   │
+│                                                     │
+│  Pros: No mechanical pressure needed               │
+│  Cons: Magnet can fail, less reliable              │
+│  Cost: R15 per reed switch + R5 per magnet         │
+│                                                     │
+│  Option 3: Conductive Tape Method                  │
+│  ───────────────────────────────────               │
+│  - Apply conductive tape across enclosure seam     │
+│  - Connect tape to MAX6316 MR pin                  │
+│  - Opening case breaks tape circuit                │
+│                                                     │
+│  Pros: Very cheap (R1 per device)                  │
+│  Cons: One-time use, must replace after each open  │
+│  Use Case: Shipping/deployment, not for testing    │
+│                                                     │
+│  Option 4: No Tamper Detection (Basic Builds)      │
+│  ───────────────────────────────────────           │
+│  - Skip MAX6316 entirely                           │
+│  - Rely only on security screws                    │
+│  - Use tamper-evident seals only                   │
+│                                                     │
+│  Trade-off: Lower cost, reduced security           │
+│  Acceptable for: Home use, prototypes              │
+│                                                     │
+└────────────────────────────────────────────────────┘
+```
+
+**Micro-Switch Mounting Examples:**
+```
+Scenario A: Enclosure with Screw Posts
+        ┌─────────────────────┐
+        │  [Lid - Closed]     │
+        │      [Screw Head]   │ ← Presses switch
+        └───────────┬─────────┘
+                    ↓
+        ┌───────────┴─────────┐
+        │   ●←─ Micro-switch  │
+        │   │  (hot-glued to  │
+        │   │   screw post)   │
+        │  [ ] Screw Post     │
+        └─────────────────────┘
+
+Scenario B: Flat Enclosure (No Posts)
+        ┌─────────────────────┐
+        │  [Lid]              │
+        │   [Magnet] ←─ Glued inside
+        └───────────┬─────────┘
+                    ↓ Magnetic field
+        ┌───────────┴─────────┐
+        │  [Reed Switch]      │ ← On PCB
+        │  [PCB]              │
+        └─────────────────────┘
+
+Scenario C: Tight Space (No Room)
+        Use security screws + tamper seals only
+        Skip electronic tamper detection
+        Document in device notes
+```
+
+**Installation Steps for Option 1 (Micro-Switch):**
+```text
+[√] Purchase micro-switch (SPDT, rated 125V, 1A)
+    Recommended: Omron D2F-01 (R8 each)
+[√] Test switch with multimeter (verify NC contact)
+[√] Identify screw post location inside enclosure
+[√] Clean surface with isopropyl alcohol
+[√] Apply small amount of hot glue to switch base
+[√] Position switch so actuator aligns with screw head
+[√] Hold for 30 seconds while glue sets
+[√] Wire NC terminal to MAX6316 MR pin (GPIO)
+[√] Wire COM terminal to ground
+[√] Leave NO terminal unconnected
+[√] Test: Close enclosure, switch should be pressed
+[√] Test: Open enclosure, ESP32 should reset/alert
+[√] Add strain relief for wires (small cable tie)
+```
+
+**Alternative: Software-Only Tamper Detection:**
+```cpp
+// For enclosures without physical switch
+// Use accelerometer to detect movement/opening
+// ⚠️ NOTE: This is an OPTIONAL advanced feature
+// Add MPU6050 (~R60) or ADXL345 (~R50) to your BOM if using this method
+
+#include <Wire.h>
+#include <MPU6050.h>  // Or ADXL345
+
+MPU6050 accel;
+bool suddenMovementDetected = false;
+
+void setup() {
+  Wire.begin();
+  accel.initialize();
+  accel.setAccelerometerPowerOnDelay(50);
+  
+  // Set motion detection threshold
+  accel.setMotionDetectionThreshold(20);  // Sensitivity
+  accel.setMotionDetectionDuration(10);   // Time window
+  
+  attachInterrupt(digitalPinToInterrupt(ACCEL_INT_PIN), 
+                  motionISR, RISING);
+}
+
+void loop() {
+  if (suddenMovementDetected) {
+    suddenMovementDetected = false;
+    logTamperEvent("Possible physical tampering - movement detected");
+    // Send alert but don't reset (could be false positive)
+  }
+}
+
+void IRAM_ATTR motionISR() {
+  suddenMovementDetected = true;
+}
+
+// Cost: ~R60 for MPU6050 breakout board
+// Pros: Detects any enclosure movement
+// Cons: False positives possible, uses extra GPIO
+```
+
 ### AFTERNOON (1PM-5PM): Anti-Tamper Physical Features
 
 #### Step 2: Security Screws and Seals
@@ -1118,16 +1392,17 @@ Option 3: Printed Labels (Acceptable for Prototypes)
 
 ```text
 Hardware Deliverables:
-[√] PCB design completed in KiCad
+[√] PCB design completed in KiCad (dimensions based on enclosure)
 [√] Gerber files generated and ready for manufacturing
-[√] 3D enclosure design completed
-[√] Enclosures 3D printed (2x top, 2x bottom for 3 devices)
+[√] Commercial plug enclosure selected and measured
+[√] PCB dimensions finalized based on enclosure (varies per device)
+[√] Enclosure modification plan documented
 [√] PCBs ordered from JLCPCB/PCBWay (5-board batch)
-[√] Heat-set inserts installed in enclosures
+[√] Enclosures modified (cable holes, mounting, ventilation)
 [√] All 3 devices assembled with proper isolation
 [√] Fuse and MOV protection installed on each device
 [√] Relay wiring completed with PC817 optocoupler isolation
-[√] Tamper detection circuit installed and tested
+[√] Tamper detection circuit installed and tested (adapted to enclosure)
 [√] Security screws and tamper-evident seals applied
 [√] Device labels printed and applied (rating plate, QR code)
 
@@ -1144,7 +1419,7 @@ Testing Deliverables:
 Documentation Deliverables:
 [√] PCB schematic (PDF export)
 [√] PCB layout screenshots (top and bottom layers)
-[√] 3D enclosure STL files
+[√] Enclosure modification photos and measurements
 [√] Bill of Materials (BOM) for PCB assembly
 [√] Assembly instructions with photos
 [√] Safety test report (isolation, voltage, temperature)
@@ -1174,21 +1449,24 @@ Next Week Preview:
 - PCB Design Best Practices: https://www.tempoautomation.com/blog/pcb-design-best-practices/
 - IEC 60950-1 Clearances: https://www.electrical-installation.org/enwiki/Clearances_and_creepage_distances
 
-**3D Printing Resources:**
-- Enclosure Design Guide: https://www.fictiv.com/articles/how-to-design-a-plastic-enclosure
-- Heat-Set Insert Installation: https://www.youtube.com/watch?v=cyof7fYFcI4
-- ABS Vapor Smoothing: https://rigid.ink/pages/acetone-vapor-smoothing
+**Enclosure Modification & Safety:**
+- Electrical Enclosure Safety Guide: https://www.electrical-installation.org/enwiki/Enclosures
+- Plug Modification Best Practices: Work safely with power disconnected
+- Cable Grommet Installation: Strain relief for all cable entries
+- Tamper-Evident Seal Options: Research security label suppliers
 
 **Safety Standards:**
 - SANS 60950-1: South African safety standard for electrical equipment
 - SABS Certification Process: https://www.sabs.co.za/certification/
 - ICASA Type Approval: https://www.icasa.org.za/
 
-**Component Suppliers (South Africa):**
-- RS Components: https://za.rs-online.com/
-- Communica: https://www.communica.co.za/
-- Mantech Electronics: https://www.mantech.co.za/
-- DIY Electronics: https://www.diyelectronics.co.za/
+**Component & Enclosure Suppliers (South Africa):**
+- RS Components: https://za.rs-online.com/ (Industrial plugs, enclosures)
+- Communica: https://www.communica.co.za/ (Electrical plugs, housings)
+- Mantech Electronics: https://www.mantech.co.za/ (Maker-friendly supplies)
+- DIY Electronics: https://www.diyelectronics.co.za/ (Hobby components)
+- Builders Warehouse: Retail stores nationwide (Basic plug enclosures)
+- Voltex: https://www.voltex.co.za/ (Industrial electrical supplies)
 
 ---
 
@@ -1207,21 +1485,36 @@ Next Week Preview:
 
 ❌ Mistake: Forgetting mounting holes
 ✓ Solution: Add 4x M3 holes in corners, 5mm from edge
+
+❌ Mistake: Designing PCB before measuring enclosure
+✓ Solution: Always measure enclosure first, then design PCB to fit
 ```
 
-### Enclosure Design Mistakes:
+### Enclosure Modification Mistakes:
 ```
-❌ Mistake: Tight tolerances (PCB doesn't fit)
-✓ Solution: Add 0.5mm clearance on all sides
+❌ Mistake: Drilling in wrong location (damages structure)
+✓ Solution: Mark with masking tape, start with pilot holes, measure twice
 
-❌ Mistake: No ventilation (overheating)
-✓ Solution: Add vent slots totaling 20% of surface area
+❌ Mistake: Compromising electrical safety (drilling through barriers)
+✓ Solution: Maintain 3mm AC-to-DC clearance, never drill safety barriers
 
-❌ Mistake: Weak snap-fit clips (break easily)
-✓ Solution: Use 2mm height, 45° entry angle, test fit
+❌ Mistake: PCB too large for enclosure
+✓ Solution: Measure internal cavity accurately, design PCB 5mm smaller
 
 ❌ Mistake: No cable strain relief (wires pull out)
-✓ Solution: Add cable clamps or tie-down points
+✓ Solution: Use rubber grommets for all cable entries, secure with cable ties
+
+❌ Mistake: Inadequate PCB mounting (loose, unstable)
+✓ Solution: Use adhesive standoffs, hot glue corners, or drill into existing posts
+
+❌ Mistake: Components too tall for enclosure
+✓ Solution: Use low-profile components (SMD relay, horizontal terminals)
+
+❌ Mistake: Poor ventilation (relay overheating)
+✓ Solution: Add ventilation holes if relay exceeds 50°C in testing
+
+❌ Mistake: Sharp edges from drilling (cuts wires)
+✓ Solution: Deburr all holes with sandpaper or file
 ```
 
 ### Wiring Mistakes:
