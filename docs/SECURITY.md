@@ -628,7 +628,7 @@ Device attestation ensures firmware integrity:
 
 ## 🔄 Security Roadmap
 
-### Phase 1 (Weeks 1-12): Foundation
+### Phase 1 (Weeks 1-7): Foundation
 
 - ✅ Design security architecture
 - ✅ Select secure hardware (ESP32-S3, ATECC608A)
@@ -639,7 +639,7 @@ Device attestation ensures firmware integrity:
 - [ ] Implement signed commands
 - [ ] Create QR-based secure pairing
 
-### Phase 2 (Weeks 13-26): Hardening
+### Phase 2 (Weeks 8-20): Hardening
 
 - [ ] Complete device attestation
 - [ ] Implement field-level encryption
@@ -649,7 +649,7 @@ Device attestation ensures firmware integrity:
 - [ ] Create security documentation
 - [ ] Train team on security practices
 
-### Phase 3 (Weeks 27-52): Certification
+### Phase 3 (Weeks 21+): Certification
 
 - [ ] Begin SABS compliance testing
 - [ ] Submit ICASA type approval application
@@ -827,7 +827,7 @@ allow_anonymous false
 
 ## 📋 Appendix F: Security Audit Results
 
-### F.1 Initial Penetration Test Results (Phase 1 - Week 11)
+### F.1 Initial Penetration Test Results (Phase 1 - Week 7)
 
 **Test Date**: December 2024  
 **Tested By**: TBD - Independent Security Firm (to be selected in Phase 1)  
@@ -841,7 +841,7 @@ allow_anonymous false
 
 **Findings by Severity** (Template - to be updated after actual audit):
 
-**Note**: The following findings are illustrative examples based on common IoT security issues. Actual audit results will replace this template in Week 11-12 of Phase 1.
+**Note**: The following findings are illustrative examples based on common IoT security issues. Actual audit results will replace this template in Week 7 of Phase 1.
 
 **Findings by Severity**:
 
@@ -934,9 +934,9 @@ allow_anonymous false
 - **Q4**: Device firmware and hardware security review
 
 **Penetration Testing Schedule**:
-- **Phase 1**: Initial test (completed)
-- **Phase 2**: Re-test after major changes (Month 6)
-- **Phase 3**: Pre-launch full security audit (Month 11)
+- **Phase 1**: Initial test (Week 7)
+- **Phase 2**: Re-test after major changes (Week 16)
+- **Phase 3**: Pre-launch full security audit (Week 30+)
 - **Ongoing**: Quarterly penetration tests (Year 2+)
 
 **Bug Bounty Program** (launching Phase 2):
