@@ -666,7 +666,7 @@ During assembly, capture:
    - Field-level encryption for sensitive data
    - Audit logging for all device events
    
-5. **Security audit** (Week 11-12): Independent security assessment
+5. **Security audit** (Week 7): Independent security assessment
    - Penetration testing
    - Code review
    - Vulnerability assessment
