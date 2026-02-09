@@ -489,4 +489,4 @@ npm install
 
 **Let's create a powerful analytics dashboard for Smart Plug AI!** 📊⚡
 
-For comprehensive security architecture, OAuth2/SSO configuration, RBAC implementation, audit logging details, and compliance guidelines (SABS/ICASA/SOC2), see [docs/SECURITY.md](../docs/SECURITY.md) and [docs/ROADMAP.md](../docs/ROADMAP.md) for Phase 1 (12 weeks) timeline with security milestones.
+For comprehensive security architecture, OAuth2/SSO configuration, RBAC implementation, audit logging details, and compliance guidelines (SABS/ICASA/SOC2), see [docs/SECURITY.md](../docs/SECURITY.md) and [docs/ROADMAP.md](../docs/ROADMAP.md) for Phase 1 (7 weeks) timeline with security milestones.

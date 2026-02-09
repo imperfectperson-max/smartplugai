@@ -58,7 +58,7 @@ See [soldering checklist](docs/soldering-checklist.md) for complete shopping lis
    - 🔧 **Firmware**: See [firmware/README.md](firmware/README.md)
    - ☁️ **Backend**: See [backend/README.md](backend/README.md)
 
-3. **Review the roadmap**: Check [docs/ROADMAP.md](docs/ROADMAP.md) for Phase 1-3 milestones (Phase 1: Secure MVP Development, now-4 months, R5,000; Phase 2: Pilot & Refinement, months 5-8, R3M; Phase 3: Commercial Launch, months 9-12, R6M). Detailed week-by-week Phase 1 plan (weeks 1-12) included.
+3. **Review the roadmap**: Check [docs/ROADMAP.md](docs/ROADMAP.md) for Phase 1-3 milestones (Phase 1: Secure MVP Development, 7 weeks with 3-4 person team, R5,000; Phase 2: Pilot & Refinement, months 5-8, R3M; Phase 3: Commercial Launch, months 9-12, R6M). Detailed week-by-week Phase 1 plan (weeks 1-7) included.
 
 4. **Security documentation**: See [docs/SECURITY.md](docs/SECURITY.md) for comprehensive security architecture, device layer (ESP32-S3 + ATECC608A + MAX6316 + 24C256), MQTT over TLS 1.3, certificate management, secure boot, flash encryption, tamper detection, device attestation, and Security Roadmap (phases 1-6). Includes Appendices E (security specifications) and F (security audit results).
 
@@ -102,7 +102,7 @@ Also review our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
 ## 📚 Documentation
 
-- [Roadmap](docs/ROADMAP.md) - Phase 1-3 implementation plan with week-by-week Phase 1 (weeks 1-12) security milestones, budgets (Phase 1: R5k, Phase 2: R3M, Phase 3: R6M)
+- [Roadmap](docs/ROADMAP.md) - Phase 1-3 implementation plan with week-by-week Phase 1 (7 weeks, 3-4 person team) security milestones, budgets (Phase 1: R5k, Phase 2: R3M, Phase 3: R6M)
 - [Security Architecture](docs/SECURITY.md) - Comprehensive security design: device layer (ESP32-S3 + ATECC608A + MAX6316 + 24C256), MQTT over TLS 1.3, certificate management, secure boot, flash encryption, tamper detection, device attestation, Security Roadmap (phases 1-6), Appendices E & F
 - [Soldering Checklist](docs/soldering-checklist.md) - Hardware shopping list and assembly guide with Phase 1 budget (R2,736-R3,182 for 3 plugs)
 - [Architecture](docs/ARCHITECTURE.md) - Secure system stack: Presentation/Application/Data/Device layers with TLS 1.3, client certs, RBAC

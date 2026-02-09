@@ -368,4 +368,4 @@ For app-specific contributions:
 
 **Let's build an amazing mobile experience for Smart Plug AI!** 📱⚡
 
-For comprehensive security architecture, encryption details, and Phase 1 (12 weeks) timeline with security milestones, see [docs/SECURITY.md](../docs/SECURITY.md) and [docs/ROADMAP.md](../docs/ROADMAP.md).
+For comprehensive security architecture, encryption details, and Phase 1 (7 weeks) timeline with security milestones, see [docs/SECURITY.md](../docs/SECURITY.md) and [docs/ROADMAP.md](../docs/ROADMAP.md).
