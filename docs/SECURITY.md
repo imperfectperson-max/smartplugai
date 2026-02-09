@@ -841,7 +841,7 @@ allow_anonymous false
 
 **Findings by Severity** (Template - to be updated after actual audit):
 
-**Note**: The following findings are illustrative examples based on common IoT security issues. Actual audit results will replace this template in Week 11-12 of Phase 1.
+**Note**: The following findings are illustrative examples based on common IoT security issues. Actual audit results will replace this template in Week 6 of Phase 1.
 
 **Findings by Severity**:
 

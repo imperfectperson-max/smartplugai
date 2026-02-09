@@ -94,7 +94,7 @@ Based on the comprehensive analysis in the original specification:
 ### 6. Gantt Charts
 - **Location**: `6_Gantt_Charts/`
 - **Content**: Project timeline, resource allocation, milestones, dependencies
-- **Phases**: Phase 1 (MVP, 12 weeks), Phase 2 (Pilot, 4 months), Phase 3 (Commercial, 4 months)
+- **Phases**: Phase 1 (MVP, 7 weeks with 3-4 person team), Phase 2 (Pilot, 4 months), Phase 3 (Commercial, 4 months)
 - **Tracking**: Security milestones, risk management, deliverables
 
 ### 7. Exports
@@ -181,7 +181,7 @@ For questions about:
 
 This diagram collection supports a university project for Smart Plug AI, South Africa's first bank-grade security IoT platform. The diagrams document:
 
-- Phase 1 secure MVP development (12 weeks, R5,000 budget)
+- Phase 1 secure MVP development (7 weeks, R5,000 budget, 3-4 developers)
 - Hardware security implementation (ESP32-S3 + ATECC608A + MAX6316)
 - Mobile app with 2FA and QR-based secure pairing
 - Cloud backend with signed commands and device attestation
@@ -190,11 +190,12 @@ This diagram collection supports a university project for Smart Plug AI, South A
 ## 📅 Timeline
 
 - **Week 1-2**: Hardware & firmware foundation
-- **Week 3-4**: Mobile app security features
-- **Week 5-6**: Cloud backend security
-- **Week 7-8**: Safety & enclosure
-- **Week 9-10**: Rule engine & automation
-- **Week 11-12**: Testing & security audit
+- **Weeks 1-2**: Hardware & Firmware Foundation (Parallel Development - Hardware team + Software team)
+- **Week 3**: Backend Integration & Real Device Connection
+- **Week 4**: Safety, Enclosure & PCB Design
+- **Week 5**: Automation, Rule Engine & Advanced Features
+- **Week 6**: Testing, Security Audit & Bug Fixes
+- **Week 7**: Pilot Deployment & Documentation
 
 ## 📄 License
 
