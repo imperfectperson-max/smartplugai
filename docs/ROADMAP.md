@@ -12,88 +12,126 @@ Build South Africa's most secure IoT platform for smart plug systems that provid
 
 | Phase | Timeline | Budget | Focus |
 |-------|----------|--------|-------|
-| **Phase 1** | Now - 4 months | R5,000 | Secure MVP Development |
+| **Phase 1** | Now - 7 weeks | R5,000 | Secure MVP Development (3-4 person team) |
 | **Phase 2** | Months 5-8 | R3,000,000 | Pilot & Refinement |
 | **Phase 3** | Months 9-12 | R6,000,000 | Commercial Launch |
 
 ---
 
-## 📅 Phase 1: Secure MVP Development (Now - 4 Months)
+## 📅 Phase 1: Secure MVP Development (Now - 7 Weeks)
 
 **Goal**: Build a working secure prototype with 3 devices, mobile app with 2FA, and secure cloud backend.
 
+**Team Structure**: 3-4 developers (2 software, 1-2 hardware) working in parallel streams.
+
 ### Week-by-Week Implementation Plan
 
-#### **Week 1-2: Secure Hardware Assembly & Basic Firmware**
-- [ ] Secure breadboard setup (3 plugs)
-- [ ] ESP32-S3 + ATECC608A provisioning
-  - Generate unique device IDs
-  - Provision ATECC608A with device private keys (ECDSA P256)
-  - Lock ATECC608A configuration (irreversible)
-- [ ] Enable secure boot + flash encryption on ESP32-S3
-- [ ] Relay control via GPIO with optoisolation (PC817)
-- [ ] SCT-013 calibration with 33Ω burden resistors
-- [ ] Basic MQTT publish over TLS 1.3
-- [ ] Tamper detection circuit testing (MAX6316 watchdog)
-- [ ] Encrypted configuration storage (24C256 EEPROM)
+#### **Weeks 1-2: Hardware & Firmware Foundation** (Parallel Development)
 
-**Deliverable**: 3 working breadboard prototypes with hardware security enabled
+**Team Split**:
+- **Hardware Team (1-2 people)**: Use the existing detailed `docs/WEEK1_HARDWARE_MASTERY.md` guide
+  - [ ] Secure breadboard setup (3 plugs)
+  - [ ] ESP32-S3 + ATECC608A provisioning
+    - Generate unique device IDs
+    - Provision ATECC608A with device private keys (ECDSA P256)
+    - Lock ATECC608A configuration (irreversible)
+  - [ ] Enable secure boot + flash encryption on ESP32-S3
+  - [ ] Relay control via GPIO with optoisolation (PC817)
+  - [ ] SCT-013 calibration with 33Ω burden resistors
+  - [ ] Tamper detection circuit testing (MAX6316 watchdog)
+  - [ ] Encrypted configuration storage (24C256 EEPROM)
 
-#### **Week 3-4: Mobile App V0.1 with Security**
-- [ ] Flutter app with Firebase Auth + 2FA
-- [ ] Real-time power display (encrypted communications over TLS 1.3)
-- [ ] Manual ON/OFF toggle (signed commands with ECDSA verification)
-- [ ] Secure device pairing via QR code + challenge-response authentication
-- [ ] Encrypted historical data display (24 hours)
-- [ ] Device attestation status indicator
-- [ ] Tamper alert notifications
+- **Software Team (2 people)**: Leverage existing pre-hardware work
+  - [ ] Finalize Flutter mobile app with Firebase Auth + 2FA (already in progress in `/app/`)
+  - [ ] Complete React web dashboard with mock data (already in progress in `/web/`)
+  - [ ] Set up Firebase backend infrastructure
+  - [ ] Implement device pairing flow UI
 
-**Deliverable**: Mobile app (iOS + Android) with secure pairing and control
+**Deliverable**: 3 working breadboard prototypes + Mobile app & web dashboard ready for real device integration
 
-#### **Week 5-6: Secure Cloud Backend V1**
+---
+
+#### **Week 3: Backend Integration & Real Device Connection**
+
+**Full Team Collaboration**:
+- [ ] Connect mobile app to actual ESP32 devices via MQTT/TLS
+- [ ] Implement signed command generation (ECDSA)
 - [ ] Firebase Firestore with field-level encryption (AES-256-GCM)
-- [ ] Cloud Functions with input validation and rate limiting
-- [ ] User management with role-based access control (RBAC)
-- [ ] WebSocket over TLS for real-time updates
-- [ ] Audit logging for all operations
-- [ ] MQTT broker over TLS 1.3 with client certificates
-- [ ] Signed command generation and verification (ECDSA)
+- [ ] Real-time power display from actual sensors
+- [ ] WebSocket over TLS for dashboard
 - [ ] Device registration and attestation endpoints
+- [ ] Cloud Functions with input validation and rate limiting
 
-**Deliverable**: Secure cloud backend with encrypted data storage and signed commands
+**Deliverable**: End-to-end working system (hardware → backend → mobile/web)
 
-#### **Week 7-8: Safety & Secure Enclosure**
+---
+
+#### **Week 4: Safety, Enclosure & PCB Design**
+
+**Hardware Team**:
 - [ ] PCB design with security zones (isolated AC/DC circuits)
 - [ ] 3D-printed enclosure v1 (tamper-resistant with MAX6316 integration)
 - [ ] Mains wiring with fuse + MOV protection (3A quick-blow + 275V varistor)
 - [ ] Temperature monitoring safety cut-off
-- [ ] Basic overload detection (15A limit)
 - [ ] Physical security (anti-tamper screws, void-if-removed seals)
-- [ ] Secure assembly process documentation
 
-**Deliverable**: 3 enclosed secure prototypes with safety certifications ready
+**Software Team**:
+- [ ] OTA firmware update system with code signing (RSA-3072)
+- [ ] Device attestation endpoints
+- [ ] Enhanced error handling and logging
 
-#### **Week 9-10: Secure Rule Engine V1**
+**Deliverable**: 3 enclosed secure prototypes with PCB design ready for manufacturing
+
+---
+
+#### **Week 5: Automation, Rule Engine & Advanced Features**
+
+**Backend Team**:
 - [ ] Time-based schedules (signed commands with timestamps)
-- [ ] Manual rules via app (with user authentication + 2FA)
-- [ ] Encrypted energy usage alerts
 - [ ] Load-shedding detection (static schedule with secure updates)
 - [ ] Rate limiting on control commands (10 commands/min per device)
 - [ ] Command replay attack prevention (nonce + timestamp verification)
 
-**Deliverable**: Secure automation and scheduling system
+**Frontend Team**:
+- [ ] Automation UI in mobile app and web dashboard
+- [ ] Energy usage alerts
+- [ ] Historical data visualization
+- [ ] Cost tracking integration
 
-#### **Week 11-12: Pilot Testing V1 with Security Audit**
-- [ ] 10 devices deployed (3 real plugs + 7 virtual test devices)
-- [ ] Pilot with friends/family (controlled security environment)
-- [ ] Independent security penetration testing
-- [ ] Bug collection & fixing (security-first priority)
-- [ ] UI/UX improvements based on feedback
-- [ ] Basic data collection for ML training (anonymized and encrypted)
+**Deliverable**: Fully functional smart automation system
+
+---
+
+#### **Week 6: Testing, Security Audit & Bug Fixes**
+
+**Full Team**:
+- [ ] Comprehensive testing suite (unit, integration, end-to-end)
+- [ ] Security penetration testing (internal team + external if budget allows)
+- [ ] Load testing (100+ concurrent device connections)
+- [ ] User acceptance testing with friends/family (10 devices)
+- [ ] Bug triage and critical fixes
+- [ ] Performance optimization
+
+**Deliverable**: Production-ready system with documented security audit results
+
+---
+
+#### **Week 7: Pilot Deployment & Documentation**
+
+**Deployment Team**:
+- [ ] Deploy 10-20 devices to pilot users (friends/family)
+- [ ] 24/7 monitoring setup
+- [ ] Incident response procedures
+- [ ] User onboarding materials
+
+**Documentation Team**:
+- [ ] Complete user manual
+- [ ] Developer documentation
 - [ ] Security audit report (Appendix F)
-- [ ] Documentation of security findings and remediation
+- [ ] Calibration certificates for all devices
+- [ ] Setup guides and troubleshooting
 
-**Deliverable**: Pilot-tested system with security audit results and improvements
+**Deliverable**: Pilot-tested system with complete documentation, ready for Phase 2 scaling
 
 ---
 
@@ -238,6 +276,10 @@ Build South Africa's most secure IoT platform for smart plug systems that provid
 - **Device attestation**: 99.9%+ devices passing integrity checks
 
 ### Development Metrics
+- **Team velocity**: 3-4 developers working in parallel
+- **Sprint cycle**: 1-week sprints with daily standups
+- **Code review**: All PRs require 1+ approvals
+- **Pair programming**: Hardware-Software teams collaborate on integration
 - **Code coverage**: 85%+ for critical security paths
 - **Deployment frequency**: 3+ per week (with security scans)
 - **Mean time to recovery**: <30 minutes for critical security issues
@@ -263,6 +305,10 @@ Build South Africa's most secure IoT platform for smart plug systems that provid
 
 ## 📝 Notes
 
+- **Team Structure**: 3-4 developers (2 software, 1-2 hardware)
+- **Parallel Development**: Hardware and software teams work concurrently
+- **Leveraged Pre-Work**: Mobile app (Flutter), web dashboard (React), and backend structure already established in `/app/`, `/web/`, and `/backend/`
+- **Accelerated Timeline**: Week 1 detailed guide (`docs/WEEK1_HARDWARE_MASTERY.md`) enables rapid hardware onboarding
 - **Security-First**: All phases prioritize security over feature velocity
 - **Compliance-Driven**: SABS, ICASA, SOC2, ISO 27001 certifications guide development
 - **User Trust**: Security is the primary differentiator and value proposition
@@ -272,6 +318,14 @@ Build South Africa's most secure IoT platform for smart plug systems that provid
 - **Roadmap Flexibility**: Dates may adjust based on security findings and resource availability
 - **Documentation**: All security decisions documented for audit trail
 - **Budget Allocation**: 20-30% of budget allocated to security in all phases
+
+**Cross-References**:
+- `docs/WEEK1_HARDWARE_MASTERY.md` - Comprehensive Week 1 hardware guide
+- `docs/WEEK1_QUICK_REFERENCE.md` - Quick reference for hardware setup
+- `/app/SETUP.md` and `/app/README.md` - Flutter app setup
+- `/web/SETUP.md` and `/web/README.md` - React dashboard setup
+- `/backend/README.md` - Backend API setup
+- `PRE_HARDWARE_COMPLETE.md` - Pre-hardware work completed
 
 **Security Contacts**:
 - **Security Team**: security@smartplugai.com

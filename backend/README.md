@@ -1065,4 +1065,4 @@ See [CONTRIBUTING.md](../CONTRIBUTING.md) for general guidelines.
 
 **Ready to build a scalable IoT backend!** ☁️⚡
 
-For comprehensive security architecture, ATECC608A device provisioning workflows, TLS certificate management, SABS/ICASA compliance guidelines, and SOC2 readiness roadmap, see [docs/SECURITY.md](../docs/SECURITY.md) and [docs/ROADMAP.md](../docs/ROADMAP.md) for Phase 1 (12 weeks) timeline with security milestones.
+For comprehensive security architecture, ATECC608A device provisioning workflows, TLS certificate management, SABS/ICASA compliance guidelines, and SOC2 readiness roadmap, see [docs/SECURITY.md](../docs/SECURITY.md) and [docs/ROADMAP.md](../docs/ROADMAP.md) for Phase 1 (7 weeks) timeline with security milestones.

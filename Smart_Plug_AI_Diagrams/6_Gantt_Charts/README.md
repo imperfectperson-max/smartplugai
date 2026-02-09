@@ -13,13 +13,13 @@ The following diagram files will be added to this directory:
 
 ### Project Timeline (Phases 1-3)
 
-**Phase 1: Secure MVP Development** (Now - 4 months, R5,000 budget)
-- Weeks 1-2: Hardware & Firmware Foundation
-- Weeks 3-4: Mobile App Security Features
-- Weeks 5-6: Cloud Backend Security
-- Weeks 7-8: Safety & Enclosure
-- Weeks 9-10: Rule Engine & Automation
-- Weeks 11-12: Testing & Security Audit
+**Phase 1: Secure MVP Development** (Now - 7 weeks, R5,000 budget)
+- Weeks 1-2: Hardware & Firmware Foundation (Parallel Development)
+- Week 3: Backend Integration & Real Device Connection
+- Week 4: Safety, Enclosure & PCB Design
+- Week 5: Automation, Rule Engine & Advanced Features
+- Week 6: Testing, Security Audit & Bug Fixes
+- Week 7: Pilot Deployment & Documentation
 
 **Phase 2: Pilot & Refinement** (Months 5-8, R3M budget)
 - 500-device pilot deployment
@@ -46,12 +46,12 @@ Detailed Gantt chart showing:
 - Security checkpoints and audits
 
 Key milestones:
-- Week 2: Hardware Ready (ATECC608A provisioned, secure boot enabled)
-- Week 4: Mobile App Ready (2FA, QR pairing, encrypted display)
-- Week 6: Backend Ready (mTLS, signed commands, attestation endpoints)
-- Week 8: Enclosure Ready (tamper-evident, safety-certified)
-- Week 10: Rule Engine Ready (time-based scheduling with 2FA)
-- Week 12: Phase 1 Complete (security audit passed, 10-device pilot)
+- Week 2: Hardware Ready (ATECC608A provisioned, secure boot enabled) + Mobile/Web apps ready for integration
+- Week 3: Backend Integration (End-to-end working system)
+- Week 4: Enclosure Ready (tamper-evident, safety-certified) + OTA updates
+- Week 5: Rule Engine Ready (automation & advanced features complete)
+- Week 6: Testing Complete (security audit passed, performance validated)
+- Week 7: Phase 1 Complete (10-20 device pilot deployed, documentation complete)
 
 ## Tools
 

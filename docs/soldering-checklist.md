@@ -40,7 +40,7 @@ This checklist ensures you're prepared for the hardware assembly session and can
 | **Diode Kit** | 1N4148 + 1N4007 | 1 | R25 | 🔴 CRITICAL | Signal and power diodes |
 | **LED Kit** | RGB + current-limiting resistors | 1 | R35 | 🔴 CRITICAL | Status indicators |
 
-### 🎨 PROJECTS DAY POLISH (WEEK 3-4)
+### 🎨 PROJECTS DAY POLISH (WEEK 3)
 
 | Item | Specification | Qty | Price (ZAR) | Priority | Notes |
 |------|--------------|-----|-------------|----------|-------|
@@ -655,18 +655,18 @@ During assembly, capture:
    - Log all telemetry data for analysis
    - Test tamper detection multiple times
    
-3. **App integration** (Week 3-4): Connect mobile app to device for real-time data
+3. **App integration** (Week 3): Connect mobile app to device for real-time data
    - Secure QR pairing with challenge-response
    - Real-time encrypted telemetry display
    - Manual control with signed commands
    - Tamper alert notifications
    
-4. **Cloud integration** (Week 4-6): Deploy to secure cloud backend
+4. **Cloud integration** (Week 3-4): Deploy to secure cloud backend
    - MQTT broker over TLS 1.3
    - Field-level encryption for sensitive data
    - Audit logging for all device events
    
-5. **Security audit** (Week 11-12): Independent security assessment
+5. **Security audit** (Week 6): Independent security assessment
    - Penetration testing
    - Code review
    - Vulnerability assessment
@@ -679,7 +679,7 @@ During assembly, capture:
    - Security configuration guide
    - Troubleshooting guide
    
-7. **Iteration planning** (Week 12+): Identify improvements for v2 based on learnings
+7. **Iteration planning** (Week 7+): Identify improvements for v2 based on learnings
    - Custom PCB design (eliminate breadboard)
    - Cost optimization
    - Manufacturing process refinement
@@ -696,6 +696,6 @@ During assembly, capture:
 - **Security Questions**: security@smartplugai.com
 - **Hardware Issues**: hardware@smartplugai.com
 
-**Last Updated**: December 2024  
-**Version**: 2.0 (Security-Enhanced)  
-**Next Update**: As Phase 1 progresses (Week 2, Week 8, Week 12)
+**Last Updated**: February 2025  
+**Version**: 2.1 (Updated for 7-week Phase 1 timeline)  
+**Next Update**: As Phase 1 progresses (Week 2, Week 4, Week 7)
