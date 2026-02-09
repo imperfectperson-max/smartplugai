@@ -5,6 +5,17 @@
 
 ## 📅 DAY 22-23: PCB DESIGN WITH SECURITY ZONES
 
+⚠️ **IMPORTANT WORKFLOW CHANGE**: Before designing your PCB, you should first 
+select and measure your commercial plug enclosure (see Day 24-25). However, 
+if you're learning PCB design concepts first, you can read through this section 
+then return to finalize dimensions after measuring your enclosure.
+
+**Recommended Approach:**
+1. Read through Days 22-23 to understand PCB design principles
+2. Jump to Day 24-25 to select and measure your enclosure
+3. Return to Days 22-23 to design PCB with correct dimensions
+4. Continue with Days 26-28 for assembly and testing
+
 ### MORNING (9AM-12PM): Circuit Schematic Design
 
 #### Step 1: Select PCB Design Software
@@ -490,7 +501,8 @@ Measuring Process:
    - Areas that cannot be used
 
 ⚠️ IMPORTANT: Design PCB to fit YOUR measured dimensions
-Standard size is 100mm x 80mm, but YOUR enclosure will vary!
+(Note: 100mm x 80mm was the reference size for 3D printed enclosures.
+Commercial plugs vary - use YOUR actual measurements!)
 ```
 
 ### AFTERNOON (1PM-5PM): PCB Sizing & Modification Planning
@@ -529,7 +541,7 @@ Component Placement Strategy:
 Critical Height Measurements:
   
 ESP32-S3 WROOM-1-N8: ~3mm profile
-Relay Module (HF115F): 15mm height ⚠️ (may be too tall)
+Relay Module (HF115F): 15mm height ⚠️ (may be too tall for enclosures with <20mm internal height)
 ATECC608A (SOIC-8): 1.5mm (surface mount)
 MAX6316 (SOT-23): 1mm (surface mount)
 Screw Terminals: 10-12mm height
@@ -652,7 +664,8 @@ Commercial Plug Approach:
   Modification time: 1 hour
   Tools needed: Drill, bits, grommets (R50 if not owned)
   
-  Total: R130 + 1 hour labor
+  Total if tools owned: R80 + 1 hour labor
+  Total if tools needed: R130 + 1 hour labor
   
 vs
   
@@ -664,7 +677,8 @@ vs
   
   Total: R180 + 18 hours + printer access
   
-Savings: R50 + 17 hours per device!
+Savings: R50-R100 + 17 hours per device!
+(Plus no need to find/access 3D printer)
 ```
 
 ---
@@ -1213,6 +1227,8 @@ Scenario C: Tight Space (No Room)
 ```cpp
 // For enclosures without physical switch
 // Use accelerometer to detect movement/opening
+// ⚠️ NOTE: This is an OPTIONAL advanced feature
+// Add MPU6050 (~R60) or ADXL345 (~R50) to your BOM if using this method
 
 #include <Wire.h>
 #include <MPU6050.h>  // Or ADXL345
