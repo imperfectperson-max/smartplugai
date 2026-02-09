@@ -28,6 +28,8 @@ Build South Africa's most secure IoT platform for smart plug systems that provid
 
 #### **Weeks 1-2: Hardware & Firmware Foundation** (Parallel Development)
 
+**📖 Detailed Guide**: [WEEK1_HARDWARE_MASTERY.md](WEEK1_HARDWARE_MASTERY.md) and [WEEK2_SOFTWARE_INTEGRATION.md](WEEK2_SOFTWARE_INTEGRATION.md)
+
 **Team Split**:
 - **Hardware Team (1-2 people)**: Use the existing detailed `docs/WEEK1_HARDWARE_MASTERY.md` guide
   - [ ] Secure breadboard setup (3 plugs)
@@ -53,6 +55,8 @@ Build South Africa's most secure IoT platform for smart plug systems that provid
 
 #### **Week 3: Backend Integration & Real Device Connection**
 
+**📖 Detailed Guide**: [WEEK3_BACKEND_INTEGRATION.md](WEEK3_BACKEND_INTEGRATION.md)
+
 **Full Team Collaboration**:
 - [ ] Connect mobile app to actual ESP32 devices via MQTT/TLS
 - [ ] Implement signed command generation (ECDSA)
@@ -67,6 +71,8 @@ Build South Africa's most secure IoT platform for smart plug systems that provid
 ---
 
 #### **Week 4: Safety, Enclosure & PCB Design**
+
+**📖 Detailed Guide**: [WEEK4_SAFETY_ENCLOSURE_PCB.md](WEEK4_SAFETY_ENCLOSURE_PCB.md)
 
 **Hardware Team**:
 - [ ] PCB design with security zones (isolated AC/DC circuits)
@@ -86,6 +92,8 @@ Build South Africa's most secure IoT platform for smart plug systems that provid
 
 #### **Week 5: Automation, Rule Engine & Advanced Features**
 
+**📖 Detailed Guide**: [WEEK5_AUTOMATION_RULES.md](WEEK5_AUTOMATION_RULES.md)
+
 **Backend Team**:
 - [ ] Time-based schedules (signed commands with timestamps)
 - [ ] Load-shedding detection (static schedule with secure updates)
@@ -104,6 +112,8 @@ Build South Africa's most secure IoT platform for smart plug systems that provid
 
 #### **Week 6: Testing, Security Audit & Bug Fixes**
 
+**📖 Detailed Guide**: [WEEK6_TESTING_SECURITY_AUDIT.md](WEEK6_TESTING_SECURITY_AUDIT.md)
+
 **Full Team**:
 - [ ] Comprehensive testing suite (unit, integration, end-to-end)
 - [ ] Security penetration testing (internal team + external if budget allows)
@@ -117,6 +127,8 @@ Build South Africa's most secure IoT platform for smart plug systems that provid
 ---
 
 #### **Week 7: Pilot Deployment & Documentation**
+
+**📖 Detailed Guide**: [WEEK7_PILOT_DEPLOYMENT.md](WEEK7_PILOT_DEPLOYMENT.md)
 
 **Deployment Team**:
 - [ ] Deploy 10-20 devices to pilot users (friends/family)
