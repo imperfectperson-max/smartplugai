@@ -15,19 +15,42 @@ This checklist ensures you're prepared for the hardware assembly session and can
 | **Current Sensor** | SCT-013-030 (30A/1V) | 3 | R315 (R105 ea) | 🔴 CRITICAL | With 3.5mm jack, most accurate for residential loads |
 | **Tamper Detection** | MAX6316 watchdog | 3 | R120 (R40 ea) | 🔴 CRITICAL | Physical security: reset on tampering, battery-backed detection |
 | **Secure Storage** | 24C256 EEPROM (32KB) | 3 | R75 (R25 ea) | 🔴 CRITICAL | Encrypted configuration storage (device certs, Wi-Fi credentials) |
-| **Relay Module** | 5V, 10A+ with optocoupler | 3 | R255 (R85 ea) | 🔴 CRITICAL | Must be identical for consistency, optoisolation for safety |
-| **AC-DC Converter** | 5V/2A phone charger (certified) | 3 | R150 (R50 ea) | 🔴 CRITICAL | Safer than HLK-PM01, must be certified (prototype phase) |
-| **Burden Resistor** | 33Ω, 1W for SCT-013 | 3 | R24 (R8 ea) | 🔴 CRITICAL | Most forgotten item! Required for SCT-013 calibration |
+| **Relay Module** | 5V, 10A+ with optocoupler | 3 | R255 (R85 ea) | 🔴 CRITICAL | Must have JZC-S or SRD-05VDC-SL-C relay, PC817 optoisolation for safety. NEVER connect ESP32 GPIO directly to relay coil! |
+| **AC-DC Converter** | 5V/2A phone charger (certified) | 3 | R150 (R50 ea) | 🔴 CRITICAL | MUST be safety-certified (CE/UL/TUV mark). Safer than bare HLK-PM01 for prototype. Min 1.5A output. |
+| **Burden Resistor** | 33Ω, 1W for SCT-013 | 3 | R24 (R8 ea) | 🔴 CRITICAL | Most forgotten item! REQUIRED for SCT-013 calibration. Without this, current readings will be wrong/saturated. |
 | **SA Plug + Socket** | New, professional grade | 3 sets | R270 (R90 ea) | 🔴 CRITICAL | Professional appearance, NOT salvaged |
 
 ### 🛡️ SAFETY & SECURITY COMPONENTS (NON-NEGOTIABLE)
 
 | Item | Specification | Qty | Price (ZAR) | Priority | Notes |
 |------|--------------|-----|-------------|----------|-------|
-| **Fuse & Holder** | 3A quick-blow | 3 | R90 (R30 ea) | 🔴 CRITICAL | Safety protection for AC line |
-| **Varistor (MOV)** | 275V, 7mm diameter | 3 | R54 (R18 ea) | 🔴 CRITICAL | Surge protection, essential for South African grid |
-| **Optocouplers** | PC817 (extra isolation) | 6 | R48 (R8 ea) | 🔴 CRITICAL | Additional galvanic isolation for relay control |
+| **Fuse & Holder** | 3A quick-blow (IEC 60127) | 3 | R90 (R30 ea) | 🔴 CRITICAL | Safety protection for AC line - sized for 2A inrush + margin |
+| **Varistor (MOV)** | 275V, 7mm diameter | 3 | R54 (R18 ea) | 🔴 CRITICAL | Surge protection, 275V = 1.2× SA grid nominal (230V) |
+| **Optocouplers** | PC817 (extra isolation) | 6 | R48 (R8 ea) | 🔴 CRITICAL | Additional galvanic isolation for relay control - NEVER connect GPIO directly to relay! |
 | **Tamper-Evident Seals** | Void-if-removed type | 10 | R30 | 🔴 CRITICAL | Physical security indicator on enclosure |
+
+### Component Selection Rationale & Safety Notes
+
+**Fuse (3A Quick-Blow):**
+- Relay coil draws ~50-100mA continuous
+- Load inrush current can reach 2A temporarily
+- 3A provides safety margin while protecting wiring
+- Quick-blow (not slow-blow) because DC side is low impedance
+- MUST be installed in Line (hot) path, never in Neutral
+
+**MOV Varistor (275V):**
+- SA grid nominal: 230V AC RMS
+- MOV clamping voltage: 275V = 1.2× nominal (protects against +20% overvoltage)
+- 7mm diameter provides ~20A peak surge current capacity
+- Lifetime: ~1000 joules per surge event
+- **WARNING:** MOVs degrade with each surge. Replace every 2-3 years in areas with poor grid quality.
+
+**Optocouplers (PC817):**
+- **CRITICAL SAFETY:** Never connect ESP32 GPIO directly to relay coil (5V)!
+- PC817 provides 5000V isolation between GPIO and relay circuit
+- GPIO sources only 12mA → LED → optocoupler → relay control
+- Protects ESP32 from relay back-EMF and voltage spikes
+- **WARNING:** If optocoupler fails, relay won't switch. If bypassed, ESP32 can be destroyed.
 
 ### 🔧 BASIC ELECTRONICS KIT (SHARED ACROSS ALL 3 PLUGS)
 
@@ -83,11 +106,15 @@ This checklist ensures you're prepared for the hardware assembly session and can
 - [ ] Hot glue gun (for strain relief)
 
 ### Safety Equipment
-- [ ] Safety glasses
-- [ ] ESD wrist strap (optional but recommended)
-- [ ] Heat-resistant mat
-- [ ] Fire extinguisher nearby (seriously!)
-- [ ] Ventilation or fume extractor
+- [ ] Safety glasses with side protection (ANSI Z87.1 rated)
+- [ ] ESD wrist strap (REQUIRED for ATECC608A and ESP32-S3 handling)
+- [ ] Heat-resistant mat or silicone work surface
+- [ ] Fire extinguisher nearby (Class C electrical - seriously!)
+- [ ] Ventilation or fume extractor (flux fumes are harmful)
+- [ ] Closed-toe shoes (no sandals - protect against dropped soldering iron)
+- [ ] Natural fiber clothing (avoid synthetics that can melt)
+- [ ] Hair tied back if long (fire hazard near soldering iron)
+- [ ] First aid kit with burn treatment supplies
 
 ### Testing Equipment
 - [ ] Multimeter (continuity, voltage, current measurement)
@@ -227,9 +254,12 @@ Smooth Cone                 Rosin Joint (No solder flow)
 **Cause**: Temperature not calibrated  
 **Fix**: Use temperature-controlled iron, test on scrap  
 **Prevention**: 
-- Lead-free: 350-370°C
-- Leaded (60/40): 315-340°C
-- Fine-pitch SMD: 315-330°C
+- **Lead-free solder (Sn96.5Ag3Cu0.5):** 350-370°C
+- **Leaded solder (Sn60Pb40):** 315-340°C  
+- **Fine-pitch SMD (SOT23):** 330-350°C (lower to prevent pad lifting)
+- **Through-hole components:** 350-380°C
+- **Note:** If components are getting too hot (touch test), reduce temperature by 10-20°C
+- **Tip:** Use flux to lower required temperature by improving heat transfer
 
 ### SOT23 & Fine-Pitch Soldering
 
@@ -273,10 +303,16 @@ Critical for ATECC608A and 24C256!
         3.3V Rail
            │
       ┌────┴────┐
-    [2.2kΩ]  [2.2kΩ]
+    [2.2kΩ]  [2.2kΩ]  ← MUST be 2.2kΩ (NOT 4.7kΩ or 10kΩ)
       │         │
       │         │
     (SDA)     (SCL)
+
+Why 2.2kΩ specifically?
+- ESP32-S3 I2C high-level spec: 0.7 × VDD = 2.31V minimum
+- 4.7kΩ causes excessive voltage drop at 100kHz I2C speed
+- 2.2kΩ provides adequate pull-up while maintaining voltage levels
+- Too low (<1kΩ) wastes power; too high (>4.7kΩ) causes signal integrity issues
 
 Installation Tips:
 1. Use 1/4W through-hole resistors (easier than SMD)
@@ -291,9 +327,10 @@ Installation Tips:
 
 Common mistakes:
 ✗ Forgetting pull-ups entirely (I2C won't work!)
-✗ Using wrong value (too high = slow, too low = current waste)
+✗ Using wrong value like 4.7kΩ or 10kΩ (too high = communication errors)
 ✗ Only one resistor (both SDA and SCL need pull-ups)
 ✗ Pull-up to 5V instead of 3.3V (can damage ESP32!)
+✗ Using pull-down resistors instead of pull-up (won't work at all)
 ```
 
 ### Assembly Sequence Best Practices
@@ -328,6 +365,67 @@ Why this order?
 ```
 
 ### Troubleshooting Guide
+
+**Decision Tree: When to Stop and Seek Help**
+
+```text
+┌─────────────────────────────────────┐
+│  Is smoke or burning smell present? │
+└─────────────┬───────────────────────┘
+              │
+         Yes  │  No
+              ↓
+    ┌─────────────────┐
+    │  STOP IMMEDIATELY│  ← Continue troubleshooting
+    │  Disconnect Power│     below
+    │  Use Extinguisher│
+    │  Seek Help       │
+    └──────────────────┘
+
+┌──────────────────────────────────────┐
+│ Did component get hot during testing?│
+└─────────────┬────────────────────────┘
+              │
+         Yes  │  No
+              ↓
+    ┌─────────────────┐
+    │ Too hot to touch?│  ← Continue troubleshooting
+    └────┬─────────────┘
+         │
+    Yes  │  No (slightly warm OK)
+         ↓
+    ┌─────────────────┐
+    │ STOP - Component│  ← Identify which component
+    │ likely damaged  │  ← Check for shorts first
+    │ or shorted      │  ← Replace if necessary
+    └──────────────────┘
+
+┌──────────────────────────────────────┐
+│ AC/DC isolation test failed (<10MΩ)? │
+└─────────────┬────────────────────────┘
+              │
+         Yes  │  No
+              ↓
+    ┌─────────────────┐
+    │ STOP - Do NOT   │  ← Continue to next test
+    │ power from mains│
+    │ Find short first│
+    └──────────────────┘
+
+┌──────────────────────────────────────┐
+│ Are you uncomfortable with any step? │
+└─────────────┬────────────────────────┘
+              │
+         Yes  │  No
+              ↓
+    ┌─────────────────┐
+    │ STOP - Ask for  │  ← Proceed carefully
+    │ help. AC voltage│  ← Follow all safety checks
+    │ can be lethal.  │
+    └──────────────────┘
+```
+
+**Common Troubleshooting Scenarios:**
 
 ```text
 Problem: ESP32 won't boot
@@ -405,6 +503,34 @@ Why pre-test?
 
 ## 🛡️ Safety Checklist
 
+### Safety Standards & Compliance
+
+**⚠️ This project involves mains voltage (230V AC) which can be lethal.**
+
+**Relevant Safety Standards:**
+- **SANS 60950-1** (South Africa): Safety of IT equipment including power supplies
+- **SANS 164-2** (South Africa): Wiring regulations for low voltage installations
+- **IEC 60950-1**: International safety standard for IT equipment
+- **IEC 60335-1**: Safety of household electrical appliances
+
+**Key Safety Requirements:**
+- **Clearance**: Minimum 3mm between AC and DC traces/conductors
+- **Creepage**: Minimum 4mm along PCB surface between AC and DC
+- **Isolation**: Minimum 10MΩ resistance between AC and DC circuits
+- **Wire Gauge**: Minimum 18 AWG (0.82mm²) for 3A, recommend 16 AWG (1.31mm²) for margin
+- **Insulation Voltage**: All AC-side wire insulation must be rated ≥600V
+
+**Wire Gauge Selection Guide:**
+
+| Current Rating | Minimum AWG | Recommended AWG | Wire Diameter | Use Case |
+|---------------|-------------|------------------|---------------|----------|
+| 3A (Fused)    | 18 AWG      | 16 AWG          | 1.31mm²       | AC Line to relay |
+| 10A (Load)    | 14 AWG      | 12 AWG          | 3.31mm²       | Relay to AC output |
+| DC 5V (2A)    | 22 AWG      | 20 AWG          | 0.52mm²       | Power supply to ESP32 |
+| GPIO/Signal   | 24 AWG      | 22 AWG          | 0.33mm²       | ESP32 to peripherals |
+
+**Note:** These ratings assume ≤30cm wire runs and ≤30°C ambient temperature.
+
 ### Before Starting
 - [ ] Read through entire assembly plan
 - [ ] Clear, well-lit workspace with no clutter
@@ -425,7 +551,65 @@ Why pre-test?
 - [ ] Visual inspection: no solder bridges, cold joints, exposed conductors
 - [ ] Continuity test: verify no shorts between AC line and ground
 - [ ] Resistance test: ensure no short between AC and DC sides
+- [ ] **MANDATORY: AC/DC Isolation test (see detailed procedure below)**
 - [ ] Insulation test: verify isolation integrity
+
+#### Detailed AC/DC Isolation Testing Procedure
+
+**⚠️ CRITICAL: This test MUST pass before connecting to mains power**
+
+**Equipment needed:**
+- Digital multimeter (auto-ranging, 10MΩ minimum range)
+- Multimeter test leads (1000V rated minimum)
+- Well-lit workspace
+- Safety glasses
+
+**Test Sequence (perform in order):**
+
+**Step 1: 3.3V Rail Isolation**
+1. Set multimeter to Resistance (Ohms) mode, highest range
+2. Probe from 3.3V rail to DC GND: Should read >50Ω
+   - If <50Ω: STOP. Short circuit on 3.3V rail. Find and fix.
+3. Probe from 3.3V rail to AC Line: Should read >10MΩ (usually shows "OL" = open)
+   - If <10MΩ: STOP. Insufficient isolation. Check for solder bridges or damaged insulation.
+4. Probe from 3.3V rail to AC Neutral: Should read >10MΩ
+   - If <10MΩ: STOP. Same as above.
+
+**Step 2: 5V Rail Isolation**
+1. Probe from 5V rail to DC GND: Should read >100Ω
+   - If <100Ω: STOP. Check for short circuit on 5V rail.
+2. Probe from 5V rail to AC Line: Should read >10MΩ
+   - If <10MΩ: STOP. Isolation failure. Check power supply isolation barrier.
+3. Probe from 5V rail to AC Neutral: Should read >10MΩ
+
+**Step 3: GPIO Isolation (Relay Control)**
+1. Probe from relay control GPIO (e.g., GPIO 4) to AC Line: Should read >10MΩ
+   - If <10MΩ: STOP. Optocoupler isolation failure or wiring error.
+2. Probe from relay control GPIO to AC Neutral: Should read >10MΩ
+
+**Step 4: AC Side Verification**
+1. Probe from AC Line to AC Neutral: Should read >1MΩ (high impedance when unpowered)
+2. Probe from AC Line to Earth/Ground: Should read >1MΩ
+3. Probe from AC Neutral to Earth/Ground: Should read <5Ω (bonded at distribution panel)
+   - If >100Ω: WARNING. Earth connection may be poor. Verify wiring.
+
+**Pass Criteria Summary:**
+- All AC-to-DC measurements: >10MΩ
+- DC rail to GND: >50Ω (3.3V) or >100Ω (5V)
+- AC Neutral to Earth: <5Ω
+
+**If ANY test fails:**
+1. Disconnect all power immediately
+2. Document which test failed and the measured value
+3. Do NOT proceed to mains testing
+4. Inspect for:
+   - Solder bridges (especially near relay and optocoupler)
+   - Damaged wire insulation
+   - Incorrectly positioned components
+   - Metal debris on PCB/breadboard
+5. Fix the issue and re-test from Step 1
+
+**Only proceed to mains power testing if ALL isolation tests pass.**
 
 ## 📋 Assembly Steps
 
@@ -441,24 +625,33 @@ Why pre-test?
 
 ### Phase 2: Secure Provisioning - Week 1
 
+**⚠️ WARNING: Operations in this phase are IRREVERSIBLE. Test on spare hardware first!**
+
 1. [ ] **ATECC608A Configuration**:
    - Generate unique device ID
    - Generate device private key (ECDSA P256) in Slot 0
    - Write server public key to Slot 1
    - Configure key slots (Slot 0: never readable, Slot 1: always readable)
-   - Lock configuration (IRREVERSIBLE - test thoroughly first!)
+   - **🔴 CRITICAL:** Lock configuration (IRREVERSIBLE - test thoroughly first!)
+   - **⚠️ WARNING:** Once locked, configuration CANNOT be changed. Device is bricked if misconfigured.
+   - **BEST PRACTICE:** Test entire provisioning flow on a spare ATECC608A before locking production devices.
 
 2. [ ] **ESP32-S3 Secure Boot**:
-   - Generate RSA-3072 signing key (store securely!)
+   - Generate RSA-3072 signing key (store securely offline!)
    - Enable secure boot v2
    - Flash bootloader with secure boot enabled
    - Verify bootloader signature verification
+   - **⚠️ WARNING:** Secure boot is enabled via eFuse which is one-time programmable (OTP).
+   - **⚠️ CRITICAL:** Back up your signing key! If lost, you cannot update firmware.
 
 3. [ ] **ESP32-S3 Flash Encryption**:
    - Enable flash encryption in eFuse
    - Generate unique encryption key (hardware-generated)
    - Flash firmware with encryption enabled
    - Verify encrypted flash contents
+   - **⚠️ WARNING:** Flash encryption is enabled via eFuse (OTP - cannot be reversed).
+   - **⚠️ CRITICAL:** Once enabled, you can only flash encrypted firmware. Cannot read back firmware.
+   - **BEST PRACTICE:** Test on spare ESP32-S3 module first. Have multiple modules available.
 
 ### Phase 3: DC Side Assembly - Week 1-2
 
@@ -473,7 +666,7 @@ Why pre-test?
    - GND → GND
    - SDA → GPIO 21 (shared I2C bus)
    - SCL → GPIO 22 (shared I2C bus)
-   - Add 4.7kΩ pull-up resistors on SDA/SCL if needed
+   - Add 2.2kΩ pull-up resistors on SDA/SCL (REQUIRED, NOT optional)
 4. [ ] Connect MAX6316 watchdog:
    - VCC → 3.3V (battery backup optional)
    - GND → GND
@@ -522,29 +715,98 @@ Why pre-test?
 
 ### Phase 6: Testing & Validation - Week 2
 
+**⚠️ MANDATORY PRE-MAINS-POWER SAFETY GATE ⚠️**
+
+**Before connecting to 230V AC mains, EVERY item below MUST pass:**
+
+#### Pre-Mains Safety Checklist (ALL MUST BE TRUE)
+
+**Visual Inspection:**
+- [ ] No solder bridges visible (inspect under magnification)
+- [ ] All solder joints are shiny, not dull (no cold joints)
+- [ ] All wires properly insulated with no exposed copper
+- [ ] AC side wiring secured in proper terminal blocks
+- [ ] Fuse holder contains correct 3A fuse
+- [ ] Earth/ground connection is solid and secure
+- [ ] No loose components or metal debris on board
+- [ ] Enclosure has proper ventilation holes
+- [ ] All components are correctly oriented (check IC pin 1, diode polarity)
+
+**Resistance Testing (DC Power OFF, AC Disconnected):**
+- [ ] 3.3V to DC GND: >50Ω (no short circuit)
+- [ ] 5V to DC GND: >100Ω (no short circuit)
+- [ ] AC Line to DC GND: >10MΩ (excellent isolation)
+- [ ] AC Line to 3.3V: >10MΩ (excellent isolation)
+- [ ] AC Neutral to Earth: <5Ω (proper earth bond)
+- [ ] **If ANY isolation test <10MΩ: STOP. Find and fix the fault.**
+
+**Component Response Testing (DC Power Only, AC Disconnected):**
+- [ ] ESP32-S3 boots and enumerates on USB
+- [ ] Serial console shows boot messages (no crashes)
+- [ ] 3.3V rail measures 3.25V - 3.35V (stable)
+- [ ] 5V rail measures 4.75V - 5.25V (stable)
+- [ ] ATECC608A responds on I2C at address 0x60
+- [ ] 24C256 EEPROM responds on I2C at address 0x50-0x57
+- [ ] No abnormal heat from any component (touch test)
+- [ ] No burning smell or visible smoke
+- [ ] Relay clicks when GPIO toggled (via optocoupler)
+
+**Safety Environment:**
+- [ ] Fire extinguisher (Class C electrical) within arm's reach
+- [ ] No other people in immediate work area (2m safety boundary)
+- [ ] AC outlet is properly grounded (use outlet tester)
+- [ ] Wearing safety glasses and closed-toe shoes
+- [ ] Work surface is non-conductive and dry
+- [ ] Have emergency power-off plan (know where breaker is)
+- [ ] Mobile phone available to call for help if needed
+
+**Documentation & Knowledge:**
+- [ ] Familiar with AC electrical safety procedures
+- [ ] Know what to do if smoke/fire occurs (disconnect power, use extinguisher)
+- [ ] Have device specifications and schematic available
+- [ ] Have documented all previous test results
+- [ ] Second person aware you're doing mains testing (best practice)
+
+**🔴 CRITICAL: If ANY item above fails, DO NOT proceed to AC testing.**
+
+**Fix all issues, retest, and only proceed when 100% of checks pass.**
+
+---
+
+#### AC Power Testing Procedure (Only After Passing All Above)
+
 **Start with low voltage/current testing**
 
 1. [ ] **Visual inspection**: Check all connections, no exposed wires, proper insulation
 2. [ ] **Continuity test**: Verify circuit paths match schematic
-3. [ ] **Isolation test**: Use multimeter to confirm >1MΩ between AC and DC
+3. [ ] **Isolation test**: Confirm >10MΩ between AC and DC (from checklist above)
 4. [ ] **First power-on** (NO LOAD, AC disconnected):
    - Connect DC power only (5V from power supply)
    - ESP32-S3 should boot (check serial output)
    - Verify 5V and 3.3V rails
    - ATECC608A and 24C256 should respond on I2C bus
 5. [ ] **AC power-on** (NO LOAD):
-   - Connect to AC mains
+   - **Stand back during first connection**
+   - Connect to AC mains with fuse installed
    - Power supply should provide stable 5V
-   - Check for any abnormal heating
+   - Check for any abnormal heating (wait 5 minutes)
+   - Check for any unusual sounds or smells
+   - Monitor voltage stability on oscilloscope if available
 6. [ ] **Relay test**: Control relay via GPIO, verify clicking and continuity change
 7. [ ] **SCT-013 test**: Connect known load (40W incandescent bulb)
    - Verify current readings match expected values (I = P/V = 40W/230V ≈ 0.17A)
-   - Calibrate if needed
+   - Calibrate if needed (±10% accuracy is acceptable)
 8. [ ] **Tamper detection test**: Open enclosure, verify MAX6316 triggers reset
 9. [ ] **Secure boot test**: Attempt to flash unsigned firmware (should fail)
 10. [ ] **MQTT over TLS test**: Connect to MQTT broker over TLS 1.3, verify client cert auth
 11. [ ] **Thermal test**: Run for 30 minutes with load, check for excessive heat
+    - Touch relay case: Should be warm but not too hot to touch (< 60°C)
+    - Touch power supply: Should be warm (< 50°C)
+    - Touch ESP32: Should be slightly warm (< 45°C)
 12. [ ] **Full load test** (if safe): Test with rated load (10A max), monitor temperature
+    - Use proper test load (resistive, not motor)
+    - Monitor continuously for first 10 minutes
+    - If any component >70°C, reduce load or improve ventilation
 
 ### Phase 7: Firmware & Security Testing - Week 2
 
