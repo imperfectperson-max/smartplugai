@@ -76,9 +76,12 @@ TPS3823 /RST → ESP32 EN (reset on tamper)
 
 ### Soldering Iron Temperatures
 ```
-Lead-free solder: 350°C
-Leaded (60/40):  330°C
-SOT23 (fine):    330°C
+Lead-free solder (Sn96.5Ag3Cu0.5): 350-370°C
+Leaded (Sn60Pb40):                 315-340°C
+SOT23/fine-pitch SMD:              330-350°C
+Through-hole components:           350-380°C
+
+Note: Use flux to improve heat transfer and lower required temperature.
 ```
 
 ### I2C Addresses
@@ -224,27 +227,32 @@ Notes: _________________________________
 ### Power-On Test Checklist
 ```
 Pre-Power Safety (DC only, no AC):
-[ ] 3.3V-GND resistance: _____ Ω (>50Ω)
-[ ] 5V-GND resistance: _____ Ω (>100Ω)
+[ ] 3.3V-GND resistance: _____ Ω (>50Ω required)
+[ ] 5V-GND resistance: _____ Ω (>100Ω required)
+[ ] AC Line-DC GND isolation: _____ MΩ (>10MΩ MANDATORY)
+[ ] AC Line-3.3V isolation: _____ MΩ (>10MΩ MANDATORY)
 [ ] No 3.3V-5V continuity
-[ ] Visual inspection complete
-[ ] All components oriented correctly
+[ ] Visual inspection complete (no solder bridges)
+[ ] All components oriented correctly (check IC pin 1, diode polarity)
+[ ] Safety glasses on, fire extinguisher nearby
 
 First Power-On (5V DC only):
 [ ] ESP32 boots to serial output
-[ ] 3.3V rail measures: _____ V (3.15-3.45V)
+[ ] 3.3V rail measures: _____ V (3.25-3.35V)
 [ ] 5V rail measures: _____ V (4.75-5.25V)
 [ ] I2C scan shows devices:
     [ ] ATECC608A at 0x60
     [ ] 24C256 at 0x50
 [ ] Current sensor ADC reads ~1.65V (no load)
 [ ] Relay clicks when toggled
+[ ] No abnormal heating (touch test all components)
 
 Calibration Results:
 [ ] Zero offset: _____ V
-[ ] 60W bulb test: _____ A (expected 0.26A)
-[ ] 100W bulb test: _____ A (expected 0.43A)
-[ ] Calibration error: _____ % (should be <2%)
+[ ] 40W bulb test: _____ A (expected 0.17A ±10%)
+[ ] 60W bulb test: _____ A (expected 0.26A ±10%)
+[ ] 100W bulb test: _____ A (expected 0.43A ±10%)
+[ ] Calibration error: _____ % (should be <10%)
 ```
 
 ## 💾 Quick Command Reference

@@ -274,4 +274,55 @@ Contributors will be recognized in:
 - Security hall of fame (for responsible vulnerability disclosure)
 - Project documentation (hall of fame coming soon)
 
+## 📚 Hardware & Documentation Standards
+
+### Hardware Documentation Guidelines
+
+When contributing to hardware documentation:
+
+**Safety Information:**
+- Always include voltage warnings for AC circuits (230V can be lethal)
+- Specify exact component specifications (resistance values, voltage ratings, current ratings)
+- Include isolation requirements (>10MΩ between AC and DC circuits)
+- Add pre-testing checklists before mains power connection
+- Reference applicable safety standards (SANS, IEC)
+
+**Component Specifications:**
+- Use exact part numbers where critical (e.g., ATECC608A-TNGTLS, not just "security chip")
+- Specify tolerances (e.g., "3.3V ±5%" not just "3.3V")
+- Include why specific values are chosen (e.g., "2.2kΩ pull-ups for ESP32-S3 I2C voltage levels")
+- Document alternatives and trade-offs
+
+**Testing Procedures:**
+- Include pass/fail criteria with exact values (e.g., ">10MΩ isolation" not "high resistance")
+- Specify test equipment requirements (e.g., "multimeter with 10MΩ minimum range")
+- Add troubleshooting decision trees for common issues
+- Document what to do if tests fail
+
+**Consistency:**
+- Use consistent terminology across all documents
+- Keep specifications synchronized (update all docs when changing specs)
+- Cross-reference related documentation
+- Update all related files when making changes
+
+### Markdown Best Practices
+
+- Use proper heading hierarchy (# → ## → ###)
+- Include descriptive alt text for images
+- Use code blocks with language specification
+- Keep line length reasonable for readability
+- Use tables for structured data
+- Add checkboxes for actionable items
+
+### Hardware Safety Checklist for Contributors
+
+Before submitting hardware documentation PRs, verify:
+- [ ] All AC voltage warnings are clearly marked with ⚠️
+- [ ] Component specifications include ratings and tolerances
+- [ ] Safety procedures reference >10MΩ isolation requirement
+- [ ] Irreversible operations (eFuse, ATECC608A lock) have clear warnings
+- [ ] Test procedures include pass/fail criteria
+- [ ] Wire gauge selections are justified with current calculations
+- [ ] Safety standards (SANS/IEC) are referenced where applicable
+
 Thank you for making Smart Plug AI better and more secure!
