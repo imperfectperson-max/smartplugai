@@ -808,6 +808,65 @@ Why pre-test?
     - Monitor continuously for first 10 minutes
     - If any component >70°C, reduce load or improve ventilation
 
+## 🌡️ Thermal Management & Component Temperatures
+
+### Safe Operating Temperatures
+
+**Component Temperature Limits:**
+
+| Component | Normal Operating | Warning Level | Critical (Shut Down) | Notes |
+|-----------|-----------------|---------------|---------------------|-------|
+| ESP32-S3 | 30-45°C | 60°C | 85°C | Higher temps reduce WiFi performance |
+| ATECC608A | 25-40°C | 70°C | 85°C | Cryptographic operations generate heat |
+| Relay Coil | 40-60°C | 75°C | 85°C | Coil resistance increases with temperature |
+| Relay Contacts | 30-50°C | 70°C | 100°C | High current causes contact heating |
+| Power Supply | 35-50°C | 65°C | 80°C | Most critical component for thermal management |
+| PC817 Optocoupler | 25-40°C | 70°C | 85°C | LED generates heat at high current |
+| SCT-013 Sensor | 25-35°C | 50°C | 60°C | Accuracy degrades above 40°C |
+| 33Ω Burden Resistor | 30-45°C | 70°C | 100°C | 1W rating, but cooler is better |
+
+**Temperature Measurement:**
+- **Touch test**: Warm is OK, too hot to hold (>60°C) needs attention
+- **IR thermometer**: Most accurate non-contact method (±2°C)
+- **Thermocouple**: Most accurate contact measurement (±1°C)
+
+### Ventilation Requirements
+
+**Enclosure must have adequate ventilation holes:**
+- **Minimum vent area**: 10-15% of enclosure surface
+- **Hole size**: 3-5mm diameter
+- **Hole spacing**: 10-15mm between holes
+- **Positioning**: Bottom intake (cool air), top/side exhaust (hot air)
+- **Protection**: Fine mesh to prevent debris/insects
+
+**Power Dissipation:** ~2.5W peak per plug (power supply generates most heat)
+
+**Thermal Rise:** With proper ventilation, expect +15°C above ambient. Without ventilation, can reach +30°C or more (UNACCEPTABLE).
+
+### Thermal Troubleshooting
+
+| Symptom | Likely Cause | Solution |
+|---------|--------------|----------|
+| Power supply very hot (>65°C) | Overload or poor ventilation | Reduce load, add ventilation, check for shorts |
+| Relay coil very hot (>75°C) | Continuous high-duty operation | Normal for relays, ensure proper ventilation |
+| ESP32 very hot (>60°C) | Heavy WiFi usage or CPU load | Reduce update frequency, optimize code |
+| Entire enclosure hot | Insufficient ventilation | Add more vent holes, improve airflow |
+| One spot very hot (>80°C) | Short circuit or component failure | STOP immediately, disconnect power, inspect |
+
+### 24-Hour Burn-In Test
+
+**Protocol:**
+1. **Hours 0-1**: Light load (40W) - record temps every 15 min
+2. **Hours 1-2**: Medium load (100W) - monitor for temp rise
+3. **Hours 2-4**: Heavy load (10A) - continuous monitoring
+4. **Hours 4-24**: Cycling load (30 min on/off)
+
+**Acceptance Criteria:**
+- ✓ No component exceeds warning temperature
+- ✓ Temperatures stabilize within 30 minutes
+- ✓ No burning smell or discoloration
+- ✓ All measurements remain within ±5% throughout test
+
 ### Phase 7: Firmware & Security Testing - Week 2
 
 1. [ ] Flash production firmware (signed)
@@ -957,7 +1016,23 @@ During assembly, capture:
 **Security Contacts**:
 - **Security Questions**: security@smartplugai.com
 - **Hardware Issues**: hardware@smartplugai.com
+- **Emergency Safety Issues**: Use GitHub issues with `safety` label for urgent matters
 
-**Last Updated**: February 2025  
-**Version**: 2.1 (Updated for 7-week Phase 1 timeline)  
+**Safety Compliance References**:
+- **SANS 60950-1**: Safety of IT equipment including power supplies
+- **SANS 164-2**: Wiring regulations for low voltage installations in South Africa
+- **IEC 60950-1**: International safety standard for IT equipment
+- **IEC 60335-1**: Safety of household electrical appliances
+
+**Last Updated**: February 2025 (Enhanced safety procedures and component specifications)  
+**Version**: 2.2 - Major safety improvements:
+- Added mandatory pre-mains-power safety checklist with pass/fail criteria
+- Standardized I2C pull-up resistors to 2.2kΩ with detailed reasoning
+- Enhanced AC/DC isolation testing procedure (>10MΩ requirement)
+- Added comprehensive PPE requirements and safety standards references
+- Added thermal management section with component temperature limits
+- Expanded component-specific warnings (eFuse, ATECC608A lock, optocoupler)
+- Added wire gauge selection guide with current ratings
+- Added troubleshooting decision tree for critical safety decisions
+
 **Next Update**: As Phase 1 progresses (Week 2, Week 4, Week 7)
