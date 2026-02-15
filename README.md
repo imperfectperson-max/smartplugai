@@ -64,7 +64,15 @@ See [soldering checklist](docs/soldering-checklist.md) for complete shopping lis
 
 ## 🔨 Hardware Soldering Preparation
 
+**⚠️ SAFETY WARNING: This project involves 230V AC mains voltage which can be lethal. Follow all safety procedures in the documentation.**
+
 **Next Session**: [Soldering Checklist](docs/soldering-checklist.md)
+
+**Key Safety Documents**:
+- 📋 [Complete Soldering Checklist](docs/soldering-checklist.md) - Shopping list, assembly steps, safety procedures
+- ⚠️ [Week 1 Hardware Guide](docs/WEEK1_HARDWARE_MASTERY.md) - Detailed assembly instructions
+- 🛡️ [Week 4 Safety & Enclosure](docs/WEEK4_SAFETY_ENCLOSURE_PCB.md) - AC/DC isolation, PCB design, enclosure safety
+- ⚡ [Week 1 Quick Reference](docs/WEEK1_QUICK_REFERENCE.md) - Fast access to critical info
 
 **Phase 1 Hardware Shopping List** (3 plugs with bank-grade security):
 - ✅ ESP32-S3-WROOM-1-N8 (3x @ R160 each): Hardware crypto acceleration
@@ -85,10 +93,13 @@ See [soldering checklist](docs/soldering-checklist.md) for complete shopping lis
 Before the soldering session:
 - ✅ Verify complete parts list (see [soldering checklist](docs/soldering-checklist.md))
 - ✅ Review safety procedures and workspace setup including fuse and MOV protection
+- ✅ **CRITICAL:** Read AC/DC isolation testing procedure (>10MΩ required before mains power)
 - ✅ Test components individually with breadboard
-- ✅ Plan ATECC608A provisioning and secure boot setup
+- ✅ Plan ATECC608A provisioning and secure boot setup (operations are irreversible!)
 - ✅ Prepare professional enclosure with tamper-evident seals
 - ✅ Verify certified 5V/2A phone charger for power supply (prototype phase)
+- ✅ Have Class C fire extinguisher, safety glasses, and first aid kit ready
+- ✅ Understand that ESP32 eFuse operations (secure boot, flash encryption) cannot be reversed
 
 ## 🤝 Contributing
 
