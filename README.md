@@ -36,6 +36,29 @@ Smart Plug AI is South Africa's **bank-grade security IoT platform** combining:
 
 ***Note***: Need to consider delivery fees if ordering online
 
+Weeks 1-4:  Research Phase
+            - Download UK-DALE, REDD, AMPds datasets
+            - Implement baseline models (Simple Moving Average)
+            - Establish accuracy metrics (target: 85%+)
+
+Weeks 5-8:  Prototype Deployment
+            - Build 3 basic plugs (no security yet)
+            - Collect REAL South African data
+            - Minimum 30 days of continuous data
+
+Weeks 9-12: ML Development
+            - Train CNN on current patterns
+            - Train LSTM for time series
+            - Implement ensemble methods
+            - Cross-validation on your data
+
+Weeks 13-16: QUANTIFIABLE RESULT
+            - Achieve 90%+ accuracy OR
+            - 40%+ improvement over baseline
+            - Statistical significance tests
+            - Confusion matrices, ROC curves
+
+THEN: Weeks 17-23: Production Security Build
 See [soldering checklist](docs/soldering-checklist.md) for complete shopping list and assembly guide.
 
 **Software Development**:
