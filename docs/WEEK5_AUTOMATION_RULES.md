@@ -1,5 +1,7 @@
 # WEEK 5: AUTOMATION, RULE ENGINE & ADVANCED FEATURES - DEEP DIVE
 
+> 📍 **Roadmap Context**: This guide covers automation and rules for the **Phase 2: Full System** stage (Months 13–18) of the [24-month Smart Plug AI roadmap](ROADMAP.md).
+
 📅 **Timeline**: Days 29-35  
 🎯 **Goal**: Implement intelligent automation system with time-based schedules, load-shedding detection, and advanced rule engine with security safeguards
 

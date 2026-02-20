@@ -1,5 +1,7 @@
 # WEEK 1: HARDWARE MASTERY & BASIC FIRMWARE - DEEP DIVE
 
+> 📍 **Roadmap Context**: This guide covers assembly and soldering for the **Phase 1: Secure Prototype** stage (Months 9–12) of the [24-month Smart Plug AI roadmap](ROADMAP.md). See also: [WEEK1_QUICK_REFERENCE.md](WEEK1_QUICK_REFERENCE.md) for the quick reference card.
+
 📅 **Timeline**: Days 1-7  
 🎯 **Goal**: Build perfectly assembled smart plug prototype with secure firmware foundation
 

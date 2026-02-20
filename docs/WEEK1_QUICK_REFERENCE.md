@@ -1,5 +1,7 @@
 # Week 1 Quick Reference Guide
 
+> 📍 **Roadmap Context**: Quick reference for the **Phase 1: Secure Prototype** stage (Months 9–12) of the [24-month Smart Plug AI roadmap](ROADMAP.md). Full details in [WEEK1_HARDWARE_MASTERY.md](WEEK1_HARDWARE_MASTERY.md).
+
 ⚡ **Fast access to critical Week 1 information** ⚡
 
 ## 📋 At-a-Glance Assembly Sequence

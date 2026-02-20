@@ -1,5 +1,7 @@
 # WEEK 3: BACKEND INTEGRATION & REAL DEVICE CONNECTION - DEEP DIVE
 
+> 📍 **Roadmap Context**: This guide covers backend integration for the **Phase 2: Full System** stage (Months 13–18) of the [24-month Smart Plug AI roadmap](ROADMAP.md). See [ARCHITECTURE.md](ARCHITECTURE.md) for the full backend architecture.
+
 📅 **Timeline**: Days 15-21  
 🎯 **Goal**: Connect physical ESP32 devices to cloud backend with secure MQTT/TLS communication and implement device attestation
 

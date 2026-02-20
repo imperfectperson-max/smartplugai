@@ -1,58 +1,97 @@
-# Smart Plug AI Mobile App
+# 📱 Smart Plug AI — Mobile App
 
-Flutter-based cross-platform mobile application for monitoring and controlling smart plugs in real-time.
+Flutter-based cross-platform mobile application for the Smart Plug AI platform — South Africa's first AI-powered energy intelligence platform.
+
+## 📋 Table of Contents
+
+- [Overview](#-overview)
+- [Architecture](#-architecture)
+- [Features](#-features)
+- [Getting Started](#-getting-started)
+- [Project Structure](#️-project-structure)
+- [State Management](#-state-management)
+- [Security Features](#-security-features)
+- [Testing](#-testing)
+- [Building for Production](#-building-for-production)
+- [Contributing](#-contributing)
+
+---
 
 ## 🎯 Overview
 
-The mobile app provides users with:
-- **Real-time power monitoring**: Live current and power consumption with end-to-end encryption
-- **Secure device control**: Turn devices on/off remotely with signed commands
-- **Historical data**: View encrypted 24-hour power usage trends and analytics
-- **Smart notifications**: Alerts for high power usage or anomalies
-- **Secure QR code pairing**: Easy device setup with challenge-response authentication
-- **Multi-device management**: Control multiple smart plugs with secure 2FA authentication
-- **Security features**: Firebase/Auth0 authentication with 2FA, encrypted telemetry in transit, device attestation status display
+The Smart Plug AI mobile app gives users:
+- **Appliance insights**: See exactly which appliance is running (91% AI accuracy)
+- **Real-time monitoring**: Live power consumption with end-to-end encryption
+- **Load shedding intelligence**: Predictions and impact tracking
+- **Actionable savings**: Personalised recommendations to cut electricity bills by 30%
+- **Secure device control**: ON/OFF relay control with ECDSA-signed commands
+- **Multi-device management**: Manage all smart plugs from one dashboard
 
 ## 📱 Supported Platforms
 
 - **iOS**: 13.0 and above
 - **Android**: 5.0 (API level 21) and above
 
-## 🔒 Security Features
+---
 
-Smart Plug AI Mobile App implements **bank-grade security** from Day 1:
+## 🏗️ Architecture
 
-### Authentication & Authorization
-- **Firebase Auth / Auth0** integration with 2FA/MFA support
-- **Time-based OTP (TOTP)** for second factor authentication
-- **Secure session management** with JWT tokens (30-minute expiry)
-- **Biometric authentication** (Face ID, Touch ID, fingerprint) for app unlock
+4-layer Flutter architecture:
 
-### Secure Device Pairing
-- **QR code scanning** with challenge-response authentication
-- **Device verification** using server-signed challenges
-- **Certificate-based device identity** validation
-- **Tamper detection status** display during pairing
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  LAYER 4: UI                                                         │
+│  Dashboard · Device List · Device Detail · Insights                  │
+│  Settings · Auth Flow                                                │
+├─────────────────────────────────────────────────────────────────────┤
+│  LAYER 3: BLoC / PROVIDER                                            │
+│  AuthBloc · DeviceBloc · InsightsBloc · SettingsBloc · SyncBloc      │
+├─────────────────────────────────────────────────────────────────────┤
+│  LAYER 2: SERVICES                                                   │
+│  ApiService (encrypted) · WebSocketService                           │
+│  SecureStorage (biometric) · HiveService (encrypted)                 │
+│  LocalAuthService · NotificationService                              │
+├─────────────────────────────────────────────────────────────────────┤
+│  LAYER 1: MODELS                                                     │
+│  User · Device · PowerReading · ApplianceEvent · Insight · Alert     │
+└─────────────────────────────────────────────────────────────────────┘
+```
 
-### Encrypted Communications
-- **TLS 1.3** for all API and WebSocket connections
-- **Certificate pinning** to prevent man-in-the-middle attacks
-- **End-to-end encryption** for sensitive telemetry data (AES-256-GCM)
-- **MQTT over TLS** with client certificates (production)
+**State management**: BLoC pattern (flutter_bloc) for complex state, Provider for simple global state.
 
-### Data Protection
-- **Secure local storage** using platform keychain (iOS) / keystore (Android)
-- **Encrypted telemetry cache** for offline viewing
-- **No sensitive data** in logs or crash reports
-- **Automatic session timeout** after 30 minutes of inactivity
+---
 
-### Device Security Monitoring
-- **Device attestation status** indicator (firmware integrity)
-- **Tamper alert notifications** (MAX6316 watchdog triggers)
-- **Security health score** display (secure boot, flash encryption status)
-- **Certificate expiry warnings** for devices
+## ✨ Features
 
-For comprehensive security architecture, see [docs/SECURITY.md](../docs/SECURITY.md).
+### Phase 0 (Months 1–8): Data Collection UI
+
+- ✅ Authentication (email/password + 2FA)
+- ✅ Dashboard with device list
+- ✅ Real-time power monitoring (mock data)
+- ✅ Device detail screen with 24-hour chart
+- ✅ QR pairing flow mockup
+- ✅ Security status indicators
+- ✅ Settings and profile screens
+
+### Phase 2 (Months 13–18): Full Integration
+
+- [ ] Live data from ESP32-S3 devices via MQTT/TLS 1.3
+- [ ] AI appliance recognition display (91% accuracy)
+- [ ] Load shedding predictions and tracking
+- [ ] Signed relay control commands
+- [ ] Push notifications for anomalies and alerts
+- [ ] Encrypted offline mode (Hive)
+- [ ] Biometric authentication (Face ID / fingerprint)
+- [ ] Device attestation status display
+
+### Phase 3 (Months 19–24): Polish
+
+- [ ] Insights dashboard with savings recommendations
+- [ ] Historical analytics and trends
+- [ ] Energy cost tracking
+- [ ] Export reports
+
+---
 
 ## 🚀 Getting Started
 
@@ -60,29 +99,23 @@ For comprehensive security architecture, see [docs/SECURITY.md](../docs/SECURITY
 
 - Flutter SDK 3.10.0 or higher
 - Dart 3.0.0 or higher
-- Android Studio / Xcode (for platform-specific builds)
+- Android Studio / Xcode (for platform builds)
 - VS Code with Flutter extensions (recommended)
-
-**Security Prerequisites**:
-- **Firebase project** with Authentication enabled (or Auth0 account)
-- **2FA setup** in Firebase/Auth0 (TOTP or SMS)
-- **TLS certificates** for certificate pinning (production)
-- **MQTT broker** with TLS 1.3 and client certificate support (production)
 
 ### Installation
 
-1. **Clone the repository** (if not already done):
+1. **Clone the repository**:
    ```bash
    git clone https://github.com/imperfectperson-max/smartplugai.git
    cd smartplugai/app
    ```
 
-2. **Install Flutter dependencies**:
+2. **Install dependencies**:
    ```bash
    flutter pub get
    ```
 
-3. **Verify Flutter installation**:
+3. **Verify setup**:
    ```bash
    flutter doctor
    ```
@@ -91,281 +124,146 @@ For comprehensive security architecture, see [docs/SECURITY.md](../docs/SECURITY
    ```bash
    # iOS Simulator
    flutter run -d "iPhone 14 Pro"
-   
+
    # Android Emulator
    flutter run -d emulator-5554
-   
+
    # Physical device
    flutter run
    ```
 
-## 🏗️ Project Structure
+**Mock login**: any email + password (6+ chars) + any 6-digit 2FA code
+
+---
+
+## 🗂️ Project Structure
 
 ```
 app/
 ├── lib/
-│   ├── main.dart              # App entry point
-│   ├── models/                # Data models
+│   ├── main.dart                   # App entry point (BLoC/Provider setup)
+│   ├── models/                     # Data models (Layer 1)
+│   │   ├── user.dart
 │   │   ├── device.dart
 │   │   ├── power_reading.dart
-│   │   └── user.dart
-│   ├── screens/               # UI screens
-│   │   ├── home_screen.dart
-│   │   ├── device_detail_screen.dart
+│   │   ├── appliance_event.dart
+│   │   ├── insight.dart
+│   │   └── alert.dart
+│   ├── blocs/                      # BLoC state management (Layer 3)
+│   │   ├── auth/
+│   │   ├── device/
+│   │   ├── insights/
+│   │   ├── settings/
+│   │   └── sync/
+│   ├── services/                   # Services layer (Layer 2)
+│   │   ├── api_service.dart        # Encrypted REST API calls
+│   │   ├── websocket_service.dart  # Real-time updates
+│   │   ├── secure_storage.dart     # Biometric-protected storage
+│   │   ├── hive_service.dart       # Encrypted local database
+│   │   ├── local_auth_service.dart # Biometric authentication
+│   │   └── notification_service.dart
+│   ├── screens/                    # UI screens (Layer 4)
 │   │   ├── auth/
 │   │   │   ├── login_screen.dart
 │   │   │   └── signup_screen.dart
+│   │   ├── home_screen.dart
+│   │   ├── device_detail_screen.dart
+│   │   ├── insights_screen.dart
 │   │   ├── pairing/
 │   │   │   └── qr_scanner_screen.dart
 │   │   └── settings_screen.dart
-│   ├── widgets/               # Reusable widgets
+│   ├── widgets/                    # Reusable widgets
 │   │   ├── power_gauge.dart
 │   │   ├── device_card.dart
-│   │   └── power_chart.dart
-│   ├── services/              # Business logic & API
-│   │   ├── auth_service.dart
-│   │   ├── mqtt_service.dart
-│   │   ├── device_service.dart
-│   │   └── notification_service.dart
-│   ├── utils/                 # Utilities & helpers
+│   │   ├── power_chart.dart
+│   │   └── appliance_badge.dart
+│   ├── utils/
 │   │   ├── constants.dart
 │   │   └── formatters.dart
-│   └── theme/                 # App theming
+│   └── theme/
 │       └── app_theme.dart
-├── test/                      # Unit & widget tests
-├── integration_test/          # Integration tests
-├── assets/                    # Images, fonts, etc.
-├── pubspec.yaml              # Dependencies
-└── README.md                 # This file
+├── test/                           # Unit & widget tests
+├── integration_test/               # Integration tests
+├── assets/
+├── pubspec.yaml
+└── README.md
 ```
-
-## 🎨 Key Features to Implement
-
-### Phase 1: UI Mockups (Before Hardware Ready) - Mobile App V0.1
-
-These can be built and tested with mock/placeholder data:
-
-#### 1. Authentication Flow with 2FA
-- [ ] **Login screen** with email/password and 2FA support (Firebase/Auth0 integration planned)
-- [ ] **Sign-up screen** with basic validation
-- [ ] **Mock auth service** that simulates login with 2FA flow
-- [ ] **Onboarding screens** explaining app features and security model
-
-**Suggested Mock Implementation**:
-```dart
-class MockAuthService {
-  Future<bool> login(String email, String password) async {
-    await Future.delayed(Duration(seconds: 1));
-    return email.isNotEmpty && password.length >= 6;
-  }
-}
-```
-
-#### 2. Real-Time Power Monitoring UI (Encrypted Display)
-- [ ] **Dashboard screen** showing list of devices with encryption status indicator
-- [ ] **Device card widget** displaying device name, status, current power (encrypted in transit)
-- [ ] **Power gauge widget** with animated needle/circular indicator
-- [ ] **Real-time chart** using fl_chart showing 24-hour encrypted historical data
-- [ ] **Mock data generator** to simulate live encrypted power readings with security status
-
-**Suggested Mock Implementation**:
-```dart
-Stream<PowerReading> getMockPowerStream() async* {
-  while (true) {
-    yield PowerReading(
-      voltage: 120.0 + Random().nextDouble() * 2,
-      current: 0.5 + Random().nextDouble() * 2.5,
-      power: 60.0 + Random().nextDouble() * 300,
-      timestamp: DateTime.now(),
-    );
-    await Future.delayed(Duration(seconds: 1));
-  }
-}
-```
-
-#### 3. Secure QR Code Pairing Flow with Challenge-Response
-- [ ] **QR scanner screen** using mobile_scanner for secure device pairing
-- [ ] **Challenge-response authentication** flow after QR scan
-- [ ] **Pairing instructions screen** with security explanations
-- [ ] **Success/failure feedback** with security validation status
-- [ ] **Mock device addition** with simulated challenge-response (adds device to local list)
-
-#### 4. Device Management with Signed Commands
-- [ ] **Device list view** with search/filter and security status
-- [ ] **Device detail screen** with controls (signed ON/OFF commands) and settings
-- [ ] **Device settings** (rename, icon, notifications, attestation status)
-- [ ] **Delete device** confirmation with security considerations
-
-#### 5. Settings & Profile with Security
-- [ ] **User profile screen** with 2FA management
-- [ ] **App settings** (theme, units, notifications, security preferences)
-- [ ] **Security dashboard** showing encryption status and device attestation
-- [ ] **About screen** with version info and security certifications
-
-### Phase 2: Backend Integration (After Hardware Ready) - Mobile App V2
-
-Once the hardware and backend are functional:
-
-- [ ] Replace mock auth with Firebase/Auth0 authentication with 2FA enabled
-- [ ] Implement MQTT client with TLS 1.3 to receive real encrypted device data
-- [ ] Add WebSocket support for real-time encrypted updates
-- [ ] Implement device control with signed commands (relay on/off via API)
-- [ ] Add push notifications for security alerts and tamper detection
-- [ ] Implement data persistence with local database (sqflite/hive) using encryption
-- [ ] Add offline mode support with encrypted local storage
-- [ ] Implement challenge-response pairing with real devices
-- [ ] Display device attestation status and security health
-
-## 📦 Recommended Packages
-
-Add these to `pubspec.yaml` as you implement features:
-
-```yaml
-dependencies:
-  # State management
-  provider: ^6.1.0  # or riverpod, bloc, get
-  
-  # Networking
-  http: ^1.1.0
-  mqtt_client: ^10.0.0  # For MQTT communication
-  
-  # Charts & Visualization
-  fl_chart: ^0.65.0
-  
-  # QR Code
-  mobile_scanner: ^3.5.0
-  
-  # Local Storage
-  shared_preferences: ^2.2.0
-  sqflite: ^2.3.0  # or hive
-  
-  # Authentication (when ready)
-  firebase_auth: ^5.3.1
-  firebase_core: ^3.6.0
-  
-  # Notifications
-  flutter_local_notifications: ^16.0.0
-  
-  # UI Utilities
-  google_fonts: ^6.1.0
-  flutter_svg: ^2.0.0
-  intl: ^0.18.0  # For formatting dates/numbers
-```
-
-## 🧪 Testing
-
-### Run Unit Tests
-```bash
-flutter test
-```
-
-### Run Integration Tests
-```bash
-flutter test integration_test/app_test.dart
-```
-
-### Run with Coverage
-```bash
-flutter test --coverage
-genhtml coverage/lcov.info -o coverage/html
-open coverage/html/index.html
-```
-
-## 🎯 First Tasks (Suggested)
-
-Start here if you're new to the project:
-
-1. **Set up Flutter project** (if not already initialized):
-   ```bash
-   flutter create --org com.smartplugai --project-name smartplug_app .
-   ```
-
-2. **Create basic app structure**:
-   - Set up folder structure (models, screens, services, widgets)
-   - Configure app theme and colors
-   - Set up routing (use go_router or named routes)
-
-3. **Build authentication mockup**:
-   - Login screen UI
-   - Sign-up screen UI
-   - Mock authentication service
-   - Navigation after login
-
-4. **Create power monitoring UI**:
-   - Device list screen
-   - Device card widget with power display
-   - Mock data service
-   - Animated power gauge widget
-
-5. **Implement QR scanner**:
-   - Add mobile_scanner package
-   - Build scanner screen
-   - Handle QR code data (device ID)
-   - Add device to local list
-
-## 🐛 Debugging
-
-### Enable Flutter DevTools
-```bash
-flutter pub global activate devtools
-flutter pub global run devtools
-```
-
-### Debug on Physical Device
-
-**iOS**:
-```bash
-flutter run --debug
-```
-
-**Android** with USB debugging enabled:
-```bash
-flutter run --debug
-```
-
-## 🚀 Building for Production
-
-### Android APK
-```bash
-flutter build apk --release
-# Output: build/app/outputs/flutter-apk/app-release.apk
-```
-
-### iOS IPA
-```bash
-flutter build ios --release
-# Then use Xcode to archive and distribute
-```
-
-## 📝 Notes for Developers
-
-- **Mock everything initially**: Don't wait for hardware. Build the UI with mock data streams.
-- **Use Provider/Riverpod**: Choose a state management solution early and stick with it.
-- **Test on real devices**: Simulators don't reflect real performance.
-- **Design responsive**: Support different screen sizes (phones, tablets).
-- **Plan for offline mode**: Users should see cached data when offline.
-- **Handle errors gracefully**: Network issues, Bluetooth problems, device disconnections.
-
-## 🔗 Useful Resources
-
-- [Flutter Documentation](https://flutter.dev/docs)
-- [Dart Language Tour](https://dart.dev/guides/language/language-tour)
-- [Flutter Cookbook](https://flutter.dev/docs/cookbook)
-- [MQTT in Flutter](https://pub.dev/packages/mqtt_client)
-- [fl_chart Examples](https://github.com/imaNNeo/fl_chart/tree/master/example)
-
-## 🤝 Contributing
-
-See the main [CONTRIBUTING.md](../CONTRIBUTING.md) for general guidelines.
-
-For app-specific contributions:
-- Follow Flutter/Dart style guide
-- Run `flutter analyze` before committing
-- Write widget tests for new UI components
-- Update this README if adding new features
 
 ---
 
-**Let's build an amazing mobile experience for Smart Plug AI!** 📱⚡
+## 🧩 State Management
 
-For comprehensive security architecture, encryption details, and Phase 1 (7 weeks) timeline with security milestones, see [docs/SECURITY.md](../docs/SECURITY.md) and [docs/ROADMAP.md](../docs/ROADMAP.md).
+The app uses **BLoC** (Business Logic Component) pattern:
+
+| BLoC | Manages |
+|------|---------|
+| `AuthBloc` | Login, logout, 2FA, session refresh |
+| `DeviceBloc` | Device list, telemetry, relay control |
+| `InsightsBloc` | Appliance recognition results, savings recommendations |
+| `SettingsBloc` | User preferences, notifications, security settings |
+| `SyncBloc` | Background sync, offline/online state |
+
+---
+
+## 🔒 Security Features
+
+| Feature | Implementation |
+|---------|---------------|
+| Authentication | Firebase Auth / Auth0 with 2FA (TOTP) |
+| Biometrics | Face ID, Touch ID, fingerprint for app unlock |
+| Cert pinning | Prevents MITM on API connections |
+| Encrypted storage | Hive with AES encryption + platform keychain |
+| Secure transport | TLS 1.3 for all API and WebSocket connections |
+| E2E decryption | App decrypts device data locally (cloud never sees plaintext) |
+| Session timeout | Auto-logout after 30 minutes of inactivity |
+| No sensitive logs | Zero PII in crash reports or debug output |
+
+See [docs/SECURITY.md](../docs/SECURITY.md) for the full security architecture.
+
+---
+
+## 🧪 Testing
+
+```bash
+# Unit tests
+flutter test
+
+# Integration tests
+flutter test integration_test/app_test.dart
+
+# With coverage
+flutter test --coverage
+genhtml coverage/lcov.info -o coverage/html
+```
+
+---
+
+## 🏭 Building for Production
+
+```bash
+# Android APK
+flutter build apk --release
+
+# Android App Bundle (Play Store)
+flutter build appbundle --release
+
+# iOS
+flutter build ios --release
+# Then archive and distribute via Xcode
+```
+
+---
+
+## 🤝 Contributing
+
+See [CONTRIBUTING.md](../CONTRIBUTING.md) for general guidelines.
+
+For app-specific contributions:
+- Follow the BLoC architecture pattern (add new BLoCs in `lib/blocs/`)
+- Run `flutter analyze` before committing
+- Write widget tests for new UI components
+- Update this README if adding new features or screens
+
+---
+
+*Part of the Smart Plug AI platform — see [docs/ROADMAP.md](../docs/ROADMAP.md) for the full 24-month roadmap.*

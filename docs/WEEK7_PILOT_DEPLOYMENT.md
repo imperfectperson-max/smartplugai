@@ -1,5 +1,7 @@
 # WEEK 7: PILOT DEPLOYMENT & DOCUMENTATION - DEEP DIVE
 
+> 📍 **Roadmap Context**: This guide covers pilot deployment for the **Phase 2: Full System** stage (Months 13–18) of the [24-month Smart Plug AI roadmap](ROADMAP.md). See [WEEK7_PILOT_DEPLOYMENT.md](WEEK7_PILOT_DEPLOYMENT.md) for monitoring setup.
+
 📅 **Timeline**: Days 43-49  
 🎯 **Goal**: Deploy to pilot users, establish 24/7 monitoring, complete all documentation, and validate system readiness for Phase 2 scaling
 
