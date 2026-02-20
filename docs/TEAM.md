@@ -83,7 +83,7 @@ Team composition and roles across the 3-year Smart Plug AI journey.
 ```
 Month 1–8:   3-person research team (founders/co-founders)
 Month 9:     Add Firmware Engineer (4th person)
-Month 13:    Firmware + Mobile + Backend + Hardware lead fully active
+Month 13:    All 4 Year 2 roles active: Firmware + Mobile + Backend + Hardware Lead
 Month 19:    Begin hiring Sales and Operations roles
 Month 22:    Full 8-person commercial team in place
 Month 24:    Seed round close → scale team as funded

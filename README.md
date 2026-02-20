@@ -72,7 +72,7 @@ Smart Plug AI combines five capabilities into one platform:
 
 ---
 
-## �� Hardware Architecture
+## ⚙️ Hardware Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
