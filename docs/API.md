@@ -1,6 +1,6 @@
 # Smart Plug AI API Documentation
 
-Comprehensive API reference for REST endpoints, WebSocket connections, and MQTT topics.
+Comprehensive API reference for the Smart Plug AI platform — South Africa's first AI-powered energy intelligence platform. This API serves the full 4-layer architecture (Hardware → Firmware → Backend → Mobile) described in [docs/ARCHITECTURE.md](ARCHITECTURE.md).
 
 ## 📚 Table of Contents
 

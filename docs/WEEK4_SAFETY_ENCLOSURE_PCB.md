@@ -1,5 +1,7 @@
 # WEEK 4: SAFETY, ENCLOSURE & PCB DESIGN - DEEP DIVE
 
+> 📍 **Roadmap Context**: This guide covers PCB design, safety, and enclosures for the **Phase 1: Secure Prototype** stage (Months 9–12) of the [24-month Smart Plug AI roadmap](ROADMAP.md). See [SECURITY.md](SECURITY.md) for the physical security design.
+
 📅 **Timeline**: Days 22-28  
 🎯 **Goal**: Transform breadboard prototypes into professional, safe, enclosed smart plugs with PCB design ready for manufacturing
 

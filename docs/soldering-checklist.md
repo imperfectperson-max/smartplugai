@@ -2,6 +2,8 @@
 
 This checklist ensures you're prepared for the hardware assembly session and can safely build the Smart Plug AI secure prototype with bank-grade security features.
 
+> 📍 **Roadmap Context**: This checklist supports the **Phase 1: Secure Prototype** stage (Months 9–12) of the [24-month Smart Plug AI roadmap](ROADMAP.md). The basic data collection plugs (Phase 0) used a simpler BOM without security hardware.
+
 ## 📦 Phase 1: Hardware Shopping List (3 Secure Plugs)
 
 **Total Budget**: R2,736 - R3,182 (3 plugs with bank-grade security)
