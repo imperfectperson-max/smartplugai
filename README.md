@@ -1,6 +1,6 @@
 # 🔌 Smart Plug AI
 
-> South Africa's first AI-powered energy intelligence platform with bank-grade security
+> South Africa's AI-powered energy intelligence platform with security
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Status: Pre-Seed](https://img.shields.io/badge/Status-Pre--Seed-orange.svg)]()
